@@ -22,7 +22,7 @@ public class ClickableNodesArea : Node2D
             var vector = new Vector2(containerPosition.x + (NODE_TOTAL_WIDTH * i) + NODE_WIDTH / 2, containerPosition.y + NODE_WIDTH / 2);
             newNode.Init(i, i, (int)KEYS[i], vector);
             AddChild(newNode);
-            newNode.AddToGroup("nodes");
+            newNode.AddToGroup("clickableNodes");
         }
     }
 }

@@ -4,12 +4,17 @@ using System.Collections.Generic;
 
 public class Game : Node
 {
-    private int _score = 0;
+    private int _score;
     private List<int> _taskNodes;
     private List<int> _clickedNodes;
-    private Label _label;
     private TaskNodesArea _taskNodesArea;
     private SelectedNodesArea _selectedNodesArea;
+    private Timer _gameTimer;
+    private Timer _taskTimer;
+    private Timer _hudUpdateTimer;
+    private HUD _hud;
+
+    public bool IsRunning { get; set; }
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
@@ -18,13 +23,19 @@ public class Game : Node
         _clickedNodes = new List<int>();
         _selectedNodesArea = GetNode<SelectedNodesArea>("SelectedNodesArea");
         _taskNodesArea = GetNode<TaskNodesArea>("TaskNodesArea");
+        _hud = GetNode<HUD>("HUD");
+        _taskTimer = GetNode<Timer>("TaskTimer");
+        _gameTimer = GetNode<Timer>("GameTimer");
+        _hudUpdateTimer = GetNode<Timer>("HudUpdateTimer");
+
+        IsRunning = false;
+
+        _hud.Connect("StartGamePressed", this, "StartGame");
         _taskNodesArea.Connect("AddedTaskNode", this, "AddTaskNode");
-        GenerateNewTask();
-
-        _label = GetNode<Label>("Label");
-        _label.Text = _score.ToString();
-
-        var nodes = GetTree().GetNodesInGroup("nodes");   
+        _gameTimer.Connect("timeout", this, "StopGame");
+        _taskTimer.Connect("timeout", this, "GenerateNewTask");
+        _hudUpdateTimer.Connect("timeout", this, "UpdateLabels");
+        var nodes = GetTree().GetNodesInGroup("clickableNodes");   
         foreach (ClickableNode node in nodes)
         {
             node.Connect("Clicked", this, "NodeClicked");
@@ -33,6 +44,8 @@ public class Game : Node
 
     public void NodeClicked(int type)
     {
+        if (!IsRunning) return;
+
         _clickedNodes.Add(type);
         _selectedNodesArea.AddSelectedNode(type);
 
@@ -53,7 +66,6 @@ public class Game : Node
             }
 
             _score += correctNodes;
-            _label.Text = _score.ToString();
             GenerateNewTask();
         }
     }
@@ -69,5 +81,32 @@ public class Game : Node
         _taskNodes.Clear();
         _taskNodesArea.GenerateTaskNodes();
         _selectedNodesArea.DeleteSelectedNodes();
+        _taskTimer.Stop();
+        _taskTimer.Start();
+    }
+
+    public void StopGame()
+    {
+        IsRunning = false;
+        _hud.ShowGameOverHUD();
+        _hud.UpdateLabels(0, 0, _score);
+        _gameTimer.Stop();
+        _taskTimer.Stop();
+    }
+
+    public void StartGame() 
+    {
+        _score = 0;
+        IsRunning = true;
+        _hud.HideGameOverHUD();
+        _gameTimer.Start();
+        _taskTimer.Start();
+        _hudUpdateTimer.Start();
+        GenerateNewTask();
+    }
+
+    public void UpdateLabels()
+    {
+        _hud.UpdateLabels(_gameTimer.TimeLeft, _taskTimer.TimeLeft, _score);
     }
 }
