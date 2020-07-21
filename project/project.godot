@@ -19,13 +19,17 @@ config/name="Project"
 run/main_scene="res://Game.tscn"
 config/icon="res://icon.png"
 
+[display]
+
+window/stretch/mode="viewport"
+window/stretch/aspect="keep"
+
 [editor_plugins]
 
 enabled=PoolStringArray( "MonoDebuggerQM-1.0.2" )
 
 [mono]
 
-debugger_agent/wait_for_debugger=true
 project/auto_update_project=false
 
 [rendering]
