@@ -5,6 +5,8 @@ using System.Collections.Generic;
 public class Game : Node
 {
     private int _score;
+    private int _completedTasks;
+    private int _currentModifier;
     private List<int> _taskNodes;
     private List<int> _clickedNodes;
     private TaskNodesArea _taskNodesArea;
@@ -13,8 +15,34 @@ public class Game : Node
     private Timer _taskTimer;
     private Timer _hudUpdateTimer;
     private HUD _hud;
+    private Config _config;
 
     public bool IsRunning { get; set; }
+
+    public void Init(string encodedConfig) 
+    {
+        if (string.IsNullOrEmpty(encodedConfig))
+        {
+            _config = new Config()
+            {
+                ComboBreakStreak = 1,
+                GameControlsType = GameControls.MouseClick,
+                IncrementComboStreak = 3,
+                MaxComboModifier = 5,
+                PerfectTaskBonusPoints = 5,
+                SuccessRatingType = SuccessRating.GainedPoints,
+                TasksPerGame = 0,
+                TimePerGame = 30,
+                TimePerTask = 10,
+                UnusedTimeGameBonus = 5,
+                UnusedTimeTaskBonus = 1
+            };
+        }
+        else
+        {
+            //TODO: decode the config string and set up the config
+        }
+    }
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
@@ -28,6 +56,7 @@ public class Game : Node
         _gameTimer = GetNode<Timer>("GameTimer");
         _hudUpdateTimer = GetNode<Timer>("HudUpdateTimer");
 
+        ConfigSetup();
         IsRunning = false;
 
         _hud.Connect("StartGamePressed", this, "StartGame");
@@ -51,22 +80,12 @@ public class Game : Node
 
         if (_clickedNodes.Count == _taskNodes.Count)
         {
-            var correctNodes = 0;
-            for (int i = 0; i < _clickedNodes.Count; i++)
-            {
-                if (_clickedNodes[i] == _taskNodes[i])
-                {
-                    correctNodes++;
-                }
-            }
+            CheckCompletedTask();
 
-            if (correctNodes == _clickedNodes.Count)
+            if (_config.TasksPerGame != 0 && _completedTasks == _config.TasksPerGame)
             {
-                correctNodes += 5;
+                StopGame();
             }
-
-            _score += correctNodes;
-            GenerateNewTask();
         }
     }
 
@@ -75,13 +94,37 @@ public class Game : Node
         _taskNodes.Add(type);
     }
 
+    public void CheckCompletedTask()
+    {
+        _taskTimer.Stop();
+        var correctNodes = 0;
+        var gainedScore = 0;
+        for (int i = 0; i < _clickedNodes.Count; i++)
+        {
+            if (_clickedNodes[i] == _taskNodes[i])
+            {
+                correctNodes++;
+            }
+        }
+        gainedScore += correctNodes;
+
+        if (correctNodes == _clickedNodes.Count)
+        {
+            gainedScore += _config.PerfectTaskBonusPoints;
+            gainedScore += Convert.ToInt32(Math.Round(_taskTimer.TimeLeft)) * _config.UnusedTimeTaskBonus;
+        }
+
+        _score += gainedScore * _currentModifier;
+        _completedTasks++;
+        GenerateNewTask();
+    }
+
     public void GenerateNewTask()
     {
         _clickedNodes.Clear();
         _taskNodes.Clear();
         _taskNodesArea.GenerateTaskNodes();
         _selectedNodesArea.DeleteSelectedNodes();
-        _taskTimer.Stop();
         _taskTimer.Start();
     }
 
@@ -97,6 +140,8 @@ public class Game : Node
     public void StartGame() 
     {
         _score = 0;
+        _completedTasks = 0;
+        _currentModifier = 1;
         IsRunning = true;
         _hud.HideGameOverHUD();
         _gameTimer.Start();
@@ -108,5 +153,11 @@ public class Game : Node
     public void UpdateLabels()
     {
         _hud.UpdateLabels(_gameTimer.TimeLeft, _taskTimer.TimeLeft, _score);
+    }
+
+    private void ConfigSetup()
+    {
+        _taskTimer.WaitTime = _config.TimePerTask;
+        _gameTimer.WaitTime = _config.TimePerGame;
     }
 }
