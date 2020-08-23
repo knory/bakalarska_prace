@@ -17,61 +17,29 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ScoreDescLabel" type="Label" parent="."]
-margin_left = 24.7
-margin_top = 115.9
-margin_right = 64.7
-margin_bottom = 129.9
-text = "Score:"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="ScoreLabel" type="Label" parent="."]
-margin_left = 84.0
-margin_top = 114.0
-margin_right = 144.0
-margin_bottom = 140.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="GameTimeDescLabel" type="Label" parent="."]
-margin_left = 29.05
-margin_top = 211.55
-margin_right = 89.05
-margin_bottom = 259.55
-text = "Total time left:"
-autowrap = true
+margin_left = 65.95
+margin_top = 118.75
+margin_right = 125.95
+margin_bottom = 144.75
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="GameTimeLabel" type="Label" parent="."]
-margin_left = 113.136
-margin_top = 225.106
-margin_right = 153.136
-margin_bottom = 239.106
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="TaskTimeDescLabel" type="Label" parent="."]
-margin_left = 31.1
-margin_top = 356.65
-margin_right = 93.1
-margin_bottom = 404.65
-text = "Task time left:"
-autowrap = true
+margin_left = 62.7859
+margin_top = 230.806
+margin_right = 102.786
+margin_bottom = 244.806
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="TaskTimeLabel" type="Label" parent="."]
-margin_left = 113.136
-margin_top = 367.4
-margin_right = 153.136
-margin_bottom = 381.4
+margin_left = 58.9859
+margin_top = 371.2
+margin_right = 98.9859
+margin_bottom = 385.2
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -81,7 +49,15 @@ margin_left = 467.25
 margin_top = 390.0
 margin_right = 563.25
 margin_bottom = 425.0
-text = "Start"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CurrentComboLabel" type="Label" parent="."]
+margin_left = 55.0499
+margin_top = 59.0
+margin_right = 95.0499
+margin_bottom = 73.0
 __meta__ = {
 "_edit_use_anchors_": false
 }

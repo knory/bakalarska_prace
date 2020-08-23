@@ -3,9 +3,9 @@ using System;
 
 public class Config
 {
-    public int IncrementComboStreak { get; set; }
-    public int MaxComboModifier { get; set; }
-    public int ComboBreakStreak { get; set; }
+    public int ComboStreak { get; set; } //DONE
+    public int MaxComboModifier { get; set; } //DONE
+    public int ComboBreakStreak { get; set; } //DONE
     public int PerfectTaskBonusPoints { get; set; } //DONE
     public int UnusedTimeTaskBonus { get; set; } //DONE
     public int UnusedTimeGameBonus { get; set; }

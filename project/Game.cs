@@ -5,8 +5,11 @@ using System.Collections.Generic;
 public class Game : Node
 {
     private int _score;
+    private int _completedPerfectTasks;
     private int _completedTasks;
     private int _currentModifier;
+    private int _currentPerfectStreak;
+    private int _currentFailedStreak;
     private List<int> _taskNodes;
     private List<int> _clickedNodes;
     private TaskNodesArea _taskNodesArea;
@@ -27,7 +30,7 @@ public class Game : Node
             {
                 ComboBreakStreak = 1,
                 GameControlsType = GameControls.MouseClick,
-                IncrementComboStreak = 3,
+                ComboStreak = 3,
                 MaxComboModifier = 5,
                 PerfectTaskBonusPoints = 5,
                 SuccessRatingType = SuccessRating.GainedPoints,
@@ -47,6 +50,8 @@ public class Game : Node
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
+        Init(string.Empty);
+
         _taskNodes = new List<int>();
         _clickedNodes = new List<int>();
         _selectedNodesArea = GetNode<SelectedNodesArea>("SelectedNodesArea");
@@ -97,23 +102,7 @@ public class Game : Node
     public void CheckCompletedTask()
     {
         _taskTimer.Stop();
-        var correctNodes = 0;
-        var gainedScore = 0;
-        for (int i = 0; i < _clickedNodes.Count; i++)
-        {
-            if (_clickedNodes[i] == _taskNodes[i])
-            {
-                correctNodes++;
-            }
-        }
-        gainedScore += correctNodes;
-
-        if (correctNodes == _clickedNodes.Count)
-        {
-            gainedScore += _config.PerfectTaskBonusPoints;
-            gainedScore += Convert.ToInt32(Math.Round(_taskTimer.TimeLeft)) * _config.UnusedTimeTaskBonus;
-        }
-
+        var gainedScore = CountGainedScore();
         _score += gainedScore * _currentModifier;
         _completedTasks++;
         GenerateNewTask();
@@ -132,9 +121,18 @@ public class Game : Node
     {
         IsRunning = false;
         _hud.ShowGameOverHUD();
-        _hud.UpdateLabels(0, 0, _score);
+        UpdateLabels();
         _gameTimer.Stop();
         _taskTimer.Stop();
+        
+        // if (_config.SuccessRatingType == SuccessRating.GainedPoints) 
+        // {
+        //     _hud.UpdateLabels(0, 0, _score);
+        // }
+        // else
+        // {
+        //     _hud.UpdateLabels(0, 0, _completedTasks, _completedPerfectTasks);
+        // }
     }
 
     public void StartGame() 
@@ -142,22 +140,91 @@ public class Game : Node
         _score = 0;
         _completedTasks = 0;
         _currentModifier = 1;
+        _currentPerfectStreak = 0;
+        _currentFailedStreak = 0;
         IsRunning = true;
         _hud.HideGameOverHUD();
-        _gameTimer.Start();
-        _taskTimer.Start();
         _hudUpdateTimer.Start();
         GenerateNewTask();
+        _taskTimer.Start();
+
+        if (_config.TimePerGame != 0)
+        {
+            _gameTimer.Start();
+        }
     }
 
     public void UpdateLabels()
     {
-        _hud.UpdateLabels(_gameTimer.TimeLeft, _taskTimer.TimeLeft, _score);
+        if (_config.SuccessRatingType == SuccessRating.GainedPoints)
+        {
+            _hud.UpdateLabels(_currentModifier, _gameTimer.TimeLeft, _taskTimer.TimeLeft, _score);
+        }
+        else
+        {
+            _hud.UpdateLabels(_currentModifier, _gameTimer.TimeLeft, _taskTimer.TimeLeft, _completedTasks, _completedPerfectTasks);
+        }
+    }
+
+    private int CountGainedScore()
+    {
+        var correctNodes = 0;
+        var gainedScore = 0;
+        for (int i = 0; i < _clickedNodes.Count; i++)
+        {
+            if (_clickedNodes[i] == _taskNodes[i])
+            {
+                correctNodes++;
+            }
+        }
+        gainedScore += correctNodes;
+
+        if (correctNodes == _clickedNodes.Count)
+        {
+            gainedScore += _config.PerfectTaskBonusPoints;
+            gainedScore += Convert.ToInt32(Math.Round(_taskTimer.TimeLeft)) * _config.UnusedTimeTaskBonus;
+            _currentPerfectStreak++;
+            _completedPerfectTasks++;
+
+            if (_config.ComboStreak == _currentPerfectStreak)
+            {
+                IncrementComboModifier();
+            }
+        }
+        else
+        {
+            _currentFailedStreak++;
+
+            if (_config.ComboBreakStreak == _currentFailedStreak)
+            {
+                DecrementComboModifier();
+            }
+        }
+
+        return gainedScore;
     }
 
     private void ConfigSetup()
     {
         _taskTimer.WaitTime = _config.TimePerTask;
         _gameTimer.WaitTime = _config.TimePerGame;
+    }
+
+    private void IncrementComboModifier()
+    {
+        if (_config.MaxComboModifier == 0 || _config.MaxComboModifier > _currentModifier)
+        {
+            _currentModifier++;
+            _currentPerfectStreak = 0;
+        }
+        
+        _currentFailedStreak = 0;
+    }
+
+    private void DecrementComboModifier()
+    {
+        _currentModifier = 1;
+        _currentFailedStreak = 0;
+        _currentPerfectStreak = 0;
     }
 }

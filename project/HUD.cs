@@ -5,11 +5,9 @@ public class HUD : CanvasLayer
 {
     private Label _gameStatusLabel;
     private Label _scoreLabel;
-    private Label _scoreDescLabel;
+    private Label _currentComboLabel;
     private Label _gameTimeLabel;
-    private Label _gameTimeDescLabel;
     private Label _taskTimeLabel;
-    private Label _taskTimeDescLabel;
     private Button _startButton;
 
     [Signal]
@@ -20,24 +18,28 @@ public class HUD : CanvasLayer
     {
         _gameStatusLabel = GetNode<Label>("GameStatusLabel");
         _scoreLabel = GetNode<Label>("ScoreLabel");
-        _scoreDescLabel = GetNode<Label>("ScoreDescLabel");
+        _currentComboLabel = GetNode<Label>("CurrentComboLabel");
         _gameTimeLabel = GetNode<Label>("GameTimeLabel");
-        _gameTimeDescLabel = GetNode<Label>("GameTimeDescLabel");
         _taskTimeLabel = GetNode<Label>("TaskTimeLabel");
-        _taskTimeDescLabel = GetNode<Label>("TaskTimeDescLabel");
         _startButton = GetNode<Button>("StartButton");
 
         _startButton.Connect("pressed", this, "StartButtonPressed");
 
-        _gameStatusLabel.Text = "Game Over";
+        _startButton.Text = $"{ResourceStrings.StartGame}";
+        _gameStatusLabel.Text = $"{ResourceStrings.GameOver}";
         _gameStatusLabel.Visible = false;
     }
 
-    public void UpdateLabels(float gameTimeLeft, float taskTimeLeft, int score)
+    public void UpdateLabels(int combo, float gameTimeLeft, float taskTimeLeft, int score)
     {
-        _gameTimeLabel.Text = new DateTimeOffset().AddSeconds(gameTimeLeft).ToString("mm:ss");
-        _taskTimeLabel.Text = new DateTimeOffset().AddSeconds(taskTimeLeft).ToString("mm:ss");
-        _scoreLabel.Text = score.ToString();
+        UpdateGeneralLabels(combo, gameTimeLeft, taskTimeLeft);
+        _scoreLabel.Text = $"{ResourceStrings.Score}: {score}";
+    }
+
+    public void UpdateLabels(int combo, float gameTimeLeft, float taskTimeLeft, int completedTasks, int perfectTasks)
+    {
+        UpdateGeneralLabels(combo, gameTimeLeft, taskTimeLeft);
+        _scoreLabel.Text = $"{ResourceStrings.PerfectTasks}: {perfectTasks} / {ResourceStrings.CompletedTasks}: {completedTasks}";
     }
 
     public void ShowGameOverHUD()
@@ -50,6 +52,13 @@ public class HUD : CanvasLayer
     {
         _gameStatusLabel.Visible = false;
         _startButton.Visible = false;
+    }
+
+    private void UpdateGeneralLabels(int combo, float gameTimeLeft, float taskTimeLeft)
+    {
+        _currentComboLabel.Text = $"{ResourceStrings.CurrentCombo}: {combo}";
+        _gameTimeLabel.Text = $"{ResourceStrings.TotalTimeLeft}: {new DateTimeOffset().AddSeconds(gameTimeLeft).ToString("mm:ss")}";
+        _taskTimeLabel.Text = $"{ResourceStrings.TaskTimeLeft}: {new DateTimeOffset().AddSeconds(taskTimeLeft).ToString("mm:ss")}";
     }
 
     private void StartButtonPressed()
