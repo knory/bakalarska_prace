@@ -10,10 +10,13 @@
 script = ExtResource( 3 )
 
 [node name="ClickableNodesArea" parent="." instance=ExtResource( 1 )]
+visible = false
 
 [node name="TaskNodesArea" parent="." instance=ExtResource( 2 )]
+visible = false
 
 [node name="SelectedNodesArea" parent="." instance=ExtResource( 4 )]
+visible = false
 
 [node name="HUD" parent="." instance=ExtResource( 5 )]
 

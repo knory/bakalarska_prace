@@ -16,12 +16,14 @@ public class HUD : CanvasLayer
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
-        _gameStatusLabel = GetNode<Label>("GameStatusLabel");
-        _scoreLabel = GetNode<Label>("ScoreLabel");
-        _currentComboLabel = GetNode<Label>("CurrentComboLabel");
-        _gameTimeLabel = GetNode<Label>("GameTimeLabel");
-        _taskTimeLabel = GetNode<Label>("TaskTimeLabel");
-        _startButton = GetNode<Button>("StartButton");
+        var wrapper = GetNode<VBoxContainer>("MarginContainer/VBoxContainer");
+        _gameStatusLabel = wrapper.GetNode<Label>("GameStatusLabel");
+        _startButton = wrapper.GetNode<Button>("StartButton");
+        var gameLabelsWrapper = wrapper.GetNode<VBoxContainer>("VBoxContainer");
+        _scoreLabel = gameLabelsWrapper.GetNode<Label>("ScoreLabel");
+        _currentComboLabel = gameLabelsWrapper.GetNode<Label>("CurrentComboLabel");
+        _gameTimeLabel = gameLabelsWrapper.GetNode<Label>("GameTimeLabel");
+        _taskTimeLabel = gameLabelsWrapper.GetNode<Label>("TaskTimeLabel");
 
         _startButton.Connect("pressed", this, "StartButtonPressed");
 
@@ -52,6 +54,11 @@ public class HUD : CanvasLayer
     {
         _gameStatusLabel.Visible = false;
         _startButton.Visible = false;
+    }
+
+    public void HideComboModifierLabel()
+    {
+        _currentComboLabel.Visible = false;
     }
 
     private void UpdateGeneralLabels(int combo, float gameTimeLeft, float taskTimeLeft)

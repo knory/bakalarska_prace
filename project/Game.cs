@@ -14,6 +14,7 @@ public class Game : Node
     private List<int> _clickedNodes;
     private TaskNodesArea _taskNodesArea;
     private SelectedNodesArea _selectedNodesArea;
+    private ClickableNodesArea _clickableNodesArea;
     private Timer _gameTimer;
     private Timer _taskTimer;
     private Timer _hudUpdateTimer;
@@ -56,6 +57,7 @@ public class Game : Node
         _clickedNodes = new List<int>();
         _selectedNodesArea = GetNode<SelectedNodesArea>("SelectedNodesArea");
         _taskNodesArea = GetNode<TaskNodesArea>("TaskNodesArea");
+        _clickableNodesArea = GetNode<ClickableNodesArea>("ClickableNodesArea");
         _hud = GetNode<HUD>("HUD");
         _taskTimer = GetNode<Timer>("TaskTimer");
         _gameTimer = GetNode<Timer>("GameTimer");
@@ -124,15 +126,9 @@ public class Game : Node
         UpdateLabels();
         _gameTimer.Stop();
         _taskTimer.Stop();
-        
-        // if (_config.SuccessRatingType == SuccessRating.GainedPoints) 
-        // {
-        //     _hud.UpdateLabels(0, 0, _score);
-        // }
-        // else
-        // {
-        //     _hud.UpdateLabels(0, 0, _completedTasks, _completedPerfectTasks);
-        // }
+        _clickableNodesArea.Visible = false;
+        _taskNodesArea.Visible = false;
+        _selectedNodesArea.Visible = false;
     }
 
     public void StartGame() 
@@ -147,6 +143,9 @@ public class Game : Node
         _hudUpdateTimer.Start();
         GenerateNewTask();
         _taskTimer.Start();
+        _clickableNodesArea.Visible = true;
+        _taskNodesArea.Visible = true;
+        _selectedNodesArea.Visible = true;
 
         if (_config.TimePerGame != 0)
         {
@@ -186,7 +185,7 @@ public class Game : Node
             _currentPerfectStreak++;
             _completedPerfectTasks++;
 
-            if (_config.ComboStreak == _currentPerfectStreak)
+            if (_config.ComboStreak > 0 && _config.ComboStreak == _currentPerfectStreak)
             {
                 IncrementComboModifier();
             }
@@ -195,7 +194,7 @@ public class Game : Node
         {
             _currentFailedStreak++;
 
-            if (_config.ComboBreakStreak == _currentFailedStreak)
+            if (_config.ComboBreakStreak > 0 && _config.ComboBreakStreak == _currentFailedStreak)
             {
                 DecrementComboModifier();
             }
@@ -208,6 +207,11 @@ public class Game : Node
     {
         _taskTimer.WaitTime = _config.TimePerTask;
         _gameTimer.WaitTime = _config.TimePerGame;
+
+        if (_config.MaxComboModifier == 1)
+        {
+            _hud.HideComboModifierLabel();
+        }
     }
 
     private void IncrementComboModifier()

@@ -5,11 +5,29 @@
 [node name="HUD" type="CanvasLayer"]
 script = ExtResource( 1 )
 
-[node name="GameStatusLabel" type="Label" parent="."]
-margin_left = 413.015
-margin_top = 115.499
-margin_right = 637.015
-margin_bottom = 227.499
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_bottom = 4.0
+custom_constants/margin_right = 70
+custom_constants/margin_top = 70
+custom_constants/margin_left = 70
+custom_constants/margin_bottom = 70
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+margin_left = 70.0
+margin_top = 70.0
+margin_right = 954.0
+margin_bottom = 534.0
+custom_constants/separation = 15
+alignment = 1
+
+[node name="GameStatusLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+margin_right = 884.0
+margin_bottom = 14.0
 align = 1
 valign = 1
 autowrap = true
@@ -17,47 +35,53 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ScoreLabel" type="Label" parent="."]
-margin_left = 65.95
-margin_top = 118.75
-margin_right = 125.95
-margin_bottom = 144.75
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+margin_top = 29.0
+margin_right = 884.0
+margin_bottom = 429.0
+rect_min_size = Vector2( 150, 400 )
+custom_constants/separation = 25
+
+[node name="ScoreLabel" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer"]
+margin_right = 884.0
+margin_bottom = 14.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="GameTimeLabel" type="Label" parent="."]
-margin_left = 62.7859
-margin_top = 230.806
-margin_right = 102.786
-margin_bottom = 244.806
+[node name="GameTimeLabel" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer"]
+margin_top = 39.0
+margin_right = 884.0
+margin_bottom = 53.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="TaskTimeLabel" type="Label" parent="."]
-margin_left = 58.9859
-margin_top = 371.2
-margin_right = 98.9859
-margin_bottom = 385.2
+[node name="TaskTimeLabel" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer"]
+margin_top = 78.0
+margin_right = 884.0
+margin_bottom = 92.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="StartButton" type="Button" parent="."]
-margin_left = 467.25
-margin_top = 390.0
-margin_right = 563.25
-margin_bottom = 425.0
+[node name="CurrentComboLabel" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer"]
+margin_top = 117.0
+margin_right = 884.0
+margin_bottom = 131.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="CurrentComboLabel" type="Label" parent="."]
-margin_left = 55.0499
-margin_top = 59.0
-margin_right = 95.0499
-margin_bottom = 73.0
+[node name="StartButton" type="Button" parent="MarginContainer/VBoxContainer"]
+margin_left = 436.0
+margin_top = 444.0
+margin_right = 448.0
+margin_bottom = 464.0
+grow_horizontal = 2
+rect_min_size = Vector2( 10, 20 )
+size_flags_horizontal = 4
+size_flags_vertical = 0
 __meta__ = {
 "_edit_use_anchors_": false
 }
