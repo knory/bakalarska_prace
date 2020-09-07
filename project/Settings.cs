@@ -14,7 +14,9 @@ public class Settings : Control
     private LineEdit _timePerGameValue;
     private LineEdit _tasksPerGameValue;
     private LineEdit _generatedCodeValue;
+    private Label _codeCopiedLabel;
     private Button _generateCodeButton;
+    private Button _copyClipboardButton;
     private Button _backButton;
 
     // Called when the node enters the scene tree for the first time.
@@ -32,10 +34,13 @@ public class Settings : Control
         _tasksPerGameValue = valuesContainer.GetNode<LineEdit>("TasksPerGameContainer/Value");
 
         _generatedCodeValue = GetNode<LineEdit>("MarginContainer/VBoxContainer/GeneratedCodeValue");
-        _generateCodeButton = GetNode<Button>("MarginContainer/VBoxContainer/GenerateCodeButton");
+        _codeCopiedLabel = GetNode<Label>("MarginContainer/VBoxContainer/CodeCopiedLabel");
+        _generateCodeButton = GetNode<Button>("MarginContainer/VBoxContainer/HBoxContainer/GenerateCodeButton");
+        _copyClipboardButton = GetNode<Button>("MarginContainer/VBoxContainer/HBoxContainer/CopyClipboardButton");
         _backButton = GetNode<Button>("MarginContainer/VBoxContainer/BackButton");
 
         _generateCodeButton.Connect("pressed", this, "GenerateConfigCode");
+        _copyClipboardButton.Connect("pressed", this, "CopyConfigCodeToClipboard");
         _backButton.Connect("pressed", this, "ChangeSceneToMenu");
     }
 
@@ -55,7 +60,16 @@ public class Settings : Control
         };
 
         var serializedConfig = JsonConvert.SerializeObject(config);
-        _generatedCodeValue.Text = serializedConfig;
+        var configBytesArray = System.Text.Encoding.UTF8.GetBytes(serializedConfig);
+        var encodedConfig = System.Convert.ToBase64String(configBytesArray);
+        _generatedCodeValue.Text = encodedConfig;
+        _copyClipboardButton.Disabled = false;
+    }
+
+    private void CopyConfigCodeToClipboard()
+    {
+        OS.Clipboard = _generatedCodeValue.Text;
+        _codeCopiedLabel.Text = "Code copied to clipboard!";
     }
 
     private void ChangeSceneToMenu()

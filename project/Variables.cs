@@ -11,6 +11,7 @@ public struct ResourceStrings
     public static string CompletedTasks => "Completed tasks";
     public static string CurrentCombo => "Current combo";
     public static string GameOver => "Game Over";
+    public static string GameStartsIn => "Game starts in";
     public static string PerfectTasks => "Perfect tasks";
     public static string Score => "Score";
     public static string StartGame => "Start Game";

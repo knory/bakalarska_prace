@@ -1,4 +1,5 @@
 using Godot;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
@@ -18,16 +19,16 @@ public class Game : Node
     private Timer _gameTimer;
     private Timer _taskTimer;
     private Timer _hudUpdateTimer;
+    private Timer _countdownTimer;
     private HUD _hud;
+    private GameStartOverlay _gameStartOverlay;
     private Config _config;
 
     public bool IsRunning { get; set; }
 
-    public void Init(string encodedConfig) 
+    public bool Init(string encodedConfig) 
     {
-        if (string.IsNullOrEmpty(encodedConfig))
-        {
-            _config = new Config()
+        var defaultConfig = new Config()
             {
                 ComboBreakStreak = 1,
                 GameControlsType = GameControls.MouseClick,
@@ -41,36 +42,63 @@ public class Game : Node
                 UnusedTimeGameBonus = 5,
                 UnusedTimeTaskBonus = 1
             };
+
+        if (string.IsNullOrEmpty(encodedConfig))
+        {
+            _config = defaultConfig;
         }
         else
         {
-            //TODO: decode the config string and set up the config
+            try 
+            {
+                var decodedByteArray = System.Convert.FromBase64String(encodedConfig);
+                var jsonConfig = System.Text.Encoding.UTF8.GetString(decodedByteArray);
+                var deserializedConfig = JsonConvert.DeserializeObject<Config>(jsonConfig);
+
+                if (deserializedConfig != null) 
+                {
+                    _config = deserializedConfig;
+                }
+                else
+                {
+                    _gameStartOverlay.ShowCodeErrorLabel();
+                    return false;
+                }
+            }
+            catch (Exception)
+            {
+                _gameStartOverlay.ShowCodeErrorLabel();
+                return false;
+            }
         }
+
+        _gameStartOverlay.HideCodeErrorLabel();
+        return true;
     }
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
-        Init(string.Empty);
-
         _taskNodes = new List<int>();
         _clickedNodes = new List<int>();
         _selectedNodesArea = GetNode<SelectedNodesArea>("SelectedNodesArea");
         _taskNodesArea = GetNode<TaskNodesArea>("TaskNodesArea");
         _clickableNodesArea = GetNode<ClickableNodesArea>("ClickableNodesArea");
         _hud = GetNode<HUD>("HUD");
+        _gameStartOverlay = GetNode<GameStartOverlay>("GameStartOverlay");
         _taskTimer = GetNode<Timer>("TaskTimer");
         _gameTimer = GetNode<Timer>("GameTimer");
         _hudUpdateTimer = GetNode<Timer>("HudUpdateTimer");
+        _countdownTimer = GetNode<Timer>("CountdownTimer");
 
-        ConfigSetup();
         IsRunning = false;
 
-        _hud.Connect("StartGamePressed", this, "StartGame");
+        _gameStartOverlay.Connect("StartGame", this, "StartCountdownTimer");
         _taskNodesArea.Connect("AddedTaskNode", this, "AddTaskNode");
         _gameTimer.Connect("timeout", this, "StopGame");
         _taskTimer.Connect("timeout", this, "GenerateNewTask");
         _hudUpdateTimer.Connect("timeout", this, "UpdateLabels");
+        _countdownTimer.Connect("timeout", this, "StartGame");
         var nodes = GetTree().GetNodesInGroup("clickableNodes");   
         foreach (ClickableNode node in nodes)
         {
@@ -122,10 +150,12 @@ public class Game : Node
     public void StopGame()
     {
         IsRunning = false;
-        _hud.ShowGameOverHUD();
+        _gameStartOverlay.ShowGameStatusLabel();
+        _gameStartOverlay.ShowOverlay();
         UpdateLabels();
         _gameTimer.Stop();
         _taskTimer.Stop();
+        _hudUpdateTimer.Stop();
         _clickableNodesArea.Visible = false;
         _taskNodesArea.Visible = false;
         _selectedNodesArea.Visible = false;
@@ -139,13 +169,11 @@ public class Game : Node
         _currentPerfectStreak = 0;
         _currentFailedStreak = 0;
         IsRunning = true;
-        _hud.HideGameOverHUD();
-        _hudUpdateTimer.Start();
+        _hud.HideCountdownLabel();
+        _gameStartOverlay.HideOverlay();
+        _gameStartOverlay.HideGameStatusLabel();
         GenerateNewTask();
         _taskTimer.Start();
-        _clickableNodesArea.Visible = true;
-        _taskNodesArea.Visible = true;
-        _selectedNodesArea.Visible = true;
 
         if (_config.TimePerGame != 0)
         {
@@ -153,15 +181,39 @@ public class Game : Node
         }
     }
 
+    public void StartCountdownTimer(string encodedConfig)
+    {
+        if (!Init(encodedConfig))
+        {
+            return;
+        }
+
+        ConfigSetup();
+        _hudUpdateTimer.Start();
+        _gameStartOverlay.HideOverlay();
+        _hud.ShowCountdownLabel();
+        _clickableNodesArea.Visible = true;
+        _taskNodesArea.Visible = true;
+        _selectedNodesArea.Visible = true;
+        _countdownTimer.Start();
+    }
+
     public void UpdateLabels()
     {
-        if (_config.SuccessRatingType == SuccessRating.GainedPoints)
+        if (_countdownTimer.TimeLeft > 0)
         {
-            _hud.UpdateLabels(_currentModifier, _gameTimer.TimeLeft, _taskTimer.TimeLeft, _score);
+            _hud.UpdateCountdownLabel(_countdownTimer.TimeLeft);
         }
         else
         {
-            _hud.UpdateLabels(_currentModifier, _gameTimer.TimeLeft, _taskTimer.TimeLeft, _completedTasks, _completedPerfectTasks);
+            if (_config.SuccessRatingType == SuccessRating.GainedPoints)
+            {
+                _hud.UpdateLabels(_currentModifier, _gameTimer.TimeLeft, _taskTimer.TimeLeft, _score);
+            }
+            else
+            {
+                _hud.UpdateLabels(_currentModifier, _gameTimer.TimeLeft, _taskTimer.TimeLeft, _completedTasks, _completedPerfectTasks);
+            }
         }
     }
 

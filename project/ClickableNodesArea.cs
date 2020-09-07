@@ -9,7 +9,7 @@ public class ClickableNodesArea : Node2D
     private const int NUMBER_OF_NODES = 5;
     private static readonly KeyList[] KEYS = {KeyList.Q, KeyList.W, KeyList.E, KeyList.R, KeyList.T};
     private PackedScene _clickableNodeScene;
-    
+
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
