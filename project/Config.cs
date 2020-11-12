@@ -13,7 +13,6 @@ public class Config
     public int TimePerGame { get; set; } //DONE
     public int TasksPerGame { get; set; } //DONE
     public SuccessRating SuccessRatingType { get; set; }
-    public GameControls GameControlsType { get; set; }
 
     public Config()
     { }
@@ -23,10 +22,4 @@ public enum SuccessRating
 {
     CompletedTasks,
     GainedPoints
-}
-
-public enum GameControls 
-{
-    MouseClick,
-    Keyboard
 }

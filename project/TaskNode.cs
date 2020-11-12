@@ -15,7 +15,7 @@ public class TaskNode : Area2D
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
-        var texture = (Texture)GD.Load($"res://{Variables.SpriteNames[Type]}");
+        var texture = (Texture)GD.Load($"res://{Constants.SpriteNames[Type]}");
         GetNode<Sprite>("Sprite").Texture = texture;
         Position = _position;
     }

@@ -35,11 +35,17 @@ public class GameStartOverlay : CanvasLayer
     public void HideOverlay()
     {
         _overlayWrapper.Visible = false;
+        _gameCodeValue.MouseFilter = Control.MouseFilterEnum.Ignore;
+        _startButton.MouseFilter = Control.MouseFilterEnum.Ignore;
+        _backButton.MouseFilter = Control.MouseFilterEnum.Ignore;
     }
 
     public void ShowOverlay()
     {
         _overlayWrapper.Visible = true;
+        _gameCodeValue.MouseFilter = Control.MouseFilterEnum.Stop;
+        _startButton.MouseFilter = Control.MouseFilterEnum.Stop;
+        _backButton.MouseFilter = Control.MouseFilterEnum.Stop;
     }
 
     public void HideGameStatusLabel()

@@ -1,0 +1,9 @@
+[gd_scene format=2]
+
+[node name="ComponentWrapper" type="Node2D"]
+
+[node name="WindowWrapper" type="Node2D" parent="."]
+
+[node name="Sprite" type="Sprite" parent="WindowWrapper"]
+
+[node name="ContentWrapper" type="Node2D" parent="WindowWrapper"]

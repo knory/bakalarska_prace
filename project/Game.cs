@@ -1,7 +1,6 @@
 using Godot;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 
 public class Game : Node
 {
@@ -11,11 +10,11 @@ public class Game : Node
     private int _currentModifier;
     private int _currentPerfectStreak;
     private int _currentFailedStreak;
-    private List<int> _taskNodes;
-    private List<int> _clickedNodes;
-    private TaskNodesArea _taskNodesArea;
-    private SelectedNodesArea _selectedNodesArea;
-    private ClickableNodesArea _clickableNodesArea;
+    private GameTask _gameTask;
+    private MultipleSelectComponent _multipleSelectComponent;
+    private SingleSelectComponent _singleSelectComponent;
+    private SwitchComponent _switchComponent;
+    private TeammateComponent _teammateComponent;
     private Timer _gameTimer;
     private Timer _taskTimer;
     private Timer _hudUpdateTimer;
@@ -28,10 +27,11 @@ public class Game : Node
 
     public bool Init(string encodedConfig) 
     {
-        var defaultConfig = new Config()
+        if (string.IsNullOrEmpty(encodedConfig))
+        {
+            _config = new Config()
             {
                 ComboBreakStreak = 1,
-                GameControlsType = GameControls.MouseClick,
                 ComboStreak = 3,
                 MaxComboModifier = 5,
                 PerfectTaskBonusPoints = 5,
@@ -42,10 +42,6 @@ public class Game : Node
                 UnusedTimeGameBonus = 5,
                 UnusedTimeTaskBonus = 1
             };
-
-        if (string.IsNullOrEmpty(encodedConfig))
-        {
-            _config = defaultConfig;
         }
         else
         {
@@ -79,11 +75,10 @@ public class Game : Node
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
-        _taskNodes = new List<int>();
-        _clickedNodes = new List<int>();
-        _selectedNodesArea = GetNode<SelectedNodesArea>("SelectedNodesArea");
-        _taskNodesArea = GetNode<TaskNodesArea>("TaskNodesArea");
-        _clickableNodesArea = GetNode<ClickableNodesArea>("ClickableNodesArea");
+        _multipleSelectComponent = GetNode<MultipleSelectComponent>("MultipleSelectComponent");
+        _singleSelectComponent = GetNode<SingleSelectComponent>("SingleSelectComponent");
+        _switchComponent = GetNode<SwitchComponent>("SwitchComponent");
+        _teammateComponent = GetNode<TeammateComponent>("TeammateComponent");
         _hud = GetNode<HUD>("HUD");
         _gameStartOverlay = GetNode<GameStartOverlay>("GameStartOverlay");
         _taskTimer = GetNode<Timer>("TaskTimer");
@@ -91,42 +86,20 @@ public class Game : Node
         _hudUpdateTimer = GetNode<Timer>("HudUpdateTimer");
         _countdownTimer = GetNode<Timer>("CountdownTimer");
 
+        var teammates = new Teammate[Constants.TeammateResources.Length];
+
+        for (int i = 0; i < teammates.Length; i++) {
+            var teammateResource = Constants.TeammateResources[i];
+            teammates[i] = new Teammate(teammateResource.Id, teammateResource.PhotoPath, teammateResource.Name);
+        }
+
         IsRunning = false;
 
         _gameStartOverlay.Connect("StartGame", this, "StartCountdownTimer");
-        _taskNodesArea.Connect("AddedTaskNode", this, "AddTaskNode");
         _gameTimer.Connect("timeout", this, "StopGame");
         _taskTimer.Connect("timeout", this, "GenerateNewTask");
         _hudUpdateTimer.Connect("timeout", this, "UpdateLabels");
         _countdownTimer.Connect("timeout", this, "StartGame");
-        var nodes = GetTree().GetNodesInGroup("clickableNodes");   
-        foreach (ClickableNode node in nodes)
-        {
-            node.Connect("Clicked", this, "NodeClicked");
-        }
-    }
-
-    public void NodeClicked(int type)
-    {
-        if (!IsRunning) return;
-
-        _clickedNodes.Add(type);
-        _selectedNodesArea.AddSelectedNode(type);
-
-        if (_clickedNodes.Count == _taskNodes.Count)
-        {
-            CheckCompletedTask();
-
-            if (_config.TasksPerGame != 0 && _completedTasks == _config.TasksPerGame)
-            {
-                StopGame();
-            }
-        }
-    }
-
-    public void AddTaskNode(int type)
-    {
-        _taskNodes.Add(type);
     }
 
     public void CheckCompletedTask()
@@ -135,15 +108,13 @@ public class Game : Node
         var gainedScore = CountGainedScore();
         _score += gainedScore * _currentModifier;
         _completedTasks++;
-        GenerateNewTask();
     }
 
     public void GenerateNewTask()
     {
-        _clickedNodes.Clear();
-        _taskNodes.Clear();
-        _taskNodesArea.GenerateTaskNodes();
-        _selectedNodesArea.DeleteSelectedNodes();
+        CheckCompletedTask();
+        ResetComponents();
+        _gameTask = new GameTask();
         _taskTimer.Start();
     }
 
@@ -156,9 +127,8 @@ public class Game : Node
         _gameTimer.Stop();
         _taskTimer.Stop();
         _hudUpdateTimer.Stop();
-        _clickableNodesArea.Visible = false;
-        _taskNodesArea.Visible = false;
-        _selectedNodesArea.Visible = false;
+        HideComponents();
+        DeactivateComponents();
     }
 
     public void StartGame() 
@@ -172,6 +142,7 @@ public class Game : Node
         _hud.HideCountdownLabel();
         _gameStartOverlay.HideOverlay();
         _gameStartOverlay.HideGameStatusLabel();
+        ActivateComponents();
         GenerateNewTask();
         _taskTimer.Start();
 
@@ -192,9 +163,8 @@ public class Game : Node
         _hudUpdateTimer.Start();
         _gameStartOverlay.HideOverlay();
         _hud.ShowCountdownLabel();
-        _clickableNodesArea.Visible = true;
-        _taskNodesArea.Visible = true;
-        _selectedNodesArea.Visible = true;
+        ShowComponents();
+        ResetComponents();
         _countdownTimer.Start();
     }
 
@@ -219,40 +189,47 @@ public class Game : Node
 
     private int CountGainedScore()
     {
-        var correctNodes = 0;
+        var correctComponents = 0;
         var gainedScore = 0;
-        for (int i = 0; i < _clickedNodes.Count; i++)
-        {
-            if (_clickedNodes[i] == _taskNodes[i])
-            {
-                correctNodes++;
-            }
-        }
-        gainedScore += correctNodes;
+        bool perfectTask = true;
 
-        if (correctNodes == _clickedNodes.Count)
+        if (_multipleSelectComponent.CheckSelectedValue(_gameTask?.MultipleSelectValues))
         {
-            gainedScore += _config.PerfectTaskBonusPoints;
-            gainedScore += Convert.ToInt32(Math.Round(_taskTimer.TimeLeft)) * _config.UnusedTimeTaskBonus;
-            _currentPerfectStreak++;
-            _completedPerfectTasks++;
-
-            if (_config.ComboStreak > 0 && _config.ComboStreak == _currentPerfectStreak)
-            {
-                IncrementComboModifier();
-            }
+            correctComponents++;
         }
         else
         {
-            _currentFailedStreak++;
-
-            if (_config.ComboBreakStreak > 0 && _config.ComboBreakStreak == _currentFailedStreak)
-            {
-                DecrementComboModifier();
-            }
+            perfectTask = false;
         }
 
-        return gainedScore;
+        if (_singleSelectComponent.CheckSelectedValue(_gameTask?.SingleSelectValue))
+        {
+            correctComponents++;
+        }
+        else
+        {
+            perfectTask = false;
+        }
+
+        if (_switchComponent.CheckSelectedValue(_gameTask?.SwitchValue))
+        {
+            correctComponents++;
+        }
+        else
+        {
+            perfectTask = false;
+        }
+
+        if (_teammateComponent.CheckSelectedValue(_gameTask?.TeammatesValues))
+        {
+            correctComponents++;
+        }
+        else
+        {
+            perfectTask = false;
+        }
+        
+        return correctComponents;
     }
 
     private void ConfigSetup()
@@ -282,5 +259,40 @@ public class Game : Node
         _currentModifier = 1;
         _currentFailedStreak = 0;
         _currentPerfectStreak = 0;
+    }
+
+    private void HideComponents()
+    {
+        _multipleSelectComponent.Visible = false;
+        _singleSelectComponent.Visible = false;
+        _switchComponent.Visible = false;
+    }
+
+    private void ShowComponents()
+    {
+        _multipleSelectComponent.Visible = true;
+        _singleSelectComponent.Visible = true;
+        _switchComponent.Visible = true;
+    }
+
+    private void DeactivateComponents()
+    {
+        _multipleSelectComponent.DeactivateNodes();
+        _singleSelectComponent.DeactivateNodes();
+        _switchComponent.DeactivateNodes();
+    }
+
+    private void ActivateComponents()
+    {
+        _multipleSelectComponent.ActivateNodes();
+        _singleSelectComponent.ActivateNodes();
+        _switchComponent.ActivateNodes();
+    }
+
+    private void ResetComponents()
+    {
+        _multipleSelectComponent.ResetState();
+        _singleSelectComponent.ResetState();
+        _switchComponent.ResetState();
     }
 }

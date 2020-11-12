@@ -16,11 +16,12 @@ _global_script_class_icons={
 [application]
 
 config/name="Project"
-run/main_scene="res://MainMenu.tscn"
+run/main_scene="res://Game.tscn"
 config/icon="res://icon.png"
 
 [display]
 
+window/size/height=768
 window/stretch/mode="viewport"
 window/stretch/aspect="keep"
 
