@@ -22,10 +22,10 @@ public class TeammateComponent : Component
         for (int i = 0; i < teammatesCount; i++)
         {
             var teammateResource = Constants.TeammateResources[i];
-            _allTeammates[i] = new Teammate(teammateResource.Id, teammateResource.PhotoPath, teammateResource.Name);
+            _allTeammates[i] = new Teammate(teammateResource.Id, teammateResource.TexturePath, teammateResource.Name);
         }
 
-        _teammatesSideScrollControl.Init(_allTeammates, Constants.NEW_TEAMMATES_COUNT, TeammateAdded);
+        _teammatesSideScrollControl.Init(_allTeammates, Constants.POSSIBLE_TEAMMATES_COUNT, true, TeammateAdded);
         this.SetPossibleValues(_allTeammates, null);
         
         foreach (TeammateNode item in GetTree().GetNodesInGroup("AddedTeammates"))
@@ -48,7 +48,7 @@ public class TeammateComponent : Component
         Init();
     }
 
-    public override void SetValue(object newValue)
+    protected override void SetValue(object newValue)
     {
         SelectedValue = newValue;
     }
@@ -68,10 +68,6 @@ public class TeammateComponent : Component
             var selectedSet = (HashSet<int>)SelectedValue;
             var expectedSet = (HashSet<int>)expectedValue;
             return expectedSet.SequenceEqual(selectedSet);
-            // foreach (var item in (HashSet<int>)expectedValue)
-            // {
-            //     if (!selectedSet.Contains(item)) return false;
-            // }
         }
     }
 

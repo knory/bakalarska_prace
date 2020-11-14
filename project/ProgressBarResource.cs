@@ -1,8 +1,7 @@
 using Godot;
 
-public struct TeammateResource
+public class ProgressBarResource
 {
     public int Id;
     public string TexturePath;
-    public string Name;
 }

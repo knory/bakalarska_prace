@@ -2,21 +2,21 @@ using Godot;
 using System;
 using System.Linq;
 
-public abstract class Component : Node2D, IComponent
+public abstract class Component : Node2D
 {
     private object[] _possibleValues;
     private object _defaultValue;
 
     public object SelectedValue { get; set; }
 
-	public virtual void SetPossibleValues(object[] possibleValues, object defaultValue)
+	protected virtual void SetPossibleValues(object[] possibleValues, object defaultValue)
     {
         _possibleValues = possibleValues;
         _defaultValue = defaultValue;
         SelectedValue = defaultValue;
     }
 	
-	public virtual void SetValue(object newValue)
+	protected virtual void SetValue(object newValue)
     {
         if (_possibleValues.Contains(newValue))
         {

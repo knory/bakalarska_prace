@@ -15,6 +15,7 @@ public class Game : Node
     private SingleSelectComponent _singleSelectComponent;
     private SwitchComponent _switchComponent;
     private TeammateComponent _teammateComponent;
+    private ProgressBarComponent _progressBarComponent;
     private Timer _gameTimer;
     private Timer _taskTimer;
     private Timer _hudUpdateTimer;
@@ -79,19 +80,13 @@ public class Game : Node
         _singleSelectComponent = GetNode<SingleSelectComponent>("SingleSelectComponent");
         _switchComponent = GetNode<SwitchComponent>("SwitchComponent");
         _teammateComponent = GetNode<TeammateComponent>("TeammateComponent");
+        _progressBarComponent = GetNode<ProgressBarComponent>("ProgressBarComponent");
         _hud = GetNode<HUD>("HUD");
         _gameStartOverlay = GetNode<GameStartOverlay>("GameStartOverlay");
         _taskTimer = GetNode<Timer>("TaskTimer");
         _gameTimer = GetNode<Timer>("GameTimer");
         _hudUpdateTimer = GetNode<Timer>("HudUpdateTimer");
         _countdownTimer = GetNode<Timer>("CountdownTimer");
-
-        var teammates = new Teammate[Constants.TeammateResources.Length];
-
-        for (int i = 0; i < teammates.Length; i++) {
-            var teammateResource = Constants.TeammateResources[i];
-            teammates[i] = new Teammate(teammateResource.Id, teammateResource.PhotoPath, teammateResource.Name);
-        }
 
         IsRunning = false;
 
@@ -228,6 +223,8 @@ public class Game : Node
         {
             perfectTask = false;
         }
+
+        var asd = _progressBarComponent.CheckSelectedValue(1);
         
         return correctComponents;
     }

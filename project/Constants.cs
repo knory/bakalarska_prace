@@ -7,6 +7,7 @@ public static class Constants
 {
     private static string _resourcesPath = "res://resources/";
     private static string _resourcesTeammatesPath = _resourcesPath + "teammates/";
+    private static string _resourcesProgressBarPath = _resourcesPath + "progress_bar/";
 
     public static string[] SpriteNames = {"blue_node.png", "green_node.png", "purple_node.png", "red_node.png", "yellow_node.png"};
     public static Dictionary<string, Texture> TeammateActionIcons = new Dictionary<string, Texture>
@@ -16,14 +17,23 @@ public static class Constants
     };
     public static TeammateResource[] TeammateResources = new TeammateResource[]
     {
-        new TeammateResource{ Id = 1, Name = "Evžen", PhotoPath = $"{_resourcesTeammatesPath}evzen.png" },
-        new TeammateResource{ Id = 2, Name = "Jonáš", PhotoPath = $"{_resourcesTeammatesPath}jonas.png" },
-        new TeammateResource{ Id = 3, Name = "Katka", PhotoPath = $"{_resourcesTeammatesPath}katka.png" },
-        new TeammateResource{ Id = 4, Name = "Lukáš", PhotoPath = $"{_resourcesTeammatesPath}lukas.png" },
-        new TeammateResource{ Id = 5, Name = "Tereza", PhotoPath = $"{_resourcesTeammatesPath}tereza.png" }
+        new TeammateResource{ Id = 1, Name = "Evžen", TexturePath = $"{_resourcesTeammatesPath}evzen.png" },
+        new TeammateResource{ Id = 2, Name = "Jonáš", TexturePath = $"{_resourcesTeammatesPath}jonas.png" },
+        new TeammateResource{ Id = 3, Name = "Katka", TexturePath = $"{_resourcesTeammatesPath}katka.png" },
+        new TeammateResource{ Id = 4, Name = "Lukáš", TexturePath = $"{_resourcesTeammatesPath}lukas.png" },
+        new TeammateResource{ Id = 5, Name = "Tereza", TexturePath = $"{_resourcesTeammatesPath}tereza.png" }
+    };
+    public static ProgressBarResource[] ProgressBarResources = new ProgressBarResource[]
+    {
+        new ProgressBarResource{ Id = 1, TexturePath = $"{_resourcesProgressBarPath}one.png"},
+        new ProgressBarResource{ Id = 2, TexturePath = $"{_resourcesProgressBarPath}two.png"},
+        new ProgressBarResource{ Id = 3, TexturePath = $"{_resourcesProgressBarPath}three.png"},
+        new ProgressBarResource{ Id = 4, TexturePath = $"{_resourcesProgressBarPath}four.png"},
+        new ProgressBarResource{ Id = 5, TexturePath = $"{_resourcesProgressBarPath}five.png"},
     };
     public const int MULTIPLE_SELECT_VALUES_COUNT = 3;
-    public const int NEW_TEAMMATES_COUNT = 3;
+    
+    public const int POSSIBLE_TEAMMATES_COUNT = 3;
     public const int ADDED_TEAMMATES_COUNT = 5;
 
     public static Random RANDOM = new Random();

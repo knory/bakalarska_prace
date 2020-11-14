@@ -4,34 +4,60 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public abstract class SideScrollableControl<T, U, V> : Node2D, ISideScrollableControl<T, U>
+public abstract class SideScrollableControl<T, U> : Node2D
     where T : Node
-    where V : EventArgs
 {
+    private bool _canJumpBounds;
+
     protected HBoxContainer _horizontalContainer;
     protected TextureButton _leftButton;
     protected TextureButton _rightButton;
     protected HBoxContainer _contentContainer;
-    protected List<T> _possibleValues;
-    protected int _valuesShowed;
+    protected ICollection<T> _possibleValues;
+    protected int _valuesShown;
     
     /// <summary>
     /// Index of the left-most showed value.
     /// </summary>
     protected int _leftMostIndex;
 
-    protected EventHandler<V> _nodeClickedCallback;
-
-    public virtual void Init(U[] possibleValues, int valuesShowed, EventHandler<V> nodeClickedCallback)
+    protected abstract ICollection<T> TransformPossibleValues(U[] possibleValues);
+    
+    protected void SetContent()
     {
-        _nodeClickedCallback = nodeClickedCallback;
+        DeleteContent();
+
+        var remainingValues = _possibleValues.Count - _leftMostIndex;
+        var overflownValues = _valuesShown - remainingValues;
+        if (overflownValues > 0)
+        {
+            foreach (var item in _possibleValues.Skip(_leftMostIndex))
+            {
+                _contentContainer.AddChild(item);
+            }
+
+            foreach (var item in _possibleValues.Take(overflownValues))
+            {
+                _contentContainer.AddChild(item);
+            }
+        }
+        else 
+        {
+            foreach (var item in _possibleValues.Skip(_leftMostIndex).Take(_valuesShown))
+            {
+                _contentContainer.AddChild(item);
+            }
+        }
+    }
+
+    public virtual void Init(U[] possibleValues, int valuesShown, bool canJumpBounds)
+    {
+        _canJumpBounds = canJumpBounds;
         _possibleValues = TransformPossibleValues(possibleValues);
-        _valuesShowed = valuesShowed;
+        _valuesShown = valuesShown;
         _leftMostIndex = 0;
         
         var text1 = (Texture)GD.Load($"res://{Constants.SpriteNames[0]}");
-        var text2 = (Texture)GD.Load($"res://{Constants.SpriteNames[2]}");
-        var text3 = (Texture)GD.Load($"res://{Constants.SpriteNames[3]}");
 
         _horizontalContainer = GetNode<HBoxContainer>("HorizontalContainer");
         _leftButton = _horizontalContainer.GetNode<TextureButton>("LeftButton");
@@ -47,61 +73,44 @@ public abstract class SideScrollableControl<T, U, V> : Node2D, ISideScrollableCo
         _rightButton.Connect("pressed", this, nameof(OnScrollRight));
     }
 
-    // Called when the node enters the scene tree for the first time.
-    public override void _Ready()
-    {
-
-    }
-
     private void OnScrollLeft()
     {
-        _leftMostIndex = _leftMostIndex == 0 ? _possibleValues?.Count - 1 ?? 0 : _leftMostIndex - 1;
+        if (_possibleValues.Count <= Constants.POSSIBLE_TEAMMATES_COUNT) return;
+
+        if (_canJumpBounds)
+        {
+            _leftMostIndex = _leftMostIndex == 0 ? _possibleValues?.Count - 1 ?? 0 : _leftMostIndex - 1;
+        }
+        else
+        {
+            _leftMostIndex = _leftMostIndex == 0 ? 0 : _leftMostIndex - 1;
+        }
+
         SetContent();
     }
 
     private void OnScrollRight()
     {
-        _leftMostIndex = _leftMostIndex == (_possibleValues?.Count - 1 ?? 0) ? 0 : _leftMostIndex + 1;
+        if (_possibleValues.Count <= Constants.POSSIBLE_TEAMMATES_COUNT) return;
+
+        if (_canJumpBounds)
+        {
+            _leftMostIndex = _leftMostIndex >= (_possibleValues?.Count - 1 ?? 0) ? 0 : _leftMostIndex + 1;
+        }
+        else
+        {
+            _leftMostIndex = _leftMostIndex >= (_possibleValues?.Count - 1 ?? 0) ? _possibleValues?.Count - 1 ?? 0 : _leftMostIndex + 1;
+        }
+
         SetContent();
     }
 
-    public abstract List<T> TransformPossibleValues(U[] possibleValues);
-    public abstract void SetContent();
-    // protected virtual void SetContent()
-    // {
-    //     if (_possibleValues == null) return;
-
-    //     DeleteContent();
-
-    //     var remainingValues = _possibleValues?.Count - _leftMostIndex ?? 0;
-    //     var overflownValues = _valuesShowed - remainingValues;
-    //     if (overflownValues > 0)
-    //     {
-    //         foreach (T item in _possibleValues.Skip(_leftMostIndex))
-    //         {
-    //             _contentContainer.AddChild(item);
-    //         }
-
-    //         foreach (T item in _possibleValues.Take(overflownValues))
-    //         {
-    //             _contentContainer.AddChild(item);
-    //         }
-    //     }
-    //     else 
-    //     {
-    //         foreach (T item in _possibleValues.Skip(_leftMostIndex).Take(_valuesShowed))
-    //         {
-    //             _contentContainer.AddChild(item);
-    //         }
-    //     }
-    // }
 
     protected void DeleteContent()
     {
         var contentNodes = _contentContainer.GetChildren();
         foreach (var item in contentNodes)
         {
-            //((Node)item).QueueFree();
             _contentContainer.RemoveChild((Node)item);
         }
     }

@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class TeammatesSideScrollControl : SideScrollableControl<TeammateNode, Teammate, TeammateNodeClickedEventArgs>
+public class TeammatesSideScrollControl : SideScrollableClickControl<TeammateNode, Teammate, TeammateNodeClickedEventArgs>
 {
     private PackedScene _teammatePackedScene = (PackedScene)ResourceLoader.Load("res://TeammateNode.tscn");
 
@@ -25,7 +25,7 @@ public class TeammatesSideScrollControl : SideScrollableControl<TeammateNode, Te
         SetContent();
     }
 
-    public override List<TeammateNode> TransformPossibleValues(Teammate[] possibleValues)
+    protected override ICollection<TeammateNode> TransformPossibleValues(Teammate[] possibleValues)
     {
         var teammateNodes = new List<TeammateNode>();
 
@@ -35,33 +35,6 @@ public class TeammatesSideScrollControl : SideScrollableControl<TeammateNode, Te
         }
 
         return teammateNodes;
-    }
-
-    public override void SetContent()
-    {
-        DeleteContent();
-
-        var remainingValues = _possibleValues.Count - _leftMostIndex;
-        var overflownValues = _valuesShowed - remainingValues;
-        if (overflownValues > 0)
-        {
-            foreach (var item in _possibleValues.Skip(_leftMostIndex))
-            {
-                _contentContainer.AddChild(item);
-            }
-
-            foreach (var item in _possibleValues.Take(overflownValues))
-            {
-                _contentContainer.AddChild(item);
-            }
-        }
-        else 
-        {
-            foreach (var item in _possibleValues.Skip(_leftMostIndex).Take(_valuesShowed))
-            {
-                _contentContainer.AddChild(item);
-            }
-        }
     }
 
     private TeammateNode CreateNodeFromTeammate(Teammate teammate)
