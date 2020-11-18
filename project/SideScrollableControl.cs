@@ -73,7 +73,7 @@ public abstract class SideScrollableControl<T, U> : Node2D
         _rightButton.Connect("pressed", this, nameof(OnScrollRight));
     }
 
-    private void OnScrollLeft()
+    protected virtual void OnScrollLeft()
     {
         if (_possibleValues.Count <= Constants.POSSIBLE_TEAMMATES_COUNT) return;
 
@@ -89,7 +89,7 @@ public abstract class SideScrollableControl<T, U> : Node2D
         SetContent();
     }
 
-    private void OnScrollRight()
+    protected virtual void OnScrollRight()
     {
         if (_possibleValues.Count <= Constants.POSSIBLE_TEAMMATES_COUNT) return;
 

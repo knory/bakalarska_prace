@@ -30,7 +30,7 @@ public class SingleSelectComponent : Component
         Init();
     }
 
-    public void OnValueSelected(object sender, ClickableControlSelectedEventArgs e)
+    public void OnValueSelected(object sender, SelectedValueEventArgs e)
     {
         foreach (var item in _clickableComponents)
         {

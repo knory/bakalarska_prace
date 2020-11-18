@@ -53,13 +53,8 @@ public class TeammateNode : Control
         {
             image.Resize(width, height);
         }
-        var itex = new ImageTexture();
-        itex.CreateFromImage(image);
-        return itex;
+        var imageTexture = new ImageTexture();
+        imageTexture.CreateFromImage(image);
+        return imageTexture;
     }
-}
-
-public class TeammateNodeClickedEventArgs : EventArgs
-{
-    public TeammateNode SelectedValue { get; set; }
 }

@@ -15,6 +15,7 @@ public class ProgressBarComponent : Component
     public override void _Ready()
     {
         _progressBarSideScrollControl = GetNode<ProgressBarSideScrollControl>("ProgressBarSideScrollControl");
+        _progressBarSideScrollControl.ValueChanged += ChangeValue;
 
         var statesCount = Constants.ProgressBarResources.Length;
         _progressBarStates = new ProgressBarState[statesCount];
@@ -29,7 +30,16 @@ public class ProgressBarComponent : Component
 
     public override bool CheckSelectedValue(object expectedValue = null)
     {
-        var selectedValue = _progressBarSideScrollControl.GetSelectedValue();
-        return selectedValue == (int)expectedValue;
+        return (int?)expectedValue == (int?)SelectedValue;
+    }
+
+    public void ChangeValue(object sender, SelectedValueEventArgs e)
+    {
+        SetValue(e.SelectedValue);
+    }
+
+    protected override void SetValue(object newValue)
+    {
+        SelectedValue = (int)newValue;
     }
 }

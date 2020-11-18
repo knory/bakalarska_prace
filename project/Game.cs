@@ -16,6 +16,8 @@ public class Game : Node
     private SwitchComponent _switchComponent;
     private TeammateComponent _teammateComponent;
     private ProgressBarComponent _progressBarComponent;
+    private DoubleDropdownComponent _doubleDropdownComponent;
+    private SideScrollSelectListComponent _sideScrollSelectListComponent;
     private Timer _gameTimer;
     private Timer _taskTimer;
     private Timer _hudUpdateTimer;
@@ -81,6 +83,8 @@ public class Game : Node
         _switchComponent = GetNode<SwitchComponent>("SwitchComponent");
         _teammateComponent = GetNode<TeammateComponent>("TeammateComponent");
         _progressBarComponent = GetNode<ProgressBarComponent>("ProgressBarComponent");
+        _doubleDropdownComponent = GetNode<DoubleDropdownComponent>("DoubleDropdownComponent");
+        _sideScrollSelectListComponent = GetNode<SideScrollSelectListComponent>("SideScrollSelectListComponent");
         _hud = GetNode<HUD>("HUD");
         _gameStartOverlay = GetNode<GameStartOverlay>("GameStartOverlay");
         _taskTimer = GetNode<Timer>("TaskTimer");
@@ -225,6 +229,8 @@ public class Game : Node
         }
 
         var asd = _progressBarComponent.CheckSelectedValue(1);
+        var dse = _doubleDropdownComponent.CheckSelectedValue((1, 2));
+        var fer = _sideScrollSelectListComponent.CheckSelectedValue((2, 5));
         
         return correctComponents;
     }

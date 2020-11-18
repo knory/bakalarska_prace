@@ -10,8 +10,8 @@ public class ClickableControl : Godot.TextureButton
     public bool IsActive { get; set; } = false;
     public object Value { get; set; }
 
-    public event EventHandler<ClickableControlSelectedEventArgs> Selected;
-    public event EventHandler<ClickableControlSelectedEventArgs> Deselected;
+    public event EventHandler<SelectedValueEventArgs> Selected;
+    public event EventHandler<SelectedValueEventArgs> Deselected;
 
     public void Init(Texture deselectedTexture, Texture selectedTexture, object componentValue, bool defaultSelected = false)
     {
@@ -39,7 +39,7 @@ public class ClickableControl : Godot.TextureButton
     }
 
     private void HandleClick() {
-        var args = new ClickableControlSelectedEventArgs
+        var args = new SelectedValueEventArgs
         {
             SelectedValue = (int)Value
         };
@@ -71,9 +71,4 @@ public class ClickableControl : Godot.TextureButton
         IsSelected = true;
         this.TextureNormal = _selectedTexture;
     }
-}
-
-public class ClickableControlSelectedEventArgs : EventArgs
-{
-    public int SelectedValue { get; set; }
 }
