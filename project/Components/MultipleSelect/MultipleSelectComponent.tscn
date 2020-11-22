@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Components/MultipleSelect/MultipleSelectComponent.cs" type="Script" id=1]
+
+[node name="MultipleSelectComponent" type="Node2D"]
+script = ExtResource( 1 )
+
+[node name="HorizontalContainer" type="HBoxContainer" parent="."]
+margin_right = 372.0
+margin_bottom = 204.0
+size_flags_vertical = 3
+custom_constants/separation = 10
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}

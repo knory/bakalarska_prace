@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/minus.png-5184af0a11f5741fa323c441c1dd4d64.stex"
+path="res://.import/minus.png-2e3587ee0e058698acee153b3781307b.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://resources/teammates/minus.png"
-dest_files=[ "res://.import/minus.png-5184af0a11f5741fa323c441c1dd4d64.stex" ]
+source_file="res://Resources/Teammates/minus.png"
+dest_files=[ "res://.import/minus.png-2e3587ee0e058698acee153b3781307b.stex" ]
 
 [params]
 

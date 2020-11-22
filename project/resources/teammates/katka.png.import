@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/katka.png-ff18cefc9e329aa253cea5f47c1c71de.stex"
+path="res://.import/katka.png-45fa583440e9433b1cbc96215e901d36.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://resources/teammates/katka.png"
-dest_files=[ "res://.import/katka.png-ff18cefc9e329aa253cea5f47c1c71de.stex" ]
+source_file="res://Resources/Teammates/katka.png"
+dest_files=[ "res://.import/katka.png-45fa583440e9433b1cbc96215e901d36.stex" ]
 
 [params]
 

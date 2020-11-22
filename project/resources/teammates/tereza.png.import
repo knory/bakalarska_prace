@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/tereza.png-6fac673e6530db93c3227ad2b232ea95.stex"
+path="res://.import/tereza.png-2b37cfe3ba47b023bd63323ebe6c69e2.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://resources/teammates/tereza.png"
-dest_files=[ "res://.import/tereza.png-6fac673e6530db93c3227ad2b232ea95.stex" ]
+source_file="res://Resources/Teammates/tereza.png"
+dest_files=[ "res://.import/tereza.png-2b37cfe3ba47b023bd63323ebe6c69e2.stex" ]
 
 [params]
 

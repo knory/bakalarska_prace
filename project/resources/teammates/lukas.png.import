@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/lukas.png-bd9f7eee0557ed1565ae401eb2cac39c.stex"
+path="res://.import/lukas.png-93f96867d7be9011fab64d406761aa0a.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://resources/teammates/lukas.png"
-dest_files=[ "res://.import/lukas.png-bd9f7eee0557ed1565ae401eb2cac39c.stex" ]
+source_file="res://Resources/Teammates/lukas.png"
+dest_files=[ "res://.import/lukas.png-93f96867d7be9011fab64d406761aa0a.stex" ]
 
 [params]
 

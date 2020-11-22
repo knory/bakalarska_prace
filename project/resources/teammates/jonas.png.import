@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/jonas.png-ad27e23410c804dc39375b6fc2beae0f.stex"
+path="res://.import/jonas.png-edbacaf8cc4a91f6cab4568143edfcfb.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://resources/teammates/jonas.png"
-dest_files=[ "res://.import/jonas.png-ad27e23410c804dc39375b6fc2beae0f.stex" ]
+source_file="res://Resources/Teammates/jonas.png"
+dest_files=[ "res://.import/jonas.png-edbacaf8cc4a91f6cab4568143edfcfb.stex" ]
 
 [params]
 
