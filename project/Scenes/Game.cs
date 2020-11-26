@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using Scenes;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Utils;
 
 namespace Scenes
@@ -158,6 +159,14 @@ namespace Scenes
             if (_config.TimePerGame != 0)
             {
                 _gameTimer.Start();
+            }
+
+            var filepath = AppDomain.CurrentDomain.BaseDirectory + $"/results/results.json";
+            System.IO.Directory.CreateDirectory(AppDomain.CurrentDomain.BaseDirectory + "/results");
+            using (var writer = System.IO.File.AppendText(filepath))
+            {
+                //await writer.WriteLineAsync(json);
+                writer.Write("ahoj ehehe test");
             }
         }
 
