@@ -1,8 +1,10 @@
 using Components;
 using Godot;
+using Models;
 using Newtonsoft.Json;
 using Scenes;
 using System;
+using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.IO;
 using Utils;
@@ -11,7 +13,6 @@ namespace Scenes
 {
     public class Game : Node
     {
-        private int _score;
         private int _completedPerfectTasks;
         private int _completedTasks;
         private int _currentModifier;
@@ -34,11 +35,15 @@ namespace Scenes
         private HUD _hud;
         private GameStartOverlay _gameStartOverlay;
         private Config _config;
+        
+        private GameData _gameData;
 
         public bool IsRunning { get; set; }
 
         public bool Init(string encodedConfig) 
         {
+            _gameData = new GameData();
+
             if (string.IsNullOrEmpty(encodedConfig))
             {
                 _config = new Config()
@@ -49,11 +54,15 @@ namespace Scenes
                     PerfectTaskBonusPoints = 5,
                     SuccessRatingType = SuccessRating.GainedPoints,
                     TasksPerGame = 0,
-                    TimePerGame = 30,
+                    TimePerGame = 5,
                     TimePerTask = 10,
                     UnusedTimeGameBonus = 5,
                     UnusedTimeTaskBonus = 1
                 };
+
+                var serializedConfig = JsonConvert.SerializeObject(_config);
+                var configBytesArray = System.Text.Encoding.UTF8.GetBytes(serializedConfig);
+                _gameData.GameConfig = System.Convert.ToBase64String(configBytesArray);
             }
             else
             {
@@ -66,6 +75,9 @@ namespace Scenes
                     if (deserializedConfig != null) 
                     {
                         _config = deserializedConfig;
+                        var serializedConfig = JsonConvert.SerializeObject(_config);
+                        var configBytesArray = System.Text.Encoding.UTF8.GetBytes(serializedConfig);
+                        _gameData.GameConfig = System.Convert.ToBase64String(configBytesArray);
                     }
                     else
                     {
@@ -116,7 +128,7 @@ namespace Scenes
         {
             _taskTimer.Stop();
             var gainedScore = CountGainedScore();
-            _score += gainedScore * _currentModifier;
+            _gameData.GainedPoints += gainedScore * _currentModifier;
             _completedTasks++;
         }
 
@@ -139,11 +151,12 @@ namespace Scenes
             _hudUpdateTimer.Stop();
             HideComponents();
             DeactivateComponents();
+            SendGameData();
         }
 
         public void StartGame() 
         {
-            _score = 0;
+            _gameData.GainedPoints = 0;
             _completedTasks = 0;
             _currentModifier = 1;
             _currentPerfectStreak = 0;
@@ -159,14 +172,6 @@ namespace Scenes
             if (_config.TimePerGame != 0)
             {
                 _gameTimer.Start();
-            }
-
-            var filepath = AppDomain.CurrentDomain.BaseDirectory + $"/results/results.json";
-            System.IO.Directory.CreateDirectory(AppDomain.CurrentDomain.BaseDirectory + "/results");
-            using (var writer = System.IO.File.AppendText(filepath))
-            {
-                //await writer.WriteLineAsync(json);
-                writer.Write("ahoj ehehe test");
             }
         }
 
@@ -196,7 +201,7 @@ namespace Scenes
             {
                 if (_config.SuccessRatingType == SuccessRating.GainedPoints)
                 {
-                    _hud.UpdateLabels(_currentModifier, _gameTimer.TimeLeft, _taskTimer.TimeLeft, _score);
+                    _hud.UpdateLabels(_currentModifier, _gameTimer.TimeLeft, _taskTimer.TimeLeft, _gameData.GainedPoints);
                 }
                 else
                 {
@@ -208,12 +213,12 @@ namespace Scenes
         private int CountGainedScore()
         {
             var correctComponents = 0;
-            var gainedScore = 0;
             bool perfectTask = true;
 
             if (_multipleSelectComponent.CheckSelectedValue(_gameTask?.MultipleSelectValues))
             {
                 correctComponents++;
+                _gameData.CorrectActions++;
             }
             else
             {
@@ -223,6 +228,7 @@ namespace Scenes
             if (_singleSelectComponent.CheckSelectedValue(_gameTask?.SingleSelectValue))
             {
                 correctComponents++;
+                _gameData.CorrectActions++;
             }
             else
             {
@@ -232,6 +238,7 @@ namespace Scenes
             if (_switchComponent.CheckSelectedValue(_gameTask?.SwitchValue))
             {
                 correctComponents++;
+                _gameData.CorrectActions++;
             }
             else
             {
@@ -241,17 +248,46 @@ namespace Scenes
             if (_teammateComponent.CheckSelectedValue(_gameTask?.TeammatesValues))
             {
                 correctComponents++;
+                _gameData.CorrectActions++;
             }
             else
             {
                 perfectTask = false;
             }
 
-            var asd = _progressBarComponent.CheckSelectedValue(1);
-            var dse = _doubleDropdownComponent.CheckSelectedValue((1, 2));
-            var fer = _sideScrollSelectListComponent.CheckSelectedValue((2, 5));
-            var anna = _sideScrollButtonComponent.CheckSelectedValue(new HashSet<int>() { 1 });
-            var defak = _ratingComponent.CheckSelectedValue(2);
+            if (_progressBarComponent.CheckSelectedValue(1))
+            {
+                _gameData.CorrectActions++;
+            }
+
+            if(_doubleDropdownComponent.CheckSelectedValue((1, 2)))
+            {
+                _gameData.CorrectActions++;
+            }
+
+            if (_sideScrollSelectListComponent.CheckSelectedValue((2, 5)))
+            {
+                _gameData.CorrectActions++;
+            }
+
+            if (_sideScrollButtonComponent.CheckSelectedValue(new HashSet<int>() { 1 }))
+            {
+                _gameData.CorrectActions++;
+            }
+
+            if (_ratingComponent.CheckSelectedValue(2))
+            {
+                _gameData.CorrectActions++;
+            }
+
+            if (perfectTask)
+            {
+                _gameData.CorrectSequences++;
+            }
+
+            _gameData.TotalSequences++;
+            //TODO count Total actions
+            //TODO check if action has been done (component has not default value)
             
             return correctComponents;
         }
@@ -318,6 +354,38 @@ namespace Scenes
             _multipleSelectComponent.ResetState();
             _singleSelectComponent.ResetState();
             _switchComponent.ResetState();
+        }
+
+        private void SendGameData()
+        {
+            _gameData.Username = "Ingame test";
+            _gameData.TimeLimit = _config.TimePerGame == 0 ? _config.TimePerTask * _config.TasksPerGame : _config.TimePerGame;
+            _gameData.TimeAdded = DateTime.Now;
+
+            var host = "http://xknor-gamification.azurewebsites.net";
+            var url = "/api/GameDataCollector";
+            var headers = new string[] { "Content-Type: application/json" };
+            var serializedData = JsonConvert.SerializeObject(_gameData);
+
+            using (var client = new HTTPClient())
+            {
+                client.ConnectToHost(host);
+
+                while (client.GetStatus() == HTTPClient.Status.Resolving || client.GetStatus() == HTTPClient.Status.Connecting)
+                {
+                    client.Poll();
+                }
+
+                var e = client.Request(HTTPClient.Method.Post, url, headers, serializedData);
+
+                while (client.GetStatus() == HTTPClient.Status.Requesting)
+                {
+                    client.Poll();
+                }
+
+                var st = client.GetStatus();
+                Console.WriteLine();
+            }
         }
     }
 }
