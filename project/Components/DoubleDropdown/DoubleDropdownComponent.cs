@@ -7,7 +7,7 @@ using Utils;
 
 namespace Components
 {
-    public class DoubleDropdownComponent : Component
+    public class DoubleDropdownComponent : Component<(int, int)>
     {
         private HBoxContainer _horizontalContainer;
         private Label _label;
@@ -21,6 +21,7 @@ namespace Components
             PopulateDropdown(listOfOptions1, _optionButton1);
             PopulateDropdown(listOfOptions2, _optionButton2);
 
+            DefaultValue = (listOfOptions1[0].Id, listOfOptions2[0].Id);
             SetValue((_optionButton1.Selected, _optionButton2.Selected));
         }
 
@@ -35,15 +36,18 @@ namespace Components
             _optionButton1.Connect("item_selected", this, nameof(DropdownValueChanged));
             _optionButton2.Connect("item_selected", this, nameof(DropdownValueChanged));
 
-            var options1 = new DropdownModel[Constants.DOUBLE_DROPDOWN_OPTIONS_COUNT];
-            var options2 = new DropdownModel[Constants.DOUBLE_DROPDOWN_OPTIONS_COUNT];
+            var options1 = new DropdownModel[Constants.DOUBLE_DROPDOWN_OPTIONS_COUNT + 1];
+            var options2 = new DropdownModel[Constants.DOUBLE_DROPDOWN_OPTIONS_COUNT + 1];
 
             for (int i = 0; i < Constants.DOUBLE_DROPDOWN_OPTIONS_COUNT; i++)
             {
-                options1[i] = new DropdownModel { Id = i, Text = (i * 2).ToString() };
-                options2[i] = new DropdownModel { Id = i, Text = (i * 5).ToString() };
+                options1[i + 1] = new DropdownModel { Id = i, Text = (i * 2).ToString() };
+                options2[i + 1] = new DropdownModel { Id = i, Text = (i * 5).ToString() };
             }
 
+            var defaultVal = new DropdownModel { Id = -1, Text = "--" };
+            options1[0] = defaultVal;
+            options2[0] = defaultVal;
             Init(options1, options2, ":");
         }
 
@@ -58,18 +62,6 @@ namespace Components
             {
                 dropdown.AddItem(item.Text, item.Id);
             }
-        }
-
-        public override bool CheckSelectedValue(object expectedValue = null)
-        {
-            if (expectedValue == null) return false;
-
-            return ((int, int))expectedValue == ((int, int))SelectedValue;
-        }
-
-        protected override void SetValue(object newValue)
-        {
-            SelectedValue = newValue;
         }
     }
 }

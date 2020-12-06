@@ -7,7 +7,7 @@ namespace Utils
 {
     public class GameTask
     {
-        public List<int> MultipleSelectValues { get; set; } = new List<int>();
+        public HashSet<int> MultipleSelectValues { get; set; } = new HashSet<int>();
         public int SingleSelectValue { get; set; }
         public bool SwitchValue { get; set; }
         public HashSet<int> TeammatesValues { get; set; } = new HashSet<int>();

@@ -7,7 +7,7 @@ using Utils;
 
 namespace Components
 {
-    public class SingleSelectComponent : Component
+    public class SingleSelectComponent : Component<int>
     {
         private HBoxContainer _horizontalContainer;
         private List<ClickableControl> _clickableComponents;
@@ -20,11 +20,17 @@ namespace Components
 
             for (int i = 1; i <= 3; i++) {
                 var clickableComponentInstance = (ClickableControl)clickableComponentScene.Instance();
+                
                 clickableComponentInstance.Init(text1, text2, i);
+                clickableComponentInstance.Selected += OnValueSelected;
+                clickableComponentInstance.Deselected += OnValueDeselected;
+
                 _horizontalContainer.AddChild(clickableComponentInstance);
                 _clickableComponents.Add(clickableComponentInstance);
-                clickableComponentInstance.Selected += OnValueSelected;
             }
+
+            SetValue(-1);
+            DefaultValue = -1;
         }
 
         // Called when the node enters the scene tree for the first time.
@@ -48,6 +54,18 @@ namespace Components
                     item.Select();
                 }
             }
+
+            SetValue(e.SelectedValue);
+        }
+
+        public void OnValueDeselected(object sender, SelectedValueEventArgs e)
+        {
+            foreach (var item in _clickableComponents)
+            {
+                item.Deselect();
+            }
+
+            SetValue(-1);
         }
 
         public override void ResetState()
@@ -56,29 +74,6 @@ namespace Components
             {
                 item.Deselect();
             }
-        }
-
-        public int GetSelectedValue()
-        {
-            var result = -1;
-            foreach (var item in _clickableComponents)
-            {
-                if (item.IsSelected)
-                {
-                    result = item.Value;
-                    break;
-                }
-            }
-
-            return result;
-        }
-
-        public override bool CheckSelectedValue(object expectedValue = null)
-        {
-            var selectedValue = GetSelectedValue();
-            if (expectedValue == null) return selectedValue == -1;
-
-            return (int)expectedValue == selectedValue;
         }
 
         public void ActivateNodes()

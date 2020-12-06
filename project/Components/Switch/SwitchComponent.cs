@@ -6,9 +6,15 @@ using Utils;
 
 namespace Components
 {
-    public class SwitchComponent : Component
+    public class SwitchComponent : Component<bool>
     {
         private ClickableControl _clickableControl;
+
+        public void Init()
+        {
+            DefaultValue = false;
+            SetValue(false);
+        }
 
         // Called when the node enters the scene tree for the first time.
         public override void _Ready()
@@ -18,11 +24,6 @@ namespace Components
 
             _clickableControl = GetNode<ClickableControl>("ClickableControl");
             _clickableControl.Init(text1, text2, 0);
-        }
-
-        public override bool CheckSelectedValue(object expectedValue = null)
-        {
-            return (bool)(expectedValue ?? false) == _clickableControl.IsSelected;
         }
 
         public override void ResetState()

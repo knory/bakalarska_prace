@@ -10,7 +10,7 @@ using Utils;
 
 namespace Components
 {
-    public class TeammateComponent : Component
+    public class TeammateComponent : Component<HashSet<int>>
     {
         private VBoxContainer _verticalContainer;
         private VBoxContainer _newTeammatesWrapper;
@@ -32,12 +32,15 @@ namespace Components
             }
 
             _teammatesSideScrollControl.Init(_allTeammates, Constants.POSSIBLE_TEAMMATES_COUNT, true, TeammateAdded);
-            this.SetPossibleValues(_allTeammates, null);
             
             foreach (TeammateControl item in GetTree().GetNodesInGroup("AddedTeammates"))
             {
                 item.Clicked += TeammateRemoved;
             }
+
+            var defaultVal = new HashSet<int>();
+            DefaultValue = defaultVal;
+            SetValue(defaultVal);
         }
 
         // Called when the node enters the scene tree for the first time.
@@ -52,29 +55,6 @@ namespace Components
             _teammatesHorizontalContainer = _addedTeammatesWrapper.GetNode<HBoxContainer>("TeammatesHorizontalContainer");
 
             Init();
-        }
-
-        protected override void SetValue(object newValue)
-        {
-            SelectedValue = newValue;
-        }
-
-        public override bool CheckSelectedValue(object expectedValue = null)
-        {
-            if (expectedValue == null && SelectedValue == null)
-            {
-                return true;
-            }
-            else if (expectedValue == null || SelectedValue == null)
-            {
-                return false;
-            }
-            else
-            {
-                var selectedSet = (HashSet<int>)SelectedValue;
-                var expectedSet = (HashSet<int>)expectedValue;
-                return expectedSet.SequenceEqual(selectedSet);
-            }
         }
 
         public void TeammateAdded(object sender, TeammateControlClickedEventArgs e)
@@ -104,34 +84,22 @@ namespace Components
 
         private void AddSelectedValueToComponent(int teammateId)
         {
-            HashSet<int> selectedValue;
-            if (SelectedValue == null)
-            {
-                selectedValue = new HashSet<int>();
-            }
-            else
-            {
-                selectedValue = (HashSet<int>)SelectedValue;
-            }
-            
-            selectedValue.Add(teammateId);
-            SetValue(selectedValue);
+            SelectedValue.Add(teammateId);
         }
 
         private void RemoveSelectedValueFromComponent(int teammateId)
         {
-            HashSet<int> selectedValue;
-            if (SelectedValue == null)
-            {
-                selectedValue = new HashSet<int>();
-            }
-            else
-            {
-                selectedValue = (HashSet<int>)SelectedValue;
-            }
-            
-            selectedValue.Remove(teammateId);
-            SetValue(selectedValue);
+            SelectedValue.Remove(teammateId);
+        }
+
+        public override bool CheckSelectedValue(HashSet<int> expectedValue)
+        {
+            return expectedValue.SetEquals(SelectedValue);
+        }
+
+        public override bool IsModified()
+        {
+            return !DefaultValue.SetEquals(SelectedValue);
         }
 
         private TeammateControl CreateTeammateNodeFromTeammate(Teammate teammate)

@@ -7,7 +7,7 @@ using Utils;
 
 namespace Components
 {
-    public class SideScrollSelectListComponent : Component
+    public class SideScrollSelectListComponent : Component<(int, int)>
     {
         private VBoxContainer _verticalContainer;
         private SideScrollTabControl _sideScrollTabControl;
@@ -63,6 +63,7 @@ namespace Components
             }
 
             SetValue((-1, -1));
+            DefaultValue = (-1, -1);
 
             PopulateGrid(_selectLists[0]);
         }
@@ -76,16 +77,6 @@ namespace Components
             _gridContainer = _verticalContainer.GetNode<GridContainer>("GridContainer");
 
             Init(Constants.VALUES_PER_LIST, Constants.MONTH_NAMES, 7, Constants.DAY_NAMES);
-        }
-
-        protected override void SetValue(object newValue)
-        {
-            SelectedValue = newValue;
-        }
-
-        public override bool CheckSelectedValue(object expectedValue = null)
-        {
-            return ((int, int))expectedValue == ((int, int))SelectedValue;
         }
 
         private void PopulateGrid(SelectListModel listModel)

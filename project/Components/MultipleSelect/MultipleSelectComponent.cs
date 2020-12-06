@@ -9,7 +9,7 @@ using Utils;
 
 namespace Components
 {
-    public class MultipleSelectComponent : Component
+    public class MultipleSelectComponent : Component<HashSet<int>>
     {
         private HBoxContainer _horizontalContainer;
         private List<ClickableControl> _clickableComponents;
@@ -19,10 +19,17 @@ namespace Components
             var clickableComponentScene = (PackedScene)ResourceLoader.Load("res://Controls/Clickable/ClickableControl.tscn");
             var text1 = (Texture)GD.Load($"{Constants.SpriteNames[0]}");
             var text2 = (Texture)GD.Load($"{Constants.SpriteNames[1]}");
+            var defaultVal = new HashSet<int>();
+            SetValue(defaultVal);
+            DefaultValue = defaultVal;
 
             for (int i = 1; i <= Constants.MULTIPLE_SELECT_VALUES_COUNT; i++) {
                 var clickableComponentInstance = (ClickableControl)clickableComponentScene.Instance();
+                
                 clickableComponentInstance.Init(text1, text2, i);
+                clickableComponentInstance.Selected += AddSelectedValue;
+                clickableComponentInstance.Deselected += RemoveSelectedValue;
+                
                 _horizontalContainer.AddChild(clickableComponentInstance);
                 _clickableComponents.Add(clickableComponentInstance);
             }
@@ -72,14 +79,24 @@ namespace Components
             return result;
         }
 
-        public override bool CheckSelectedValue(object expectedValue = null)
+        public void AddSelectedValue(object sender, SelectedValueEventArgs eventArgs)
         {
-            if (expectedValue == null) return GetSelectedValues().Count == 0;
+            SelectedValue.Add(eventArgs.SelectedValue);
+        }
 
-            var taskValues = expectedValue as List<int>;
-            var asd = taskValues.Intersect(GetSelectedValues());
-            // neni to intersect. domyslet!!!
-            return taskValues.Count == taskValues.Intersect(GetSelectedValues()).Count();
+        public void RemoveSelectedValue(object sender, SelectedValueEventArgs eventArgs)
+        {
+            SelectedValue.Remove(eventArgs.SelectedValue);
+        }
+
+        public override bool CheckSelectedValue(HashSet<int> expectedValue)
+        {
+            return expectedValue.SetEquals(SelectedValue);
+        }
+
+        public override bool IsModified()
+        {
+            return !DefaultValue.SetEquals(SelectedValue);
         }
     }
 }

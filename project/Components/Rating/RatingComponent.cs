@@ -6,13 +6,14 @@ using Utils;
 
 namespace Components
 {
-    public class RatingComponent : Component
+    public class RatingComponent : Component<int>
     {
         private HBoxContainer _horizontalContainer;
 
         public void Init()
         {
             SetValue(-1);
+            DefaultValue = -1;
 
             var clickableControlPackedScene = (PackedScene)ResourceLoader.Load("res://Controls/Clickable/ClickableControl.tscn");
             var text1 = (Texture)GD.Load($"{Constants.SpriteNames[0]}");
@@ -33,16 +34,6 @@ namespace Components
         {
             _horizontalContainer = GetNode<HBoxContainer>("HorizontalContainer");
             Init();
-        }
-
-        protected override void SetValue(object newValue)
-        {
-            SelectedValue = newValue;
-        }
-
-        public override bool CheckSelectedValue(object expectedValue = null)
-        {
-            return (int?)expectedValue == (int?)SelectedValue;
         }
 
         public override void ResetState()

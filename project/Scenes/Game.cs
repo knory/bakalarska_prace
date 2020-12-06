@@ -382,9 +382,6 @@ namespace Scenes
                 {
                     client.Poll();
                 }
-
-                var st = client.GetStatus();
-                Console.WriteLine();
             }
         }
     }

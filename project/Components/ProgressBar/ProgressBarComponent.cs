@@ -7,7 +7,7 @@ using Utils;
 
 namespace Components
 {
-    public class ProgressBarComponent : Component
+    public class ProgressBarComponent : Component<int>
     {
         private ProgressBarSideScrollControl _progressBarSideScrollControl;
         private ProgressBarState[] _progressBarStates;
@@ -25,6 +25,9 @@ namespace Components
 
             var statesCount = Constants.ProgressBarResources.Length;
             _progressBarStates = new ProgressBarState[statesCount];
+
+            SetValue(-1);
+            DefaultValue = -1;
             
             for (int i = 0; i < statesCount; i++)
             {
@@ -34,19 +37,9 @@ namespace Components
             Init();
         }
 
-        public override bool CheckSelectedValue(object expectedValue = null)
-        {
-            return (int?)expectedValue == (int?)SelectedValue;
-        }
-
         public void ChangeValue(object sender, SelectedValueEventArgs e)
         {
             SetValue(e.SelectedValue);
-        }
-
-        protected override void SetValue(object newValue)
-        {
-            SelectedValue = (int)newValue;
         }
     }
 }

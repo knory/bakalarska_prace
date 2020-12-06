@@ -4,47 +4,31 @@ using System.Linq;
 
 namespace Components
 {
-    public abstract class Component : Node2D
+    public abstract class Component<T> : Node2D
     {
-        private object[] _possibleValues;
-        private object _defaultValue;
+        public T DefaultValue { get; protected set; }
+        protected T SelectedValue { get; private set; }
 
-        protected object SelectedValue { get; set; }
-
-        protected virtual void SetPossibleValues(object[] possibleValues, object defaultValue)
+        protected virtual void SetValue(T newValue)
         {
-            _possibleValues = possibleValues;
-            _defaultValue = defaultValue;
-            SelectedValue = defaultValue;
+            SelectedValue = newValue;
+        }
+
+        //TODO override where equals doesnt work (HashSet...)
+        //TODO when HashSet etc, check if Default Value gets changed, when the SelectedValue gets modified
+        public virtual bool IsModified() 
+        {
+            return !DefaultValue.Equals(SelectedValue);
         }
         
-        protected virtual void SetValue(object newValue)
+        public virtual bool CheckSelectedValue(T expectedValue)
         {
-            if (_possibleValues.Contains(newValue))
-            {
-                SelectedValue = newValue;
-            }
-            else
-            {
-                throw new ArgumentOutOfRangeException(nameof(newValue), newValue, $"The value of {nameof(newValue)} was expected to be in range of {string.Join(", ", _possibleValues)}.");
-            }
-        }
-        
-        public virtual bool CheckSelectedValue(object expectedValue = null)
-        {
-            if (_possibleValues?.Contains(expectedValue) ?? false)
-            {
-                return SelectedValue == expectedValue;
-            }
-            else
-            {
-                return SelectedValue == _defaultValue;
-            }
+            return SelectedValue.Equals(expectedValue);
         }
 
         public virtual void ResetState()
         {
-            SelectedValue = _defaultValue;
+            SelectedValue = DefaultValue;
         }
     }
 }
