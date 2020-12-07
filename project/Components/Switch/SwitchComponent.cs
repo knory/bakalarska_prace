@@ -13,7 +13,7 @@ namespace Components
         public void Init()
         {
             DefaultValue = false;
-            SetValue(false);
+            SetValue(DefaultValue);
         }
 
         // Called when the node enters the scene tree for the first time.
@@ -24,11 +24,24 @@ namespace Components
 
             _clickableControl = GetNode<ClickableControl>("ClickableControl");
             _clickableControl.Init(text1, text2, 0);
+            _clickableControl.Selected += OnSelected;
+            _clickableControl.Deselected += OnDeselected;
         }
 
         public override void ResetState()
         {
             _clickableControl.Deselect();
+            base.ResetState();
+        }
+
+        public void OnSelected(object sender, EventArgs eventArgs)
+        {
+            SetValue(true);
+        }
+
+        public void OnDeselected(object sender, EventArgs eventArgs)
+        {
+            SetValue(false);
         }
 
         public void ActivateNodes()

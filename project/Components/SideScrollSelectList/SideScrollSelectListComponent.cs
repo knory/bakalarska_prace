@@ -62,8 +62,8 @@ namespace Components
                 _selectLists[i] = listModel;
             }
 
-            SetValue((-1, -1));
             DefaultValue = (-1, -1);
+            SetValue(DefaultValue);
 
             PopulateGrid(_selectLists[0]);
         }
@@ -116,13 +116,27 @@ namespace Components
         {
             _selectLists[_currentTab].SelectedItem = -1;
 
-            SetValue((-1, -1));
+            SetValue(DefaultValue);
         }
 
         public void TabChanged(object sender, SelectedValueEventArgs eventArgs)
         {
             _currentTab = eventArgs.SelectedValue;
             PopulateGrid(_selectLists[eventArgs.SelectedValue]);
+        }
+
+        public override void ResetState()
+        {
+            foreach (var item in _gridContainer.GetChildren())
+            {
+                if (item is ClickableControl)
+                {
+                    ((ClickableControl)item).Deselect();
+                }
+            }
+            _sideScrollTabControl.ResetState();
+
+            base.ResetState();
         }
     }
 }

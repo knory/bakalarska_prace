@@ -29,8 +29,8 @@ namespace Components
                 _clickableComponents.Add(clickableComponentInstance);
             }
 
-            SetValue(-1);
             DefaultValue = -1;
+            SetValue(DefaultValue);
         }
 
         // Called when the node enters the scene tree for the first time.
@@ -65,7 +65,7 @@ namespace Components
                 item.Deselect();
             }
 
-            SetValue(-1);
+            SetValue(DefaultValue);
         }
 
         public override void ResetState()
@@ -74,6 +74,8 @@ namespace Components
             {
                 item.Deselect();
             }
+            
+            base.ResetState();
         }
 
         public void ActivateNodes()

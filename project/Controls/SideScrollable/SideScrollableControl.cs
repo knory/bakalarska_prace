@@ -118,5 +118,11 @@ namespace Controls
                 _contentContainer.RemoveChild((Node)item);
             }
         }
+
+        public void ResetState()
+        {
+            _leftMostIndex = 0;
+            SetContent();
+        }
     }
 }

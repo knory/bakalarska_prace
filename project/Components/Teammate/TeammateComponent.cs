@@ -38,9 +38,8 @@ namespace Components
                 item.Clicked += TeammateRemoved;
             }
 
-            var defaultVal = new HashSet<int>();
-            DefaultValue = defaultVal;
-            SetValue(defaultVal);
+            DefaultValue = new HashSet<int>();
+            SetValue(new HashSet<int>());
         }
 
         // Called when the node enters the scene tree for the first time.
@@ -92,7 +91,7 @@ namespace Components
             SelectedValue.Remove(teammateId);
         }
 
-        public override bool CheckSelectedValue(HashSet<int> expectedValue)
+        protected override bool CheckSelectedValue(HashSet<int> expectedValue)
         {
             return expectedValue.SetEquals(SelectedValue);
         }
@@ -100,6 +99,23 @@ namespace Components
         public override bool IsModified()
         {
             return !DefaultValue.SetEquals(SelectedValue);
+        }
+
+        public override void ResetState()
+        {
+            foreach (var item in _addedTeammatesWrapper.GetChildren())
+            {
+                if (item is TeammateControl)
+                {
+                    var teammate = ((TeammateControl)item).Teammate;
+                    teammate.IsAddedToTeam = false;
+                    _teammatesSideScrollControl.AddPossibleTeammate(teammate);
+                    _teammatesHorizontalContainer.RemoveChild((TeammateControl)item);
+                    RemoveSelectedValueFromComponent(teammate.Id);
+                }
+            }
+
+            SetValue(new HashSet<int>());
         }
 
         private TeammateControl CreateTeammateNodeFromTeammate(Teammate teammate)

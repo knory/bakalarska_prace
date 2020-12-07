@@ -15,7 +15,7 @@ namespace xknor.Functions.Model
         public int TotalActions { get; set; }
         public int CorrectSequences { get; set; }
         public int TotalSequences { get; set; }
-        public int TimeSpent { get; set; }
+        public float TimeSpent { get; set; }
         public int TimeLimit { get; set; }
         public int SequencesButton { get; set; }
         public int CorrectSequencesButton { get; set; }

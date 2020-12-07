@@ -63,5 +63,13 @@ namespace Controls
         {
             _backgroundImage.Texture = ((List<LabelWithButtonControl>)_possibleValues)[_leftMostIndex].BackgroundImage;
         }
+
+        public void DeselectAll()
+        {
+            foreach (var item in _possibleValues)
+            {
+                item.Deselect();
+            }
+        }
     }
 }

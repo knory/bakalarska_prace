@@ -15,9 +15,8 @@ namespace Components
         {
             _sideScrollWithBackgroundControl.Init(Constants.LABEL_WITH_BUTTON_RESOURCES, OnValueAdded, OnValueRemoved);
             
-            var defaultVal = new HashSet<int>();
-            SetValue(defaultVal);
-            DefaultValue = defaultVal;
+            SetValue(new HashSet<int>());
+            DefaultValue = new HashSet<int>();
         }
 
         // Called when the node enters the scene tree for the first time.
@@ -38,7 +37,14 @@ namespace Components
             SelectedValue.Remove(eventArgs.SelectedValue);
         }
 
-        public override bool CheckSelectedValue(HashSet<int> expectedValue)
+        public override void ResetState()
+        {
+            _sideScrollWithBackgroundControl.DeselectAll();
+            _sideScrollWithBackgroundControl.ResetState();
+            SetValue(new HashSet<int>());
+        }
+
+        protected override bool CheckSelectedValue(HashSet<int> expectedValue)
         {
             return expectedValue.SetEquals(SelectedValue);
         }

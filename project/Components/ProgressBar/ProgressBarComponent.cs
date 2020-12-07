@@ -26,8 +26,8 @@ namespace Components
             var statesCount = Constants.ProgressBarResources.Length;
             _progressBarStates = new ProgressBarState[statesCount];
 
-            SetValue(-1);
             DefaultValue = -1;
+            SetValue(DefaultValue);
             
             for (int i = 0; i < statesCount; i++)
             {
@@ -40,6 +40,12 @@ namespace Components
         public void ChangeValue(object sender, SelectedValueEventArgs e)
         {
             SetValue(e.SelectedValue);
+        }
+
+        public override void ResetState()
+        {
+            _progressBarSideScrollControl.ResetState();
+            base.ResetState();
         }
     }
 }

@@ -12,8 +12,8 @@ namespace Components
 
         public void Init()
         {
-            SetValue(-1);
             DefaultValue = -1;
+            SetValue(DefaultValue);
 
             var clickableControlPackedScene = (PackedScene)ResourceLoader.Load("res://Controls/Clickable/ClickableControl.tscn");
             var text1 = (Texture)GD.Load($"{Constants.SpriteNames[0]}");
@@ -38,12 +38,15 @@ namespace Components
 
         public override void ResetState()
         {
-            SetValue(-1);
-
-            foreach (ClickableControl item in _horizontalContainer.GetChildren())
+            foreach (var item in _horizontalContainer.GetChildren())
             {
-                item.Deselect();
+                if (item is ClickableControl)
+                {
+                    ((ClickableControl)item).Deselect();
+                }
             }
+
+            base.ResetState();
         }
 
         public void OnValueSelected(object sender, SelectedValueEventArgs eventArgs)
@@ -68,7 +71,7 @@ namespace Components
 
         public void OnValueDeselected(object sender, SelectedValueEventArgs eventArgs)
         {
-            SetValue(-1);
+            SetValue(DefaultValue);
 
             foreach (ClickableControl item in _horizontalContainer.GetChildren())
             {

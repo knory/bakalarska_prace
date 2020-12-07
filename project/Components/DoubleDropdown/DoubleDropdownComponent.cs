@@ -63,5 +63,12 @@ namespace Components
                 dropdown.AddItem(item.Text, item.Id);
             }
         }
+
+        public override void ResetState()
+        {
+            _optionButton1.Selected = 0;
+            _optionButton2.Selected = 0;
+            base.ResetState();
+        }
     }
 }

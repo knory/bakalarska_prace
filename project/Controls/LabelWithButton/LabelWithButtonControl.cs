@@ -47,5 +47,10 @@ namespace Controls
             _clickableControl.Selected += _selected;
             _clickableControl.Deselected += _deselected;
         }
+
+        public void Deselect()
+        {
+            _clickableControl.Deselect();
+        }
     }
 }

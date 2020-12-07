@@ -11,13 +11,13 @@ using Utils;
 
 namespace Scenes
 {
-    public class Game : Node
+    public class GameContainer : Node
     {
         private int _completedPerfectTasks;
         private int _completedTasks;
         private int _currentModifier;
+        private int _currentComboStreak;
         private int _currentPerfectStreak;
-        private int _currentFailedStreak;
         private GameTask _gameTask;
         private MultipleSelectComponent _multipleSelectComponent;
         private SingleSelectComponent _singleSelectComponent;
@@ -127,6 +127,7 @@ namespace Scenes
         public void CheckCompletedTask()
         {
             _taskTimer.Stop();
+            _gameData.TimeSpent += _config.TimePerTask - _taskTimer.TimeLeft;
             var gainedScore = CountGainedScore();
             _gameData.GainedPoints += gainedScore * _currentModifier;
             _completedTasks++;
@@ -151,6 +152,7 @@ namespace Scenes
             _hudUpdateTimer.Stop();
             HideComponents();
             DeactivateComponents();
+            CheckCompletedTask();
             SendGameData();
         }
 
@@ -160,7 +162,7 @@ namespace Scenes
             _completedTasks = 0;
             _currentModifier = 1;
             _currentPerfectStreak = 0;
-            _currentFailedStreak = 0;
+            _currentComboStreak = 0;
             IsRunning = true;
             _hud.HideCountdownLabel();
             _gameStartOverlay.HideOverlay();
@@ -212,84 +214,103 @@ namespace Scenes
 
         private int CountGainedScore()
         {
+            if (_gameTask == null) return 0;
+
             var correctComponents = 0;
             bool perfectTask = true;
 
-            if (_multipleSelectComponent.CheckSelectedValue(_gameTask?.MultipleSelectValues))
-            {
-                correctComponents++;
-                _gameData.CorrectActions++;
-            }
-            else
+            if (!CheckComponentValue(_multipleSelectComponent, _gameTask.MultipleSelectValues, ref correctComponents))
             {
                 perfectTask = false;
             }
 
-            if (_singleSelectComponent.CheckSelectedValue(_gameTask?.SingleSelectValue))
-            {
-                correctComponents++;
-                _gameData.CorrectActions++;
-            }
-            else
+            if (!CheckComponentValue(_singleSelectComponent, _gameTask.SingleSelectValue, ref correctComponents))
             {
                 perfectTask = false;
             }
 
-            if (_switchComponent.CheckSelectedValue(_gameTask?.SwitchValue))
-            {
-                correctComponents++;
-                _gameData.CorrectActions++;
-            }
-            else
+            if (!CheckComponentValue(_switchComponent, _gameTask.SwitchValue, ref correctComponents))
             {
                 perfectTask = false;
             }
 
-            if (_teammateComponent.CheckSelectedValue(_gameTask?.TeammatesValues))
-            {
-                correctComponents++;
-                _gameData.CorrectActions++;
-            }
-            else
+            if (!CheckComponentValue(_teammateComponent, _gameTask.TeammatesValues, ref correctComponents))
             {
                 perfectTask = false;
             }
 
-            if (_progressBarComponent.CheckSelectedValue(1))
+            if (!CheckComponentValue(_progressBarComponent, 1, ref correctComponents))
             {
-                _gameData.CorrectActions++;
+                perfectTask = false;
             }
 
-            if(_doubleDropdownComponent.CheckSelectedValue((1, 2)))
+            if (!CheckComponentValue(_doubleDropdownComponent, (1, 2), ref correctComponents))
             {
-                _gameData.CorrectActions++;
+                perfectTask = false;
             }
 
-            if (_sideScrollSelectListComponent.CheckSelectedValue((2, 5)))
+            if (!CheckComponentValue(_sideScrollSelectListComponent, (2, 5), ref correctComponents))
             {
-                _gameData.CorrectActions++;
+                perfectTask = false;
             }
 
-            if (_sideScrollButtonComponent.CheckSelectedValue(new HashSet<int>() { 1 }))
+            if (!CheckComponentValue(_sideScrollButtonComponent, new HashSet<int> { 1 }, ref correctComponents))
             {
-                _gameData.CorrectActions++;
+                perfectTask = false;
             }
 
-            if (_ratingComponent.CheckSelectedValue(2))
+            if (!CheckComponentValue(_ratingComponent, 2, ref correctComponents))
             {
-                _gameData.CorrectActions++;
+                perfectTask = false;
             }
 
+            EvaluateTaskData(perfectTask);
+
+            _gameData.TotalSequences++;
+            
+            return correctComponents;
+        }
+
+        private void EvaluateTaskData(bool perfectTask)
+        {
             if (perfectTask)
             {
                 _gameData.CorrectSequences++;
-            }
+                _currentPerfectStreak++;
+                
+                if (_currentComboStreak < 0)
+                {
+                    _currentComboStreak = 0;
+                }
 
-            _gameData.TotalSequences++;
-            //TODO count Total actions
-            //TODO check if action has been done (component has not default value)
-            
-            return correctComponents;
+                _currentComboStreak++;
+
+                if (_currentComboStreak >= _config.ComboStreak)
+                {
+                    IncrementComboModifier();
+                }
+            }
+            else
+            {
+                if (_currentPerfectStreak > _gameData.LongestPerfectStreak)
+                {
+                    _gameData.LongestPerfectStreak = _currentPerfectStreak;
+                }
+
+                _currentPerfectStreak = 0;
+
+                if (_currentComboStreak > 0)
+                {
+                    _currentComboStreak = 0;
+                }
+
+                _currentComboStreak--;
+
+                if (_currentComboStreak <= -_config.ComboBreakStreak)
+                {
+                    DecrementComboModifier();
+                }
+            }
         }
 
         private void ConfigSetup()
@@ -305,20 +326,18 @@ namespace Scenes
 
         private void IncrementComboModifier()
         {
-            if (_config.MaxComboModifier == 0 || _config.MaxComboModifier > _currentModifier)
+            if (_config.MaxComboModifier > 0 && _config.MaxComboModifier > _currentModifier)
             {
                 _currentModifier++;
-                _currentPerfectStreak = 0;
             }
             
-            _currentFailedStreak = 0;
+            _currentComboStreak = 0;
         }
 
         private void DecrementComboModifier()
         {
             _currentModifier = 1;
-            _currentFailedStreak = 0;
-            _currentPerfectStreak = 0;
+            _currentComboStreak = 0;
         }
 
         private void HideComponents()
@@ -383,6 +402,26 @@ namespace Scenes
                     client.Poll();
                 }
             }
+        }
+
+        private bool CheckComponentValue<T>(Component<T> component, T value, ref int correctComponents)
+        {
+            if (component.IsModified())
+            {
+                _gameData.TotalActions++;
+
+                if (component.IsCorrect(value))
+                {
+                    correctComponents++;
+                    _gameData.CorrectActions++;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 }

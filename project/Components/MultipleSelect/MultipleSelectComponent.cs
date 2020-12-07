@@ -19,9 +19,9 @@ namespace Components
             var clickableComponentScene = (PackedScene)ResourceLoader.Load("res://Controls/Clickable/ClickableControl.tscn");
             var text1 = (Texture)GD.Load($"{Constants.SpriteNames[0]}");
             var text2 = (Texture)GD.Load($"{Constants.SpriteNames[1]}");
-            var defaultVal = new HashSet<int>();
-            SetValue(defaultVal);
-            DefaultValue = defaultVal;
+
+            SetValue(new HashSet<int>());
+            DefaultValue = new HashSet<int>();
 
             for (int i = 1; i <= Constants.MULTIPLE_SELECT_VALUES_COUNT; i++) {
                 var clickableComponentInstance = (ClickableControl)clickableComponentScene.Instance();
@@ -45,6 +45,8 @@ namespace Components
 
         public override void ResetState()
         {
+            SetValue(new HashSet<int>());
+
             foreach (var item in _clickableComponents)
             {
                 item.Deselect();
@@ -89,7 +91,7 @@ namespace Components
             SelectedValue.Remove(eventArgs.SelectedValue);
         }
 
-        public override bool CheckSelectedValue(HashSet<int> expectedValue)
+        protected override bool CheckSelectedValue(HashSet<int> expectedValue)
         {
             return expectedValue.SetEquals(SelectedValue);
         }

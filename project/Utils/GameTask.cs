@@ -12,6 +12,8 @@ namespace Utils
         public bool SwitchValue { get; set; }
         public HashSet<int> TeammatesValues { get; set; } = new HashSet<int>();
 
+        //TODO everything else
+
         public GameTask()
         {
             for (int i = 1; i <= Constants.MULTIPLE_SELECT_VALUES_COUNT; i++)
