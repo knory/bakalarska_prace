@@ -70,5 +70,15 @@ namespace Components
             _optionButton2.Selected = 0;
             base.ResetState();
         }
+
+        public override void ActivateComponent()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void DeactivateComponent()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

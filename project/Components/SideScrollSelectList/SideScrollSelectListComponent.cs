@@ -17,6 +17,7 @@ namespace Components
         private Texture _deselectedTexture;
         private Texture _selectedTexture;
         private int _currentTab;
+        private readonly int _defaultModelSelectedValue = -1;
 
         public void Init(int[] valuesArray, string[] listNames, int numberOfColumns, string[] gridHeadline)
         {
@@ -56,7 +57,7 @@ namespace Components
                 {
                     GridOffset = 0,
                     NumberOfItems = valuesArray[i],
-                    SelectedItem = -1
+                    SelectedItem = _defaultModelSelectedValue
                 };
 
                 _selectLists[i] = listModel;
@@ -127,16 +128,24 @@ namespace Components
 
         public override void ResetState()
         {
-            foreach (var item in _gridContainer.GetChildren())
+            foreach (var tab in _selectLists)
             {
-                if (item is ClickableControl)
-                {
-                    ((ClickableControl)item).Deselect();
-                }
+                tab.SelectedItem = _defaultModelSelectedValue;
             }
             _sideScrollTabControl.ResetState();
+            PopulateGrid(_selectLists[0]);
 
             base.ResetState();
+        }
+
+        public override void ActivateComponent()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void DeactivateComponent()
+        {
+            throw new NotImplementedException();
         }
     }
 }

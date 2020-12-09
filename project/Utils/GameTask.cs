@@ -11,8 +11,14 @@ namespace Utils
         public int SingleSelectValue { get; set; }
         public bool SwitchValue { get; set; }
         public HashSet<int> TeammatesValues { get; set; } = new HashSet<int>();
+        public int ProgressBarValue { get; set; } = 3;
+        public (int, int) DoubleDropdownValue { get; set; } = (2, 3);
+        public (int, int) SideScrollSelectListValue { get; set; } = (3, 5);
+        public HashSet<int> SideScrollButtonValue { get; set; } = new HashSet<int> { 1 };
+        public int RatingValue { get; set; } = 3;
 
         //TODO everything else
+        //TODO retest everything after puttin the graphics in
 
         public GameTask()
         {

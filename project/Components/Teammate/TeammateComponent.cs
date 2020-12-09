@@ -103,7 +103,7 @@ namespace Components
 
         public override void ResetState()
         {
-            foreach (var item in _addedTeammatesWrapper.GetChildren())
+            foreach (var item in _teammatesHorizontalContainer.GetChildren())
             {
                 if (item is TeammateControl)
                 {
@@ -114,8 +114,16 @@ namespace Components
                     RemoveSelectedValueFromComponent(teammate.Id);
                 }
             }
+        }
 
-            SetValue(new HashSet<int>());
+        public override void ActivateComponent()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void DeactivateComponent()
+        {
+            throw new NotImplementedException();
         }
 
         private TeammateControl CreateTeammateNodeFromTeammate(Teammate teammate)

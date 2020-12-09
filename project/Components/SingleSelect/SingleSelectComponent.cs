@@ -78,7 +78,7 @@ namespace Components
             base.ResetState();
         }
 
-        public void ActivateNodes()
+        public override void ActivateComponent()
         {
             foreach (var item in _clickableComponents)
             {
@@ -86,7 +86,7 @@ namespace Components
             }
         }
 
-        public void DeactivateNodes()
+        public override void DeactivateComponent()
         {
             foreach (var item in _clickableComponents)
             {

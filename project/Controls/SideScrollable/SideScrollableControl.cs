@@ -119,7 +119,7 @@ namespace Controls
             }
         }
 
-        public void ResetState()
+        public virtual void ResetState()
         {
             _leftMostIndex = 0;
             SetContent();

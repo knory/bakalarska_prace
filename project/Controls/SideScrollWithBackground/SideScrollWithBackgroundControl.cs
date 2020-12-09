@@ -59,6 +59,13 @@ namespace Controls
             SetBackgroundImage();
         }
 
+        public override void ResetState()
+        {
+            base.ResetState();
+
+            SetBackgroundImage();
+        }
+
         private void SetBackgroundImage()
         {
             _backgroundImage.Texture = ((List<LabelWithButtonControl>)_possibleValues)[_leftMostIndex].BackgroundImage;

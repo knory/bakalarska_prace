@@ -54,7 +54,7 @@ namespace Scenes
                     PerfectTaskBonusPoints = 5,
                     SuccessRatingType = SuccessRating.GainedPoints,
                     TasksPerGame = 0,
-                    TimePerGame = 5,
+                    TimePerGame = 50,
                     TimePerTask = 10,
                     UnusedTimeGameBonus = 5,
                     UnusedTimeTaskBonus = 1
@@ -239,27 +239,27 @@ namespace Scenes
                 perfectTask = false;
             }
 
-            if (!CheckComponentValue(_progressBarComponent, 1, ref correctComponents))
+            if (!CheckComponentValue(_progressBarComponent, _gameTask.ProgressBarValue, ref correctComponents))
             {
                 perfectTask = false;
             }
 
-            if (!CheckComponentValue(_doubleDropdownComponent, (1, 2), ref correctComponents))
+            if (!CheckComponentValue(_doubleDropdownComponent, _gameTask.DoubleDropdownValue, ref correctComponents))
             {
                 perfectTask = false;
             }
 
-            if (!CheckComponentValue(_sideScrollSelectListComponent, (2, 5), ref correctComponents))
+            if (!CheckComponentValue(_sideScrollSelectListComponent, _gameTask.SideScrollSelectListValue, ref correctComponents))
             {
                 perfectTask = false;
             }
 
-            if (!CheckComponentValue(_sideScrollButtonComponent, new HashSet<int> { 1 }, ref correctComponents))
+            if (!CheckComponentValue(_sideScrollButtonComponent, _gameTask.SideScrollButtonValue, ref correctComponents))
             {
                 perfectTask = false;
             }
 
-            if (!CheckComponentValue(_ratingComponent, 2, ref correctComponents))
+            if (!CheckComponentValue(_ratingComponent, _gameTask.RatingValue, ref correctComponents))
             {
                 perfectTask = false;
             }
@@ -356,16 +356,16 @@ namespace Scenes
 
         private void DeactivateComponents()
         {
-            _multipleSelectComponent.DeactivateNodes();
-            _singleSelectComponent.DeactivateNodes();
-            _switchComponent.DeactivateNodes();
+            _multipleSelectComponent.DeactivateComponent();
+            _singleSelectComponent.DeactivateComponent();
+            _switchComponent.DeactivateComponent();
         }
 
         private void ActivateComponents()
         {
-            _multipleSelectComponent.ActivateNodes();
-            _singleSelectComponent.ActivateNodes();
-            _switchComponent.ActivateNodes();
+            _multipleSelectComponent.ActivateComponent();
+            _singleSelectComponent.ActivateComponent();
+            _switchComponent.ActivateComponent();
         }
 
         private void ResetComponents()
@@ -373,6 +373,12 @@ namespace Scenes
             _multipleSelectComponent.ResetState();
             _singleSelectComponent.ResetState();
             _switchComponent.ResetState();
+            _ratingComponent.ResetState();
+            _teammateComponent.ResetState();
+            _progressBarComponent.ResetState();
+            _doubleDropdownComponent.ResetState();
+            _sideScrollButtonComponent.ResetState();
+            _sideScrollSelectListComponent.ResetState();
         }
 
         private void SendGameData()
@@ -414,6 +420,17 @@ namespace Scenes
                 {
                     correctComponents++;
                     _gameData.CorrectActions++;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                if (component.IsCorrect(value))
+                {
+                    correctComponents++;
                 }
                 else
                 {

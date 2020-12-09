@@ -45,28 +45,12 @@ namespace Components
 
         public override void ResetState()
         {
-            SetValue(new HashSet<int>());
-
             foreach (var item in _clickableComponents)
             {
                 item.Deselect();
             }
-        }
 
-        public void ActivateNodes()
-        {
-            foreach (var item in _clickableComponents)
-            {
-                item.IsActive = true;
-            }
-        }
-
-        public void DeactivateNodes()
-        {
-            foreach (var item in _clickableComponents)
-            {
-                item.IsActive = false;
-            }
+            SetValue(new HashSet<int>());
         }
 
         public List<int> GetSelectedValues()
@@ -99,6 +83,16 @@ namespace Components
         public override bool IsModified()
         {
             return !DefaultValue.SetEquals(SelectedValue);
+        }
+
+        public override void ActivateComponent()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void DeactivateComponent()
+        {
+            throw new NotImplementedException();
         }
     }
 }

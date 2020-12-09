@@ -50,7 +50,7 @@ namespace Controls
 
         public void Deselect()
         {
-            _clickableControl.Deselect();
+            _clickableControl?.Deselect();
         }
     }
 }

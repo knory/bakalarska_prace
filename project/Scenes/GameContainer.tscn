@@ -17,7 +17,6 @@
 script = ExtResource( 7 )
 
 [node name="RatingComponent" parent="." instance=ExtResource( 11 )]
-visible = false
 position = Vector2( 393.495, 180.881 )
 
 [node name="SideScrollButtonComponent" parent="." instance=ExtResource( 12 )]
@@ -29,6 +28,7 @@ visible = false
 position = Vector2( 215.788, 230.068 )
 
 [node name="DoubleDropdownComponent" parent="." instance=ExtResource( 9 )]
+visible = false
 position = Vector2( 671.163, 117.414 )
 
 [node name="ProgressBarComponent" parent="." instance=ExtResource( 10 )]
@@ -36,6 +36,7 @@ visible = false
 position = Vector2( 201.508, 88.8538 )
 
 [node name="TeammateComponent" parent="." instance=ExtResource( 6 )]
+visible = false
 position = Vector2( 276.081, 225.308 )
 
 [node name="MultipleSelectComponent" parent="." instance=ExtResource( 5 )]

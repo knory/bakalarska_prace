@@ -26,7 +26,7 @@ namespace Components
             var statesCount = Constants.ProgressBarResources.Length;
             _progressBarStates = new ProgressBarState[statesCount];
 
-            DefaultValue = -1;
+            DefaultValue = 1;
             SetValue(DefaultValue);
             
             for (int i = 0; i < statesCount; i++)
@@ -46,6 +46,22 @@ namespace Components
         {
             _progressBarSideScrollControl.ResetState();
             base.ResetState();
+        }
+
+        public override bool IsModified()
+        {
+            //default value is valid action as well
+            return true;
+        }
+
+        public override void ActivateComponent()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void DeactivateComponent()
+        {
+            throw new NotImplementedException();
         }
     }
 }

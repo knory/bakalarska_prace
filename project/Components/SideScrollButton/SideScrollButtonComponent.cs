@@ -53,5 +53,15 @@ namespace Components
         {
             return !DefaultValue.SetEquals(SelectedValue);
         }
+
+        public override void ActivateComponent()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void DeactivateComponent()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

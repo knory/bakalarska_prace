@@ -10,7 +10,7 @@ namespace Controls
         private Texture _selectedTexture;
 
         public bool IsSelected { get; set; } = false;
-        public bool IsActive { get; set; } = false; //TODO zjistit, ejstli je potrebne
+        public bool IsActive { get; set; } = false;
         public int Value { get; set; }
 
         public event EventHandler<SelectedValueEventArgs> Selected;

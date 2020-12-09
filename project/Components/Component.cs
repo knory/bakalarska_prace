@@ -25,7 +25,6 @@ namespace Components
             return SelectedValue.Equals(expectedValue);
         }
 
-        // TODO test for every component
         public bool IsCorrect(T expectedValue)
         {
             var result = CheckSelectedValue(expectedValue);
@@ -38,10 +37,14 @@ namespace Components
             return result;
         }
 
-        // TODO test for every component
         public virtual void ResetState()
         {
             SetValue(DefaultValue);
         }
+
+        //TODO implement component deactivation on start countdown
+        public abstract void ActivateComponent();
+
+        public abstract void DeactivateComponent();
     }
 }
