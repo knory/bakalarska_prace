@@ -17,6 +17,7 @@ namespace Controls
         {
             var node = CreateNodeFromTeammate(teammate);
             _possibleValues.Add(CreateNodeFromTeammate(teammate));
+            _possibleValues = _possibleValues.OrderBy(x => x.Teammate.Id).ToList();
 
             SetContent();
         }
@@ -45,6 +46,32 @@ namespace Controls
             }
 
             return teammateNodes;
+        }
+
+        public override void EnableControl()
+        {
+            base.EnableControl();
+
+            foreach (var item in _possibleValues)
+            {
+                item.EnableControl();
+            }
+        }
+
+        public override void DisableControl()
+        {
+            base.DisableControl();
+
+            foreach (var item in _possibleValues)
+            {
+                item.DisableControl();
+            }
+        }
+
+        public override void ResetState()
+        {
+            _possibleValues = _possibleValues.OrderBy(x => x.Teammate.Id).ToList();
+            base.ResetState();
         }
 
         private TeammateControl CreateNodeFromTeammate(Teammate teammate)

@@ -78,19 +78,19 @@ namespace Components
             base.ResetState();
         }
 
-        public override void ActivateComponent()
+        public override void EnableComponent()
         {
             foreach (var item in _clickableComponents)
             {
-                item.IsActive = true;
+                item.Disabled = false;
             }
         }
 
-        public override void DeactivateComponent()
+        public override void DisableComponent()
         {
             foreach (var item in _clickableComponents)
             {
-                item.IsActive = false;
+                item.Disabled = true;
             }
         }
     }

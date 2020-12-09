@@ -54,14 +54,14 @@ namespace Components
             return !DefaultValue.SetEquals(SelectedValue);
         }
 
-        public override void ActivateComponent()
+        public override void EnableComponent()
         {
-            throw new NotImplementedException();
+            _sideScrollWithBackgroundControl.EnableControl();
         }
 
-        public override void DeactivateComponent()
+        public override void DisableComponent()
         {
-            throw new NotImplementedException();
+            _sideScrollWithBackgroundControl.DisableControl();
         }
     }
 }

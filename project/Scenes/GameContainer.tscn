@@ -17,39 +17,31 @@
 script = ExtResource( 7 )
 
 [node name="RatingComponent" parent="." instance=ExtResource( 11 )]
-position = Vector2( 393.495, 180.881 )
+position = Vector2( 1304, 424 )
 
 [node name="SideScrollButtonComponent" parent="." instance=ExtResource( 12 )]
-visible = false
-position = Vector2( 257.041, 233.241 )
+position = Vector2( 504, 400 )
 
 [node name="SideScrollSelectListComponent" parent="." instance=ExtResource( 8 )]
-visible = false
-position = Vector2( 215.788, 230.068 )
+position = Vector2( 32, 608 )
 
 [node name="DoubleDropdownComponent" parent="." instance=ExtResource( 9 )]
-visible = false
-position = Vector2( 671.163, 117.414 )
+position = Vector2( 296, 776 )
 
 [node name="ProgressBarComponent" parent="." instance=ExtResource( 10 )]
-visible = false
-position = Vector2( 201.508, 88.8538 )
+position = Vector2( 1088, 64 )
 
 [node name="TeammateComponent" parent="." instance=ExtResource( 6 )]
-visible = false
-position = Vector2( 276.081, 225.308 )
+position = Vector2( 24, 64 )
 
 [node name="MultipleSelectComponent" parent="." instance=ExtResource( 5 )]
-visible = false
-position = Vector2( 122.853, 621.711 )
+position = Vector2( 1416, 232 )
 
 [node name="SingleSelectComponent" parent="." instance=ExtResource( 3 )]
-visible = false
-position = Vector2( 532.7, 356.892 )
+position = Vector2( 808, 224 )
 
 [node name="SwitchComponent" parent="." instance=ExtResource( 1 )]
-visible = false
-position = Vector2( 376.231, 84.3882 )
+position = Vector2( 368, 224 )
 
 [node name="GameTimer" type="Timer" parent="."]
 wait_time = 30.0

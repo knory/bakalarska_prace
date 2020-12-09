@@ -105,25 +105,40 @@ namespace Components
         {
             foreach (var item in _teammatesHorizontalContainer.GetChildren())
             {
-                if (item is TeammateControl)
-                {
-                    var teammate = ((TeammateControl)item).Teammate;
-                    teammate.IsAddedToTeam = false;
-                    _teammatesSideScrollControl.AddPossibleTeammate(teammate);
-                    _teammatesHorizontalContainer.RemoveChild((TeammateControl)item);
-                    RemoveSelectedValueFromComponent(teammate.Id);
-                }
+                if (!(item is TeammateControl teammateControl)) continue;
+
+                var teammate = teammateControl.Teammate;
+                teammate.IsAddedToTeam = false;
+                _teammatesSideScrollControl.AddPossibleTeammate(teammate);
+                _teammatesHorizontalContainer.RemoveChild((TeammateControl)item);
+                RemoveSelectedValueFromComponent(teammate.Id);
+            }
+
+            _teammatesSideScrollControl.ResetState();
+        }
+
+        public override void EnableComponent()
+        {
+            _teammatesSideScrollControl.EnableControl();
+
+            foreach (var item in _teammatesHorizontalContainer.GetChildren())
+            {
+                if (!(item is TeammateControl teammateControl)) continue;
+
+                teammateControl.EnableControl();
             }
         }
 
-        public override void ActivateComponent()
+        public override void DisableComponent()
         {
-            throw new NotImplementedException();
-        }
+            _teammatesSideScrollControl.DisableControl();
 
-        public override void DeactivateComponent()
-        {
-            throw new NotImplementedException();
+            foreach (var item in _teammatesHorizontalContainer.GetChildren())
+            {
+                if (!(item is TeammateControl teammateControl)) continue;
+
+                teammateControl.DisableControl();
+            }
         }
 
         private TeammateControl CreateTeammateNodeFromTeammate(Teammate teammate)

@@ -54,14 +54,14 @@ namespace Components
             return true;
         }
 
-        public override void ActivateComponent()
+        public override void EnableComponent()
         {
-            throw new NotImplementedException();
+            _progressBarSideScrollControl.EnableControl();
         }
 
-        public override void DeactivateComponent()
+        public override void DisableComponent()
         {
-            throw new NotImplementedException();
+            _progressBarSideScrollControl.DisableControl();
         }
     }
 }

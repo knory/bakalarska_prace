@@ -45,6 +45,16 @@ namespace Controls
             
         }
 
+        public void EnableControl()
+        {
+            _teammateButton.Disabled = false;
+        }
+
+        public void DisableControl()
+        {
+            _teammateButton.Disabled = true;
+        }
+
         private void OnClick()
         {
             Clicked?.Invoke(this, new TeammateControlClickedEventArgs(){ SelectedValue = this });

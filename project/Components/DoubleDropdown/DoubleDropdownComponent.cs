@@ -71,14 +71,16 @@ namespace Components
             base.ResetState();
         }
 
-        public override void ActivateComponent()
+        public override void EnableComponent()
         {
-            throw new NotImplementedException();
+            _optionButton1.Disabled = false;
+            _optionButton2.Disabled = false;
         }
 
-        public override void DeactivateComponent()
+        public override void DisableComponent()
         {
-            throw new NotImplementedException();
+            _optionButton1.Disabled = true;
+            _optionButton2.Disabled = true;
         }
     }
 }

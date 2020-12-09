@@ -115,6 +115,8 @@ namespace Scenes
             _hudUpdateTimer = GetNode<Timer>("HudUpdateTimer");
             _countdownTimer = GetNode<Timer>("CountdownTimer");
 
+            //DisableComponents();
+
             IsRunning = false;
 
             _gameStartOverlay.Connect("StartGame", this, "StartCountdownTimer");
@@ -151,7 +153,7 @@ namespace Scenes
             _taskTimer.Stop();
             _hudUpdateTimer.Stop();
             HideComponents();
-            DeactivateComponents();
+            DisableComponents();
             CheckCompletedTask();
             SendGameData();
         }
@@ -167,7 +169,7 @@ namespace Scenes
             _hud.HideCountdownLabel();
             _gameStartOverlay.HideOverlay();
             _gameStartOverlay.HideGameStatusLabel();
-            ActivateComponents();
+            EnableComponents();
             GenerateNewTask();
             _taskTimer.Start();
 
@@ -354,18 +356,30 @@ namespace Scenes
             _switchComponent.Visible = true;
         }
 
-        private void DeactivateComponents()
+        private void DisableComponents()
         {
-            _multipleSelectComponent.DeactivateComponent();
-            _singleSelectComponent.DeactivateComponent();
-            _switchComponent.DeactivateComponent();
+            _multipleSelectComponent.DisableComponent();
+            _singleSelectComponent.DisableComponent();
+            _switchComponent.DisableComponent();
+            _doubleDropdownComponent.DisableComponent();
+            _progressBarComponent.DisableComponent();
+            _ratingComponent.DisableComponent();
+            _sideScrollButtonComponent.DisableComponent();
+            _sideScrollSelectListComponent.DisableComponent();
+            _teammateComponent.DisableComponent();
         }
 
-        private void ActivateComponents()
+        private void EnableComponents()
         {
-            _multipleSelectComponent.ActivateComponent();
-            _singleSelectComponent.ActivateComponent();
-            _switchComponent.ActivateComponent();
+            _multipleSelectComponent.EnableComponent();
+            _singleSelectComponent.EnableComponent();
+            _switchComponent.EnableComponent();
+            _doubleDropdownComponent.EnableComponent();
+            _progressBarComponent.EnableComponent();
+            _ratingComponent.EnableComponent();
+            _sideScrollButtonComponent.EnableComponent();
+            _sideScrollSelectListComponent.EnableComponent();
+            _teammateComponent.EnableComponent();
         }
 
         private void ResetComponents()

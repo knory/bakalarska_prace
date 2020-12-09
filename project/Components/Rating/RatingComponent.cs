@@ -73,20 +73,29 @@ namespace Components
         {
             SetValue(DefaultValue);
 
-            foreach (ClickableControl item in _horizontalContainer.GetChildren())
+            foreach (var item in _horizontalContainer.GetChildren())
             {
-                item.Deselect();
+                if (!(item is ClickableControl control)) continue;
+                control.Deselect();
             }
         }
 
-        public override void ActivateComponent()
+        public override void EnableComponent()
         {
-            throw new NotImplementedException();
+            foreach (var item in _horizontalContainer.GetChildren())
+            {
+                if (!(item is ClickableControl control)) continue;
+                control.Disabled = false;
+            }
         }
 
-        public override void DeactivateComponent()
+        public override void DisableComponent()
         {
-            throw new NotImplementedException();
+            foreach (var item in _horizontalContainer.GetChildren())
+            {
+                if (!(item is ClickableControl control)) continue;
+                control.Disabled = true;
+            }
         }
     }
 }

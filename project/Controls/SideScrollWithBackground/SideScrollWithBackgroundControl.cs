@@ -78,5 +78,25 @@ namespace Controls
                 item.Deselect();
             }
         }
+
+        public override void EnableControl()
+        {
+            base.EnableControl();
+
+            foreach (var item in _possibleValues)
+            {
+                item.EnableControl();
+            }
+        }
+
+        public override void DisableControl()
+        {
+            base.DisableControl();
+
+            foreach (var item in _possibleValues)
+            {
+                item.DisableControl();
+            }
+        }
     }
 }

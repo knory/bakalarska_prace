@@ -44,14 +44,14 @@ namespace Components
             SetValue(false);
         }
 
-        public override void ActivateComponent()
+        public override void EnableComponent()
         {
-            _clickableControl.IsActive = true;
+            _clickableControl.Disabled = false;
         }
 
-        public override void DeactivateComponent()
+        public override void DisableComponent()
         {
-            _clickableControl.IsActive = false;
+            _clickableControl.Disabled = true;
         }
     }
 }

@@ -21,7 +21,8 @@ config/icon="res://icon.png"
 
 [display]
 
-window/size/height=768
+window/size/width=1920
+window/size/height=1080
 window/stretch/mode="viewport"
 window/stretch/aspect="keep"
 
@@ -31,7 +32,6 @@ enabled=PoolStringArray( "MonoDebuggerQM-1.0.2" )
 
 [mono]
 
-debugger_agent/wait_for_debugger=true
 project/auto_update_project=false
 
 [rendering]

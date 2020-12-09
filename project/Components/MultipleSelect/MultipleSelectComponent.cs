@@ -12,7 +12,7 @@ namespace Components
     public class MultipleSelectComponent : Component<HashSet<int>>
     {
         private HBoxContainer _horizontalContainer;
-        private List<ClickableControl> _clickableComponents;
+        private List<ClickableControl> _clickableControls;
 
         public void Init() 
         {
@@ -31,21 +31,21 @@ namespace Components
                 clickableComponentInstance.Deselected += RemoveSelectedValue;
                 
                 _horizontalContainer.AddChild(clickableComponentInstance);
-                _clickableComponents.Add(clickableComponentInstance);
+                _clickableControls.Add(clickableComponentInstance);
             }
         }
 
         // Called when the node enters the scene tree for the first time.
         public override void _Ready()
         {
-            _clickableComponents = new List<ClickableControl>();
+            _clickableControls = new List<ClickableControl>();
             _horizontalContainer = GetNode<HBoxContainer>("HorizontalContainer");
             Init();
         }
 
         public override void ResetState()
         {
-            foreach (var item in _clickableComponents)
+            foreach (var item in _clickableControls)
             {
                 item.Deselect();
             }
@@ -56,7 +56,7 @@ namespace Components
         public List<int> GetSelectedValues()
         {
             var result = new List<int>();
-            foreach (var item in _clickableComponents)
+            foreach (var item in _clickableControls)
             {
                 if (item.IsSelected)
                     result.Add(item.Value);
@@ -85,14 +85,20 @@ namespace Components
             return !DefaultValue.SetEquals(SelectedValue);
         }
 
-        public override void ActivateComponent()
+        public override void EnableComponent()
         {
-            throw new NotImplementedException();
+            foreach (var item in _clickableControls)
+            {
+                item.Disabled = false;
+            }
         }
 
-        public override void DeactivateComponent()
+        public override void DisableComponent()
         {
-            throw new NotImplementedException();
+            foreach (var item in _clickableControls)
+            {
+                item.Disabled = true;
+            }
         }
     }
 }

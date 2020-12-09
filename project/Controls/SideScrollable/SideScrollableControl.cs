@@ -109,6 +109,17 @@ namespace Controls
             SetContent();
         }
 
+        public virtual void EnableControl()
+        {
+            _leftButton.Disabled = false;
+            _rightButton.Disabled = false;
+        }
+
+        public virtual void DisableControl()
+        {
+            _leftButton.Disabled = true;
+            _rightButton.Disabled = true;
+        }
 
         protected void DeleteContent()
         {

@@ -82,7 +82,7 @@ namespace Components
 
         private void PopulateGrid(SelectListModel listModel)
         {
-            foreach (Node child in _gridContainer.GetChildren())
+            foreach (ClickableControl child in GetTree().GetNodesInGroup("GridItems"))
             {
                 _gridContainer.RemoveChild(child);
             }
@@ -108,6 +108,11 @@ namespace Components
                 }
             }
 
+            foreach (var list in _selectLists)
+            {
+                list.SelectedItem = _defaultModelSelectedValue;
+            }
+            
             _selectLists[_currentTab].SelectedItem = eventArgs.SelectedValue; 
 
             SetValue((_currentTab, eventArgs.SelectedValue));
@@ -138,14 +143,24 @@ namespace Components
             base.ResetState();
         }
 
-        public override void ActivateComponent()
+        public override void EnableComponent()
         {
-            throw new NotImplementedException();
+            _sideScrollTabControl.EnableControl();
+
+            foreach (ClickableControl item in GetTree().GetNodesInGroup("GridItems"))
+            {
+                item.Disabled = false;
+            }
         }
 
-        public override void DeactivateComponent()
+        public override void DisableComponent()
         {
-            throw new NotImplementedException();
+            _sideScrollTabControl.DisableControl();
+
+            foreach (ClickableControl item in GetTree().GetNodesInGroup("GridItems"))
+            {
+                item.Disabled = true;
+            }
         }
     }
 }

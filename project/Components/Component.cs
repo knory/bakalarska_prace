@@ -42,9 +42,8 @@ namespace Components
             SetValue(DefaultValue);
         }
 
-        //TODO implement component deactivation on start countdown
-        public abstract void ActivateComponent();
+        public abstract void EnableComponent();
 
-        public abstract void DeactivateComponent();
+        public abstract void DisableComponent();
     }
 }

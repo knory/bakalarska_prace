@@ -52,5 +52,17 @@ namespace Controls
         {
             _clickableControl?.Deselect();
         }
+
+        public void EnableControl()
+        {
+            if (_clickableControl == null) return;
+            _clickableControl.Disabled = false;
+        }
+
+        public void DisableControl()
+        {
+            if (_clickableControl == null) return;
+            _clickableControl.Disabled = true;
+        }
     }
 }
