@@ -5,7 +5,8 @@ namespace Models
     public struct TeammateResource
     {
         public int Id;
-        public string TexturePath;
+        public string BigTexturePath;
+        public string SmallTexturePath;
         public string Name;
     }
 }

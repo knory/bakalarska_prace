@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://NongamifiedGame.cs" type="Script" id=1]
+[ext_resource path="res://Components/Teammate/TeammateComponent.tscn" type="PackedScene" id=2]
+
+[node name="NongamifiedGame" type="Node"]
+script = ExtResource( 1 )
+
+[node name="TopBar" type="Sprite" parent="."]
+
+[node name="TeammateComponent" parent="." instance=ExtResource( 2 )]
+margin_left = 38.0
+margin_top = 112.0
+margin_right = 38.0
+margin_bottom = 112.0

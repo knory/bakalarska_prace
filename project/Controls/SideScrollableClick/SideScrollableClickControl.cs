@@ -10,10 +10,11 @@ namespace Controls
     {
         protected EventHandler<V> _nodeClickedCallback;
 
-        public virtual void Init(U[] possibleValues, int valuesShown, bool canJumpBounds, EventHandler<V> nodeClickedCallback)
+        public virtual void Init(U[] possibleValues, int valuesShown, bool canJumpBounds, EventHandler<V> nodeClickedCallback,
+            Texture leftButtonTexture, Texture rightButtonTexture)
         {
             _nodeClickedCallback = nodeClickedCallback;
-            base.Init(possibleValues, valuesShown, canJumpBounds);
+            base.Init(possibleValues, valuesShown, canJumpBounds, leftButtonTexture, rightButtonTexture);
         }
     }
 }

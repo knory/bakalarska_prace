@@ -3,44 +3,74 @@
 [ext_resource path="res://Components/Teammate/TeammateComponent.cs" type="Script" id=1]
 [ext_resource path="res://Controls/TeammatesSideScroll/TeammatesSideScrollControl.tscn" type="PackedScene" id=2]
 
-[node name="TeammateComponent" type="Node2D"]
+[node name="TeammateComponent" type="Control"]
 script = ExtResource( 1 )
-
-[node name="VerticalContainer" type="VBoxContainer" parent="."]
-margin_right = 40.0
-margin_bottom = 40.0
-alignment = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="NewTeammatesWrapper" type="VBoxContainer" parent="VerticalContainer"]
-margin_top = 2.0
+[node name="Background" type="Sprite" parent="."]
+
+[node name="WindowWrapper" type="VBoxContainer" parent="."]
 margin_right = 40.0
-margin_bottom = 16.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Title" type="Label" parent="WindowWrapper"]
+margin_right = 40.0
+margin_bottom = 14.0
+
+[node name="VerticalContainer" type="VBoxContainer" parent="WindowWrapper"]
+margin_top = 18.0
+margin_right = 40.0
+margin_bottom = 58.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="NewTeammatesWrapper" type="VBoxContainer" parent="WindowWrapper/VerticalContainer"]
+margin_right = 40.0
+margin_bottom = 18.0
 alignment = 1
 
-[node name="NewTeammatesLabel" type="Label" parent="VerticalContainer/NewTeammatesWrapper"]
+[node name="CenterContainer" type="CenterContainer" parent="WindowWrapper/VerticalContainer/NewTeammatesWrapper"]
+margin_right = 40.0
+margin_bottom = 14.0
+
+[node name="NewTeammatesLabel" type="Label" parent="WindowWrapper/VerticalContainer/NewTeammatesWrapper/CenterContainer"]
+margin_left = 20.0
+margin_right = 20.0
+margin_bottom = 14.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+align = 1
+valign = 1
+
+[node name="TeammatesSideScrollControl" parent="WindowWrapper/VerticalContainer/NewTeammatesWrapper" instance=ExtResource( 2 )]
+margin_top = 18.0
+margin_right = 40.0
+margin_bottom = 18.0
+
+[node name="MarginContainer" type="MarginContainer" parent="WindowWrapper/VerticalContainer"]
+margin_top = 22.0
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="AddedTeammatesWrapper" type="VBoxContainer" parent="WindowWrapper/VerticalContainer/MarginContainer"]
+margin_right = 40.0
+margin_bottom = 18.0
+alignment = 1
+
+[node name="AddedTeammatesLabel" type="Label" parent="WindowWrapper/VerticalContainer/MarginContainer/AddedTeammatesWrapper"]
 margin_right = 40.0
 margin_bottom = 14.0
 align = 1
 valign = 1
 
-[node name="TeammatesSideScrollControl" parent="VerticalContainer/NewTeammatesWrapper" instance=ExtResource( 2 )]
-
-[node name="AddedTeammatesWrapper" type="VBoxContainer" parent="VerticalContainer"]
-margin_top = 20.0
-margin_right = 40.0
-margin_bottom = 38.0
-alignment = 1
-
-[node name="AddedTeammatesLabel" type="Label" parent="VerticalContainer/AddedTeammatesWrapper"]
-margin_right = 40.0
-margin_bottom = 14.0
-align = 1
-valign = 1
-
-[node name="TeammatesHorizontalContainer" type="HBoxContainer" parent="VerticalContainer/AddedTeammatesWrapper"]
+[node name="TeammatesHorizontalContainer" type="HBoxContainer" parent="WindowWrapper/VerticalContainer/MarginContainer/AddedTeammatesWrapper"]
 margin_top = 18.0
 margin_right = 40.0
 margin_bottom = 18.0

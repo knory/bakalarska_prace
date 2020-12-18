@@ -29,7 +29,7 @@ namespace Utils
                 MultipleSelectValues.Add(i);
             }
 
-            for (int i = 1; i <= Constants.TeammateResources.Length; i++)
+            for (int i = 1; i <= 8; i++)
             {
                 if (Constants.RANDOM.Next() % 2 == 0) continue;
 

@@ -18,9 +18,9 @@ namespace Controls
 
         }
 
-        public override void Init(ProgressBarState[] possibleValues, int valuesShown, bool canJumpBounds)
+        public override void Init(ProgressBarState[] possibleValues, int valuesShown, bool canJumpBounds, Texture leftButton, Texture rightButton)
         {
-            base.Init(possibleValues, valuesShown, canJumpBounds);
+            base.Init(possibleValues, valuesShown, canJumpBounds, leftButton, rightButton);
 
             _leftButton.Connect("pressed", this, nameof(OnValueChanged));
             _rightButton.Connect("pressed", this, nameof(OnValueChanged));

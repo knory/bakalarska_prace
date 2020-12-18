@@ -57,11 +57,52 @@
     <Reference Include="System.Net.Http" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="**\*.cs" />
+    <!--<Compile Include=".mono\temp\obj\Debug\.NETFramework,Version=v4.7.AssemblyAttributes.cs" />-->
+    <Compile Include="Components\Component.cs" />
+    <Compile Include="Components\DoubleDropdown\DoubleDropdownComponent.cs" />
+    <Compile Include="Components\MultipleSelect\MultipleSelectComponent.cs" />
+    <Compile Include="Components\ProgressBar\ProgressBarComponent.cs" />
+    <Compile Include="Components\Rating\RatingComponent.cs" />
+    <Compile Include="Components\SideScrollButton\SideScrollButtonComponent.cs" />
+    <Compile Include="Components\SideScrollSelectList\SideScrollSelectListComponent.cs" />
+    <Compile Include="Components\SingleSelect\SingleSelectComponent.cs" />
+    <Compile Include="Components\Switch\SwitchComponent.cs" />
+    <Compile Include="Components\Teammate\TeammateComponent.cs" />
+    <Compile Include="Controls\Clickable\ClickableControl.cs" />
+    <Compile Include="Controls\LabelWithButton\LabelWithButtonControl.cs" />
+    <Compile Include="Controls\ProgressBarSideScroll\ProgressBarSideScrollControl.cs" />
+    <Compile Include="Controls\SideScrollableClick\SideScrollableClickControl.cs" />
+    <Compile Include="Controls\SideScrollable\SideScrollableControl.cs" />
+    <Compile Include="Controls\SideScrollTab\SideScrollTabControl.cs" />
+    <Compile Include="Controls\SideScrollWithBackground\SideScrollWithBackgroundControl.cs" />
+    <Compile Include="Controls\TeammatesSideScroll\TeammatesSideScrollControl.cs" />
+    <Compile Include="Controls\Teammate\TeammateControl.cs" />
+    <Compile Include="Models\Dropdown\DropdownModel.cs" />
+    <Compile Include="Models\GameData.cs" />
+    <Compile Include="Models\LabelWithButton\LabelWithButtonResource.cs" />
+    <Compile Include="Models\ProgressBar\ProgressBarResource.cs" />
+    <Compile Include="Models\ProgressBar\ProgressBarState.cs" />
+    <Compile Include="Models\SelectList\SelectListModel.cs" />
+    <Compile Include="Models\Teammate\Teammate.cs" />
+    <Compile Include="Models\Teammate\TeammateResource.cs" />
+    <Compile Include="NongamifiedGame.cs" />
+    <Compile Include="Scenes\Game.cs" />
+    <Compile Include="Scenes\GameContainer.cs" />
+    <Compile Include="Scenes\GameStartOverlay.cs" />
+    <Compile Include="Scenes\HUD.cs" />
+    <Compile Include="Scenes\MainMenu.cs" />
+    <Compile Include="Scenes\Settings.cs" />
+    <Compile Include="Utils\Config.cs" />
+    <Compile Include="Utils\Constants.cs" />
+    <Compile Include="Utils\EventArgs.cs" />
+    <Compile Include="Utils\GameTask.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include=".mono\temp\obj\Tools\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

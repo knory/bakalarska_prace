@@ -1,9 +1,0 @@
-[gd_scene format=2]
-
-[node name="GenericComponentWrapper" type="Node2D"]
-
-[node name="WindowWrapper" type="Node2D" parent="."]
-
-[node name="WindowSprite" type="Sprite" parent="WindowWrapper"]
-
-[node name="ContentWrapper" type="Node2D" parent="WindowWrapper"]

@@ -3,7 +3,10 @@
 [ext_resource path="res://Controls/SideScrollWithBackground/SideScrollWithBackgroundControl.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Components/SideScrollButton/SideScrollButtonComponent.cs" type="Script" id=2]
 
-[node name="SideScrollButtonComponent" type="Node2D"]
+[node name="SideScrollButtonComponent" type="Control"]
 script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="SideScrollWithBackgroundControl" parent="." instance=ExtResource( 1 )]

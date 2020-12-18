@@ -6,14 +6,16 @@ namespace Models
     public class Teammate
     {
         public int Id { get; set; }
-        public Texture Texture { get; set; }
+        public Texture BigTexture { get; set; }
+        public Texture SmallTexture { get; set; }
         public string Name { get; set; }
         public bool IsAddedToTeam { get; set; }
 
-        public Teammate(int id, string texturePath, string name, bool isAddedToTeam = false)
+        public Teammate(int id, string bigTexturePath, string smallTexturePath, string name, bool isAddedToTeam = false)
         {
             Id = id;
-            Texture = (Texture)GD.Load(texturePath);
+            BigTexture = (Texture)GD.Load(bigTexturePath);
+            SmallTexture = (Texture)GD.Load(smallTexturePath);
             Name = name;
             IsAddedToTeam = isAddedToTeam;
         }

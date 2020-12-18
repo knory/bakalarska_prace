@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Components
 {
-    public abstract class Component<T> : Node2D
+    public abstract class Component<T> : Control
     {
         private int _correctModifiedSequences = 0;
         protected T SelectedValue { get; private set; }

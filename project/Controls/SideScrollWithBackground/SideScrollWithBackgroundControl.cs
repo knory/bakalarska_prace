@@ -19,7 +19,8 @@ namespace Controls
             _selectedHandler = selected;
             _deselectedHandler = deselected;
             
-            base.Init(possibleValues, 1, true);
+            //TODO FIX
+            base.Init(possibleValues, 1, true, null, null);
 
             SetBackgroundImage();
         }

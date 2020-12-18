@@ -7,7 +7,7 @@ using Utils;
 
 namespace Controls
 {
-    public abstract class SideScrollableControl<T, U> : Node2D
+    public abstract class SideScrollableControl<T, U> : Control
         where T : Node
     {
         private bool _canJumpBounds;
@@ -58,22 +58,21 @@ namespace Controls
             }
         }
 
-        public virtual void Init(U[] possibleValues, int valuesShown, bool canJumpBounds)
+        public virtual void Init(U[] possibleValues, int valuesShown, bool canJumpBounds, 
+            Texture leftButtonTexture, Texture rightButtonTexture)
         {
             _canJumpBounds = canJumpBounds;
             _possibleValues = TransformPossibleValues(possibleValues);
             _valuesShown = valuesShown;
             _leftMostIndex = 0;
             
-            var text1 = (Texture)GD.Load($"{Constants.SpriteNames[0]}");
-
             _horizontalContainer = GetNode<HBoxContainer>("HorizontalContainer");
             _leftButton = _horizontalContainer.GetNode<TextureButton>("LeftButton");
             _rightButton = _horizontalContainer.GetNode<TextureButton>("RightButton");
             _contentContainer = _horizontalContainer.GetNode<HBoxContainer>("ContentContainer");
 
-            _leftButton.TextureNormal = text1;
-            _rightButton.TextureNormal = text1;
+            _leftButton.TextureNormal = leftButtonTexture;
+            _rightButton.TextureNormal = rightButtonTexture;
 
             SetContent();
 
@@ -134,6 +133,11 @@ namespace Controls
         {
             _leftMostIndex = 0;
             SetContent();
+        }
+
+        public void SetSeparation(int separation)
+        {
+            _contentContainer.Set("custom_constants/separation", separation);
         }
     }
 }

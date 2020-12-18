@@ -16,19 +16,6 @@ namespace Utils
 
         // resources constants
         public static string[] SpriteNames { get; } = {$"{_resourcesPath}blue_node.png", $"{_resourcesPath}green_node.png", $"{_resourcesPath}purple_node.png", $"{_resourcesPath}red_node.png", $"{_resourcesPath}yellow_node.png"};
-        public static Dictionary<string, Texture> TeammateActionIcons { get; } = new Dictionary<string, Texture>
-        { 
-            {"plus", (Texture)GD.Load($"{_resourcesTeammatesPath}plus.png") },
-            {"minus", (Texture)GD.Load($"{_resourcesTeammatesPath}minus.png") }
-        };
-        public static TeammateResource[] TeammateResources { get; } = new TeammateResource[]
-        {
-            new TeammateResource{ Id = 1, Name = "Evžen", TexturePath = $"{_resourcesTeammatesPath}evzen.png" },
-            new TeammateResource{ Id = 2, Name = "Jonáš", TexturePath = $"{_resourcesTeammatesPath}jonas.png" },
-            new TeammateResource{ Id = 3, Name = "Katka", TexturePath = $"{_resourcesTeammatesPath}katka.png" },
-            new TeammateResource{ Id = 4, Name = "Lukáš", TexturePath = $"{_resourcesTeammatesPath}lukas.png" },
-            new TeammateResource{ Id = 5, Name = "Tereza", TexturePath = $"{_resourcesTeammatesPath}tereza.png" }
-        };
         public static ProgressBarResource[] ProgressBarResources { get; } = new ProgressBarResource[]
         {
             new ProgressBarResource{ Id = 1, TexturePath = $"{_resourcesProgressBarPath}one.png"},
@@ -64,6 +51,93 @@ namespace Utils
         public static int RATING_POSSIBLE_VALUES { get; } = 5;
 
         public static Random RANDOM { get; } = new Random();
+    }
+
+    public static class Resources
+    {
+        private static readonly string _resourcesPath = "res://Resources/";
+        private static readonly string _resourcesTeammatesPath = _resourcesPath + "Teammates/";
+        private static readonly string _resourcesSharedPath = _resourcesPath + "Shared/";
+
+        public static ResourceObject Nongamified = new ResourceObject
+        {
+            TeammateResources = new TeammateResource[]
+            {
+                new TeammateResource 
+                { 
+                    Id = 1, 
+                    Name = "Evžen", 
+                    BigTexturePath = $"{_resourcesTeammatesPath}evzen_big.png",
+                    SmallTexturePath = $"{_resourcesTeammatesPath}evzen_small.png" 
+                },
+                new TeammateResource
+                {
+                    Id = 2,
+                    Name = "Jonáš",
+                    BigTexturePath = $"{_resourcesTeammatesPath}jonas_big.png",
+                    SmallTexturePath = $"{_resourcesTeammatesPath}jonas_small.png"
+                },
+                new TeammateResource
+                {
+                    Id = 3,
+                    Name = "Katka",
+                    BigTexturePath = $"{_resourcesTeammatesPath}katka_big.png",
+                    SmallTexturePath = $"{_resourcesTeammatesPath}katka_small.png"
+                },
+                new TeammateResource
+                {
+                    Id = 4,
+                    Name = "Lukáš",
+                    BigTexturePath = $"{_resourcesTeammatesPath}lukas_big.png",
+                    SmallTexturePath = $"{_resourcesTeammatesPath}lukas_small.png"
+                },
+                new TeammateResource
+                {
+                    Id = 5,
+                    Name = "Milena",
+                    BigTexturePath = $"{_resourcesTeammatesPath}milena_big.png",
+                    SmallTexturePath = $"{_resourcesTeammatesPath}milena_small.png"
+                },
+                new TeammateResource
+                {
+                    Id = 6,
+                    Name = "Pavel",
+                    BigTexturePath = $"{_resourcesTeammatesPath}pavel_big.png",
+                    SmallTexturePath = $"{_resourcesTeammatesPath}pavel_small.png"
+                },
+                new TeammateResource
+                {
+                    Id = 7,
+                    Name = "Renata",
+                    BigTexturePath = $"{_resourcesTeammatesPath}renata_big.png",
+                    SmallTexturePath = $"{_resourcesTeammatesPath}renata_small.png"
+                },
+                new TeammateResource
+                {
+                    Id = 8,
+                    Name = "Tereza",
+                    BigTexturePath = $"{_resourcesTeammatesPath}tereza_big.png",
+                    SmallTexturePath = $"{_resourcesTeammatesPath}tereza_small.png"
+                }
+            },
+            TeammateActionIcons = new Dictionary<string, Texture>
+            {
+                {"plus", (Texture)GD.Load($"{_resourcesTeammatesPath}plus_button.png") },
+                {"minus", (Texture)GD.Load($"{_resourcesTeammatesPath}minus_button.png") }
+            },
+            SideButtonTextures = new Dictionary<string, Texture>
+            {
+                {"left", (Texture)GD.Load($"{_resourcesSharedPath}left_arrow.png")},
+                {"right", (Texture)GD.Load($"{_resourcesSharedPath}right_arrow.png")}
+            }
+        };
+    }
+
+    public class ResourceObject
+    {
+        public TeammateResource[] TeammateResources { get; set; }
+        public Dictionary<string, Texture> TeammateActionIcons { get; set; }
+        public Dictionary<string, Texture> SideButtonTextures { get; set; }
     }
 
     public struct ResourceStrings

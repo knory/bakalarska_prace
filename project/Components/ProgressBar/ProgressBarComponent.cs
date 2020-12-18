@@ -12,9 +12,9 @@ namespace Components
         private ProgressBarSideScrollControl _progressBarSideScrollControl;
         private ProgressBarState[] _progressBarStates;
 
-        public void Init()
+        public void Init(Texture leftButton, Texture rightButton)
         {
-            _progressBarSideScrollControl.Init(_progressBarStates, 1, false);
+            _progressBarSideScrollControl.Init(_progressBarStates, 1, false, leftButton, rightButton);
         }
 
         // Called when the node enters the scene tree for the first time.
@@ -34,7 +34,8 @@ namespace Components
                 _progressBarStates[i] = new ProgressBarState{ Id = i + 1, Texture = (Texture)GD.Load(Constants.ProgressBarResources[i].TexturePath)};
             }
 
-            Init();
+            //TODO FIX
+            Init(null, null);
         }
 
         public void ChangeValue(object sender, SelectedValueEventArgs e)

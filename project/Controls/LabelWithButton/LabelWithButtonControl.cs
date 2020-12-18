@@ -42,7 +42,8 @@ namespace Controls
                 _label.Text = _text;
             }
 
-            _clickableControl.Init(Constants.TeammateActionIcons["plus"], Constants.TeammateActionIcons["minus"], _value);
+            //TODO resolve
+            //_clickableControl.Init(Constants.TeammateActionIcons["plus"], Constants.TeammateActionIcons["minus"], _value);
 
             _clickableControl.Selected += _selected;
             _clickableControl.Deselected += _deselected;

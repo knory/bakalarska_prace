@@ -1,0 +1,19 @@
+[gd_scene format=2]
+
+[node name="Component" type="Control"]
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Background" type="Sprite" parent="."]
+
+[node name="WindowWrapper" type="VBoxContainer" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Title" type="Label" parent="WindowWrapper"]
+margin_right = 40.0
+margin_bottom = 14.0

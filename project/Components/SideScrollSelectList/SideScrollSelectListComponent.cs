@@ -19,7 +19,8 @@ namespace Components
         private int _currentTab;
         private readonly int _defaultModelSelectedValue = -1;
 
-        public void Init(int[] valuesArray, string[] listNames, int numberOfColumns, string[] gridHeadline)
+        //TODO send init object
+        public void Init(int[] valuesArray, string[] listNames, int numberOfColumns, string[] gridHeadline, Texture leftButton, Texture rightButton)
         {
             if (valuesArray.Length != listNames.Length)
             {
@@ -31,11 +32,13 @@ namespace Components
                 throw new ArgumentOutOfRangeException("Unexpected grid headline length.");
             }
 
-            _sideScrollTabControl.Init(listNames, 1, true);
+            _sideScrollTabControl.Init(listNames, 1, true, leftButton, rightButton);
             _sideScrollTabControl.TabChanged += TabChanged;
 
-            _deselectedTexture = Constants.TeammateActionIcons["plus"];
-            _selectedTexture = Constants.TeammateActionIcons["minus"];
+            // _deselectedTexture = Constants.TeammateActionIcons["plus"];
+            // _selectedTexture = Constants.TeammateActionIcons["minus"];
+            _deselectedTexture = Resources.Nongamified.TeammateActionIcons["plus"];
+            _selectedTexture = Resources.Nongamified.TeammateActionIcons["minus"];
 
             _gridContainer.Columns = numberOfColumns;
             
@@ -77,7 +80,8 @@ namespace Components
             _gridHeadline = _verticalContainer.GetNode<HBoxContainer>("GridHeadline");
             _gridContainer = _verticalContainer.GetNode<GridContainer>("GridContainer");
 
-            Init(Constants.VALUES_PER_LIST, Constants.MONTH_NAMES, 7, Constants.DAY_NAMES);
+            //TODO FIX
+            Init(Constants.VALUES_PER_LIST, Constants.MONTH_NAMES, 7, Constants.DAY_NAMES, null, null);
         }
 
         private void PopulateGrid(SelectListModel listModel)

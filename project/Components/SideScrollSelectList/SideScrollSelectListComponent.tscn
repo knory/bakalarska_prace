@@ -3,8 +3,11 @@
 [ext_resource path="res://Controls/SideScrollTab/SideScrollTabControl.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Components/SideScrollSelectList/SideScrollSelectListComponent.cs" type="Script" id=2]
 
-[node name="SideScrollSelectListComponent" type="Node2D"]
+[node name="SideScrollSelectListComponent" type="Control"]
 script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="VerticalContainer" type="VBoxContainer" parent="."]
 margin_right = 40.0
@@ -14,17 +17,20 @@ __meta__ = {
 }
 
 [node name="SideScrollTabControl" parent="VerticalContainer" instance=ExtResource( 1 )]
+margin_right = 40.0
 
 [node name="GridHeadline" type="HBoxContainer" parent="VerticalContainer"]
+margin_top = 4.0
 margin_right = 40.0
+margin_bottom = 4.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="GridContainer" type="GridContainer" parent="VerticalContainer"]
-margin_top = 4.0
+margin_top = 8.0
 margin_right = 40.0
-margin_bottom = 4.0
+margin_bottom = 8.0
 __meta__ = {
 "_edit_use_anchors_": false
 }

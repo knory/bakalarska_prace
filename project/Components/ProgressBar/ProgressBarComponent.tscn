@@ -3,7 +3,10 @@
 [ext_resource path="res://Components/ProgressBar/ProgressBarComponent.cs" type="Script" id=1]
 [ext_resource path="res://Controls/ProgressBarSideScroll/ProgressBarSideScrollControl.tscn" type="PackedScene" id=2]
 
-[node name="ProgressBarComponent" type="Node2D"]
+[node name="ProgressBarComponent" type="Control"]
 script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="ProgressBarSideScrollControl" parent="." instance=ExtResource( 2 )]
