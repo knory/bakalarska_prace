@@ -49,10 +49,13 @@ size_flags_horizontal = 4
 align = 1
 valign = 1
 
-[node name="TeammatesSideScrollControl" parent="WindowWrapper/VerticalContainer/NewTeammatesWrapper" instance=ExtResource( 2 )]
+[node name="SideScrollMarginContainer" type="MarginContainer" parent="WindowWrapper/VerticalContainer/NewTeammatesWrapper"]
 margin_top = 18.0
 margin_right = 40.0
 margin_bottom = 18.0
+
+[node name="TeammatesSideScrollControl" parent="WindowWrapper/VerticalContainer/NewTeammatesWrapper/SideScrollMarginContainer" instance=ExtResource( 2 )]
+margin_right = 40.0
 
 [node name="MarginContainer" type="MarginContainer" parent="WindowWrapper/VerticalContainer"]
 margin_top = 22.0

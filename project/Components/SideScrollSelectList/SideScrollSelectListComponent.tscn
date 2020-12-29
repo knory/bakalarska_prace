@@ -1,36 +1,44 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Controls/SideScrollTab/SideScrollTabControl.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Components/SideScrollSelectList/SideScrollSelectListComponent.cs" type="Script" id=2]
+[ext_resource path="res://Components/Component.tscn" type="PackedScene" id=3]
 
-[node name="SideScrollSelectListComponent" type="Control"]
+[node name="SideScrollSelectListComponent" instance=ExtResource( 3 )]
 script = ExtResource( 2 )
+
+[node name="VerticalContainer" type="VBoxContainer" parent="WindowWrapper" index="1"]
+margin_top = 18.0
+margin_right = 40.0
+margin_bottom = 26.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="VerticalContainer" type="VBoxContainer" parent="."]
+[node name="SideScrollTabControl" parent="WindowWrapper/VerticalContainer" index="0" instance=ExtResource( 1 )]
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 2
+size_flags_vertical = 2
+
+[node name="TableContainer" type="VBoxContainer" parent="WindowWrapper/VerticalContainer" index="1"]
+margin_top = 4.0
 margin_right = 40.0
-margin_bottom = 40.0
+margin_bottom = 8.0
+
+[node name="MarginContainer" type="MarginContainer" parent="WindowWrapper/VerticalContainer/TableContainer" index="0"]
+margin_right = 40.0
+
+[node name="GridHeadline" type="HBoxContainer" parent="WindowWrapper/VerticalContainer/TableContainer/MarginContainer" index="0"]
+margin_right = 40.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="SideScrollTabControl" parent="VerticalContainer" instance=ExtResource( 1 )]
-margin_right = 40.0
-
-[node name="GridHeadline" type="HBoxContainer" parent="VerticalContainer"]
+[node name="GridContainer" type="GridContainer" parent="WindowWrapper/VerticalContainer/TableContainer" index="1"]
 margin_top = 4.0
 margin_right = 40.0
 margin_bottom = 4.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="GridContainer" type="GridContainer" parent="VerticalContainer"]
-margin_top = 8.0
-margin_right = 40.0
-margin_bottom = 8.0
 __meta__ = {
 "_edit_use_anchors_": false
 }

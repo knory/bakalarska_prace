@@ -42,9 +42,9 @@ namespace Scenes
             _copyClipboardButton = GetNode<Button>("MarginContainer/VBoxContainer/HBoxContainer/CopyClipboardButton");
             _backButton = GetNode<Button>("MarginContainer/VBoxContainer/BackButton");
 
-            _generateCodeButton.Connect("pressed", this, "GenerateConfigCode");
-            _copyClipboardButton.Connect("pressed", this, "CopyConfigCodeToClipboard");
-            _backButton.Connect("pressed", this, "ChangeSceneToMenu");
+            _generateCodeButton.Connect("pressed", this, nameof(GenerateConfigCode));
+            _copyClipboardButton.Connect("pressed", this, nameof(CopyConfigCodeToClipboard));
+            _backButton.Connect("pressed", this, nameof(ChangeSceneToMenu));
         }
 
         private void GenerateConfigCode()

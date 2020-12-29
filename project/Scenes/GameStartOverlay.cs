@@ -13,8 +13,7 @@ namespace Scenes
         private Button _startButton;
         private Button _backButton;
 
-        [Signal]
-        public delegate void StartGame(string encodedConfig);
+        public event EventHandler<GameConfigEventArgs> StartGame;
 
         // Called when the node enters the scene tree for the first time.
         public override void _Ready()
@@ -26,13 +25,12 @@ namespace Scenes
             _startButton = _overlayWrapper.GetNode<Button>("VBoxContainer/StartButton");
             _backButton = _overlayWrapper.GetNode<Button>("VBoxContainer/BackButton");
             
-            _gameStatusLabel.Text = $"{ResourceStrings.GameOver}";
+            _gameStatusLabel.Text = $"Game Over";
             _gameStatusLabel.Visible = false;
 
             _codeErrorLabel.Visible = false;
 
-            _startButton.Connect("pressed", this, "StartButtonPressed");
-            _backButton.Connect("pressed", this, "ChangeSceneToMainMenu");
+            _startButton.Connect("pressed", this, nameof(StartButtonPressed));
         }
 
         public void HideOverlay()
@@ -73,12 +71,7 @@ namespace Scenes
 
         private void StartButtonPressed()
         {
-            EmitSignal("StartGame", _gameCodeValue.Text);
-        }
-
-        private void ChangeSceneToMainMenu()
-        {
-            GetTree().ChangeScene("res://Scenes/MainMenu.tscn");
+            StartGame?.Invoke(this, new GameConfigEventArgs { EncodedConfig = _gameCodeValue.Text });
         }
     }
 }

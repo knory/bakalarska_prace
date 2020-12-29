@@ -1,74 +1,9 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://Components/Switch/SwitchComponent.tscn" type="PackedScene" id=1]
-[ext_resource path="res://Scenes/HUD.tscn" type="PackedScene" id=2]
-[ext_resource path="res://Components/SingleSelect/SingleSelectComponent.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Scenes/GameStartOverlay.tscn" type="PackedScene" id=4]
-[ext_resource path="res://Components/MultipleSelect/MultipleSelectComponent.tscn" type="PackedScene" id=5]
-[ext_resource path="res://Components/Teammate/TeammateComponent.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Scenes/GameContainer.cs" type="Script" id=7]
-[ext_resource path="res://Components/SideScrollSelectList/SideScrollSelectListComponent.tscn" type="PackedScene" id=8]
-[ext_resource path="res://Components/DoubleDropdown/DoubleDropdownComponent.tscn" type="PackedScene" id=9]
-[ext_resource path="res://Components/ProgressBar/ProgressBarComponent.tscn" type="PackedScene" id=10]
-[ext_resource path="res://Components/Rating/RatingComponent.tscn" type="PackedScene" id=11]
-[ext_resource path="res://Components/SideScrollButton/SideScrollButtonComponent.tscn" type="PackedScene" id=12]
-[ext_resource path="res://NongamifiedGame.tscn" type="PackedScene" id=13]
 
 [node name="GameContainer" type="Node"]
 script = ExtResource( 7 )
 
-[node name="RatingComponent" parent="." instance=ExtResource( 11 )]
-visible = false
-position = Vector2( 1304, 424 )
-
-[node name="SideScrollButtonComponent" parent="." instance=ExtResource( 12 )]
-visible = false
-position = Vector2( 504, 400 )
-
-[node name="SideScrollSelectListComponent" parent="." instance=ExtResource( 8 )]
-visible = false
-position = Vector2( 32, 608 )
-
-[node name="DoubleDropdownComponent" parent="." instance=ExtResource( 9 )]
-visible = false
-position = Vector2( 296, 776 )
-
-[node name="ProgressBarComponent" parent="." instance=ExtResource( 10 )]
-visible = false
-position = Vector2( 1088, 64 )
-
-[node name="TeammateComponent" parent="." instance=ExtResource( 6 )]
-visible = false
-position = Vector2( 24, 64 )
-
-[node name="MultipleSelectComponent" parent="." instance=ExtResource( 5 )]
-visible = false
-position = Vector2( 1416, 232 )
-
-[node name="SingleSelectComponent" parent="." instance=ExtResource( 3 )]
-visible = false
-position = Vector2( 808, 224 )
-
-[node name="SwitchComponent" parent="." instance=ExtResource( 1 )]
-visible = false
-position = Vector2( 368, 224 )
-
-[node name="GameTimer" type="Timer" parent="."]
-wait_time = 30.0
-one_shot = true
-
-[node name="TaskTimer" type="Timer" parent="."]
-wait_time = 10.0
-
-[node name="HudUpdateTimer" type="Timer" parent="."]
-wait_time = 0.2
-
-[node name="CountdownTimer" type="Timer" parent="."]
-wait_time = 5.0
-one_shot = true
-
-[node name="HUD" parent="." instance=ExtResource( 2 )]
-
 [node name="GameStartOverlay" parent="." instance=ExtResource( 4 )]
-
-[node name="NongamifiedGame" parent="." instance=ExtResource( 13 )]

@@ -12,14 +12,17 @@ namespace Controls
         private TextureRect _actionIcon;
         private Label _teammateName;
 
+        public int VerticalContainerSeparation { get; set; }
+        public DynamicFont Font { get; set; }
+
         public Teammate Teammate { get; private set; }
 
         public event EventHandler<TeammateControlClickedEventArgs> Clicked;
 
-        public void Init(Teammate teammate)
+        public void Init(Teammate teammate, Texture addIcon, Texture removeIcon)
         {
             Teammate = teammate;
-            var actionIcon = teammate.IsAddedToTeam ? Resources.Nongamified.TeammateActionIcons["minus"] : Resources.Nongamified.TeammateActionIcons["plus"];
+            var actionIcon = teammate.IsAddedToTeam ? removeIcon : addIcon;
             var usedTexture = teammate.IsAddedToTeam ? teammate.SmallTexture : teammate.BigTexture;
 
             _verticalContainer = GetNode<VBoxContainer>("VerticalContainer");
@@ -38,14 +41,10 @@ namespace Controls
             var actionIconSize = _actionIcon.Texture.GetSize();
             _actionIcon.SetPosition(new Vector2(teammateButtonSize.x - actionIconSize.x, teammateButtonSize.y - actionIconSize.y));
 
-            _teammateButton.Connect("pressed", this, "OnClick");
+            _teammateButton.Connect("pressed", this, nameof(OnClick));
 
-            //TODO
-            _verticalContainer.Set("custom_constants/separation", 16);
-
-            var font = (DynamicFont)GD.Load("res://Resources/Fonts/Montserrat/montserrat_bold.tres");
-            font.Size = 18;
-            _teammateName.AddFontOverride("font", font);
+            _verticalContainer.Set("custom_constants/separation", VerticalContainerSeparation);
+            _teammateName.AddFontOverride("font", Font);
         }
 
         // Called when the node enters the scene tree for the first time.
@@ -67,18 +66,6 @@ namespace Controls
         private void OnClick()
         {
             Clicked?.Invoke(this, new TeammateControlClickedEventArgs(){ SelectedValue = this });
-        }
-
-        private Texture ScaleTexture(Texture texture, int width, int height)
-        {
-            var image = texture.GetData();
-            if (width > 0 && height > 0)
-            {
-                image.Resize(width, height);
-            }
-            var imageTexture = new ImageTexture();
-            imageTexture.CreateFromImage(image);
-            return imageTexture;
         }
     }
 }

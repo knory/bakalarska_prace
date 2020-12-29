@@ -1,6 +1,8 @@
 using Components;
 using Godot;
 using Models;
+using Project.Scenes.HUD;
+using Scenes.HUD.Nongamified;
 using System;
 using Utils;
 
@@ -8,33 +10,63 @@ namespace Scenes
 {
     public abstract class Game : Node
     {
-        private Config _config;
-        private GameData _gameData;
-        private GameTask _gameTask;
-        private Timer _taskTimer;
-        private Timer _gameTimer;
-        private int _currentModifier;
-        private int _completedTasks;
-        private int _currentPerfectStreak;
-        private int _currentComboStreak;
+        protected Config _config;
+        protected GameData _gameData;
+        protected GameTask _gameTask;
+        protected Timer _gameTimer;
+        protected Timer _taskTimer;
+        protected int _currentModifier;
+        protected int _completedTasks;
+        protected int _currentPerfectStreak;
+        protected int _currentComboStreak;
+        protected BaseHUD _hud;
+        protected TextureButton _confirmButton;
+
+        public event EventHandler<GameDataEventArgs> SendGameData;
 
         public override void _Ready()
         {
-            //get all them nodes
+            _confirmButton = GetNode<TextureButton>("ConfirmButton");
+            _confirmButton.Connect("pressed", this, nameof(EndTaskButton));
+
+            _gameTimer = new Timer();
+            _gameTimer.WaitTime = 20;
+            _gameTimer.OneShot = true;
+            AddChild(_gameTimer);
+            _gameTimer.Start();
         }
 
-        public void Init(Config config)
+        public override void _Process(float delta)
+        {
+            if (_hud != null)
+            {
+                _hud.UpdateLabels(_gameTimer.TimeLeft, _completedTasks, _gameData.TotalActions, _gameData.CorrectActions);
+            }
+        }
+
+        public void Init(Config config, GameData gameData)
         {
             _config = config;
-            _gameData = new GameData();
-            
-            //create timer
-            var startCountdownTimer = new Timer();
-            startCountdownTimer.WaitTime = 5;
-            startCountdownTimer.OneShot = true;
-            startCountdownTimer.Connect("timeout", this, "StartGame");
-            startCountdownTimer.Start();
-            //_hud.ShowCountdownLabel();
+            _gameData = gameData;
+
+            _hud = GetHUDScene(_config.FeedbackType);
+            AddChild(_hud);
+
+            _gameTimer = new Timer
+            {
+                WaitTime = _config.TimePerGame,
+                OneShot = true
+            };
+            _gameTimer.Connect("timeout", this, nameof(StopGame));
+            AddChild(_gameTimer);
+
+            _taskTimer = new Timer
+            {
+                WaitTime = _config.TimePerTask,
+                OneShot = false
+            };
+            _taskTimer.Connect("timeout", this, nameof(EndTaskTime));
+            AddChild(_taskTimer);
 
             _currentModifier = 0;
             _completedTasks = 0;
@@ -43,6 +75,15 @@ namespace Scenes
 
             ShowComponents();
             ResetComponents();
+            DisableComponents();
+
+            //create countdown timer
+            var startCountdownTimer = new Timer();
+            startCountdownTimer.WaitTime = Constants.GAME_COUNTDOWN_WAIT_TIME;
+            startCountdownTimer.OneShot = true;
+            startCountdownTimer.Connect("timeout", this, nameof(StartGame));
+            AddChild(startCountdownTimer);
+            startCountdownTimer.Start();
         }
 
         public void StartGame() 
@@ -52,7 +93,6 @@ namespace Scenes
             _currentModifier = 1;
             _currentPerfectStreak = 0;
             _currentComboStreak = 0;
-            //_hud.HideCountdownLabel();
             EnableComponents();
             GenerateNewTask();
             _taskTimer.Start();
@@ -63,35 +103,64 @@ namespace Scenes
             }
         }
 
-        public void StopGame()
+        protected void StopGame()
         {
+            _gameTimer.Paused = true;
+
+            _gameData.GainedPoints += (_config.TimePerGame - (int)_gameTimer.TimeLeft) * _config.UnusedTimeGameBonus;
+
             _gameTimer.Stop();
             _taskTimer.Stop();
             HideComponents();
             DisableComponents();
-            CheckCompletedTask();
 
-            //event to send game data, or send data from here?
+            SendGameData?.Invoke(this, new GameDataEventArgs { GameData = _gameData });
         }
-        
-        public void GenerateNewTask()
+
+        private void EndTaskButton()
         {
-            CheckCompletedTask();
+            _gameData.SequencesButton++;
+            CheckTaskAndGenerateNew(true);
+        }
+
+        private void EndTaskTime()
+        {
+            _gameData.SequencesTimeLimit++;
+            CheckTaskAndGenerateNew(false);
+        }
+
+        private void CheckTaskAndGenerateNew(bool endedByButton)
+        {
+            _taskTimer.Paused = true;
+            CheckCompletedTask(endedByButton);
+            
+            if (_completedTasks == _config.TasksPerGame)
+            {
+                StopGame();
+                return;
+            }
+
+            GenerateNewTask();
             ResetComponents();
-            _gameTask = new GameTask();
+            _taskTimer.Paused = false;
             _taskTimer.Start();
         }
-
-        public void CheckCompletedTask()
+        
+        protected void GenerateNewTask()
         {
-            _taskTimer.Stop();
+            _gameTask = new GameTask(_config.GameType);
+            _hud.SetInstructions(_gameTask.TaskAssignments);
+        }
+
+        protected void CheckCompletedTask(bool endedByButton)
+        {
             _gameData.TimeSpent += _config.TimePerTask - _taskTimer.TimeLeft;
-            var gainedScore = CountGainedScore();
-            _gameData.GainedPoints += gainedScore * _currentModifier;
+            var correctComponents = CountCorrectComponents(endedByButton);
+            _gameData.GainedPoints += correctComponents * _currentModifier;
             _completedTasks++;
         }
 
-        private bool CheckComponentValue<T>(Component<T> component, T value, ref int correctComponents)
+        protected bool CheckComponentValue<T>(Component<T> component, T value, ref int correctComponents)
         {
             if (component.IsModified())
             {
@@ -122,7 +191,7 @@ namespace Scenes
             return true;
         }
 
-        private void EvaluateTaskData(bool perfectTask)
+        protected void EvaluateTaskData(bool perfectTask)
         {
             if (perfectTask)
             {
@@ -164,7 +233,7 @@ namespace Scenes
             }
         }
 
-        private void IncrementComboModifier()
+        protected void IncrementComboModifier()
         {
             if (_config.MaxComboModifier > 0 && _config.MaxComboModifier > _currentModifier)
             {
@@ -174,122 +243,18 @@ namespace Scenes
             _currentComboStreak = 0;
         }
 
-        private void DecrementComboModifier()
+        protected void DecrementComboModifier()
         {
             _currentModifier = 1;
             _currentComboStreak = 0;
         }
 
+        protected abstract BaseHUD GetHUDScene(FeedbackType feedbackType);
+        protected abstract int CountCorrectComponents(bool endedByButton);
         protected abstract void DisableComponents();
-        // {
-        //     _multipleSelectComponent.DisableComponent();
-        //     _singleSelectComponent.DisableComponent();
-        //     _switchComponent.DisableComponent();
-        //     _doubleDropdownComponent.DisableComponent();
-        //     _progressBarComponent.DisableComponent();
-        //     _ratingComponent.DisableComponent();
-        //     _sideScrollButtonComponent.DisableComponent();
-        //     _sideScrollSelectListComponent.DisableComponent();
-        //     _teammateComponent.DisableComponent();
-        // }
-
         protected abstract void EnableComponents();
-        // {
-        //     _multipleSelectComponent.EnableComponent();
-        //     _singleSelectComponent.EnableComponent();
-        //     _switchComponent.EnableComponent();
-        //     _doubleDropdownComponent.EnableComponent();
-        //     _progressBarComponent.EnableComponent();
-        //     _ratingComponent.EnableComponent();
-        //     _sideScrollButtonComponent.EnableComponent();
-        //     _sideScrollSelectListComponent.EnableComponent();
-        //     _teammateComponent.EnableComponent();
-        // }
-
         protected abstract void ResetComponents();
-        // {
-        //     _multipleSelectComponent.ResetState();
-        //     _singleSelectComponent.ResetState();
-        //     _switchComponent.ResetState();
-        //     _ratingComponent.ResetState();
-        //     _teammateComponent.ResetState();
-        //     _progressBarComponent.ResetState();
-        //     _doubleDropdownComponent.ResetState();
-        //     _sideScrollButtonComponent.ResetState();
-        //     _sideScrollSelectListComponent.ResetState();
-        // }
-
-        protected abstract int CountGainedScore();
-        // {
-        //     if (_gameTask == null) return 0;
-
-        //     var correctComponents = 0;
-        //     bool perfectTask = true;
-
-        //     if (!CheckComponentValue(_multipleSelectComponent, _gameTask.MultipleSelectValues, ref correctComponents))
-        //     {
-        //         perfectTask = false;
-        //     }
-
-        //     if (!CheckComponentValue(_singleSelectComponent, _gameTask.SingleSelectValue, ref correctComponents))
-        //     {
-        //         perfectTask = false;
-        //     }
-
-        //     if (!CheckComponentValue(_switchComponent, _gameTask.SwitchValue, ref correctComponents))
-        //     {
-        //         perfectTask = false;
-        //     }
-
-        //     if (!CheckComponentValue(_teammateComponent, _gameTask.TeammatesValues, ref correctComponents))
-        //     {
-        //         perfectTask = false;
-        //     }
-
-        //     if (!CheckComponentValue(_progressBarComponent, _gameTask.ProgressBarValue, ref correctComponents))
-        //     {
-        //         perfectTask = false;
-        //     }
-
-        //     if (!CheckComponentValue(_doubleDropdownComponent, _gameTask.DoubleDropdownValue, ref correctComponents))
-        //     {
-        //         perfectTask = false;
-        //     }
-
-        //     if (!CheckComponentValue(_sideScrollSelectListComponent, _gameTask.SideScrollSelectListValue, ref correctComponents))
-        //     {
-        //         perfectTask = false;
-        //     }
-
-        //     if (!CheckComponentValue(_sideScrollButtonComponent, _gameTask.SideScrollButtonValue, ref correctComponents))
-        //     {
-        //         perfectTask = false;
-        //     }
-
-        //     if (!CheckComponentValue(_ratingComponent, _gameTask.RatingValue, ref correctComponents))
-        //     {
-        //         perfectTask = false;
-        //     }
-
-        //     EvaluateTaskData(perfectTask);
-
-        //     _gameData.TotalSequences++;
-            
-        //     return correctComponents;
-        // }
-
         protected abstract void HideComponents();
-        // {
-        //     _multipleSelectComponent.Visible = false;
-        //     _singleSelectComponent.Visible = false;
-        //     _switchComponent.Visible = false;
-        // }
-
         protected abstract void ShowComponents();
-        // {
-        //     _multipleSelectComponent.Visible = true;
-        //     _singleSelectComponent.Visible = true;
-        //     _switchComponent.Visible = true;
-        // }
     }
 }

@@ -7,13 +7,23 @@ using Utils;
 
 namespace Components
 {
-    public class SideScrollButtonComponent : Component<HashSet<int>>
+    public abstract class SideScrollButtonComponent : Component<HashSet<int>>
     {
-        private SideScrollWithBackgroundControl _sideScrollWithBackgroundControl;
+        protected SideScrollWithBackgroundControl _sideScrollWithBackgroundControl;
+        protected Texture[] _backgroundTextures;
+        protected Texture _leftButtonTexture;
+        protected Texture _rightButtonTexture;
+        protected Texture _addButtonTexture;
+        protected Texture _removeButtonTexture;
 
         public void Init()
         {
-            _sideScrollWithBackgroundControl.Init(Constants.LABEL_WITH_BUTTON_RESOURCES, OnValueAdded, OnValueRemoved);
+            _sideScrollWithBackgroundControl.OnSelected += OnValueAdded;
+            _sideScrollWithBackgroundControl.OnDeselected += OnValueRemoved;
+            _sideScrollWithBackgroundControl.OnScrolled += OnScrolled;
+            
+            _sideScrollWithBackgroundControl.Init(_backgroundTextures, _leftButtonTexture, _rightButtonTexture,
+                _addButtonTexture, _removeButtonTexture);
             
             SetValue(new HashSet<int>());
             DefaultValue = new HashSet<int>();
@@ -22,7 +32,9 @@ namespace Components
         // Called when the node enters the scene tree for the first time.
         public override void _Ready()
         {
-            _sideScrollWithBackgroundControl = GetNode<SideScrollWithBackgroundControl>("SideScrollWithBackgroundControl");
+            GetCommonNodes();
+
+            _sideScrollWithBackgroundControl = _windowWrapper.GetNode<SideScrollWithBackgroundControl>("SideScrollWithBackgroundControl");
 
             Init();
         }
@@ -36,6 +48,9 @@ namespace Components
         {
             SelectedValue.Remove(eventArgs.SelectedValue);
         }
+
+        public virtual void OnScrolled(object sender, EventArgs eventArgs)
+        { }
 
         public override void ResetState()
         {

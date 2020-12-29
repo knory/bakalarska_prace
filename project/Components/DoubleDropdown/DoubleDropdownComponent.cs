@@ -7,51 +7,39 @@ using Utils;
 
 namespace Components
 {
-    public class DoubleDropdownComponent : Component<(int, int)>
+    public abstract class DoubleDropdownComponent : Component<(int, int)>
     {
-        private HBoxContainer _horizontalContainer;
-        private Label _label;
-        private OptionButton _optionButton1;
-        private OptionButton _optionButton2;
+        protected Control _contentWrapper;
+        protected Label _label;
+        protected OptionButton _optionButton1;
+        protected OptionButton _optionButton2;
+        protected DropdownModel[] _listOfOptions1;
+        protected DropdownModel[] _listOfOptions2;
 
-        public void Init(DropdownModel[] listOfOptions1, DropdownModel[] listOfOptions2, string labelText)
+        public void Init()
         {
-            _label.Text = labelText;
+            PopulateDropdown(_listOfOptions1, _optionButton1);
+            PopulateDropdown(_listOfOptions2, _optionButton2);
 
-            PopulateDropdown(listOfOptions1, _optionButton1);
-            PopulateDropdown(listOfOptions2, _optionButton2);
-
-            DefaultValue = (listOfOptions1[0].Id, listOfOptions2[0].Id);
+            DefaultValue = (_listOfOptions1[0].Id, _listOfOptions2[0].Id);
             SetValue((_optionButton1.Selected, _optionButton2.Selected));
         }
 
         // Called when the node enters the scene tree for the first time.
         public override void _Ready()
         {
-            _horizontalContainer = GetNode<HBoxContainer>("HorizontalContainer");
-            _optionButton1 = _horizontalContainer.GetNode<OptionButton>("OptionButton1");
-            _optionButton2 = _horizontalContainer.GetNode<OptionButton>("OptionButton2");
-            _label = _horizontalContainer.GetNode<Label>("Label");
+            GetCommonNodes();
+
+            _contentWrapper = _windowWrapper.GetNode<Control>("ContentWrapper");
+            _optionButton1 = _contentWrapper.GetNode<OptionButton>("OptionButton1");
+            _optionButton2 = _contentWrapper.GetNode<OptionButton>("OptionButton2");
+            _label = _contentWrapper.GetNode<Label>("Label");
 
             _optionButton1.Connect("item_selected", this, nameof(DropdownValueChanged));
             _optionButton2.Connect("item_selected", this, nameof(DropdownValueChanged));
-
-            var options1 = new DropdownModel[Constants.DOUBLE_DROPDOWN_OPTIONS_COUNT + 1];
-            var options2 = new DropdownModel[Constants.DOUBLE_DROPDOWN_OPTIONS_COUNT + 1];
-
-            for (int i = 0; i < Constants.DOUBLE_DROPDOWN_OPTIONS_COUNT; i++)
-            {
-                options1[i + 1] = new DropdownModel { Id = i, Text = (i * 2).ToString() };
-                options2[i + 1] = new DropdownModel { Id = i, Text = (i * 5).ToString() };
-            }
-
-            var defaultVal = new DropdownModel { Id = -1, Text = "--" };
-            options1[0] = defaultVal;
-            options2[0] = defaultVal;
-            Init(options1, options2, ":");
         }
 
-        private void DropdownValueChanged(int index)
+        public void DropdownValueChanged(int selectedId)
         {
             SetValue((_optionButton1.Selected, _optionButton2.Selected));
         }

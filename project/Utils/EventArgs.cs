@@ -1,5 +1,5 @@
 using Controls;
-using Godot;
+using Models;
 using System;
 
 namespace Utils
@@ -12,5 +12,15 @@ namespace Utils
     public class TeammateControlClickedEventArgs : EventArgs
     {
         public TeammateControl SelectedValue { get; set; }
+    }
+
+    public class GameDataEventArgs : EventArgs
+    {
+        public GameData GameData { get; set; }
+    }
+
+    public class GameConfigEventArgs : EventArgs
+    {
+        public string EncodedConfig { get; set; }
     }
 }

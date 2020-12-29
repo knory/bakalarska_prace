@@ -12,12 +12,11 @@ namespace Controls
     {
         private bool _canJumpBounds;
 
-        protected HBoxContainer _horizontalContainer;
         protected TextureButton _leftButton;
         protected TextureButton _rightButton;
         protected HBoxContainer _contentContainer;
-        protected ICollection<T> _possibleValues;
         protected int _valuesShown;
+        protected ICollection<T> _possibleValues;
         
         /// <summary>
         /// Index of the left-most showed value.
@@ -29,6 +28,9 @@ namespace Controls
         public override void _Ready()
         {
             base._Ready();
+            _leftButton = GetNode<TextureButton>("LeftButton");
+            _rightButton = GetNode<TextureButton>("RightButton");
+            _contentContainer = GetNode<HBoxContainer>("ContentContainer");
         }
 
         protected void SetContent()
@@ -66,11 +68,6 @@ namespace Controls
             _valuesShown = valuesShown;
             _leftMostIndex = 0;
             
-            _horizontalContainer = GetNode<HBoxContainer>("HorizontalContainer");
-            _leftButton = _horizontalContainer.GetNode<TextureButton>("LeftButton");
-            _rightButton = _horizontalContainer.GetNode<TextureButton>("RightButton");
-            _contentContainer = _horizontalContainer.GetNode<HBoxContainer>("ContentContainer");
-
             _leftButton.TextureNormal = leftButtonTexture;
             _rightButton.TextureNormal = rightButtonTexture;
 
@@ -133,11 +130,6 @@ namespace Controls
         {
             _leftMostIndex = 0;
             SetContent();
-        }
-
-        public void SetSeparation(int separation)
-        {
-            _contentContainer.Set("custom_constants/separation", separation);
         }
     }
 }

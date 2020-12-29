@@ -30,12 +30,12 @@ __meta__ = {
 
 [node name="CenterContainer" type="CenterContainer" parent="VerticalContainer"]
 margin_top = 4.0
-margin_right = 960.0
+margin_right = 1920.0
 margin_bottom = 18.0
 
 [node name="TeammateName" type="Label" parent="VerticalContainer/CenterContainer"]
-margin_left = 480.0
-margin_right = 480.0
+margin_left = 960.0
+margin_right = 960.0
 margin_bottom = 14.0
 align = 1
 valign = 1

@@ -1,31 +1,30 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://Components/DoubleDropdown/DoubleDropdownComponent.cs" type="Script" id=1]
+[ext_resource path="res://Components/Component.tscn" type="PackedScene" id=2]
 
-[node name="DoubleDropdownComponent" type="Control"]
+[node name="DoubleDropdownComponent" instance=ExtResource( 2 )]
 script = ExtResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
-[node name="HorizontalContainer" type="HBoxContainer" parent="."]
+[node name="ContentWrapper" type="Control" parent="WindowWrapper" index="1"]
+margin_top = 18.0
 margin_right = 40.0
-margin_bottom = 40.0
+margin_bottom = 18.0
+
+[node name="OptionButton1" type="OptionButton" parent="WindowWrapper/ContentWrapper" index="0"]
+margin_top = -66.0
+margin_right = 40.0
+margin_bottom = -46.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="OptionButton1" type="OptionButton" parent="HorizontalContainer"]
-margin_right = 29.0
-margin_bottom = 40.0
+[node name="Label" type="Label" parent="WindowWrapper/ContentWrapper" index="1"]
+margin_top = -42.0
+margin_right = 40.0
+margin_bottom = -28.0
 
-[node name="Label" type="Label" parent="HorizontalContainer"]
-margin_left = 33.0
-margin_top = 13.0
-margin_right = 33.0
-margin_bottom = 27.0
-
-[node name="OptionButton2" type="OptionButton" parent="HorizontalContainer"]
-margin_left = 37.0
-margin_right = 66.0
-margin_bottom = 40.0
+[node name="OptionButton2" type="OptionButton" parent="WindowWrapper/ContentWrapper" index="2"]
+margin_top = -24.0
+margin_right = 40.0
+margin_bottom = -4.0

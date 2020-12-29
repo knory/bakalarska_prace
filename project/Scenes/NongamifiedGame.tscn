@@ -1,0 +1,97 @@
+[gd_scene load_steps=13 format=2]
+
+[ext_resource path="res://Scenes/NongamifiedGame.cs" type="Script" id=1]
+[ext_resource path="res://NongamifiedScenes/Teammates.tscn" type="PackedScene" id=2]
+[ext_resource path="res://NongamifiedScenes/Calendar.tscn" type="PackedScene" id=3]
+[ext_resource path="res://NongamifiedScenes/Position.tscn" type="PackedScene" id=4]
+[ext_resource path="res://NongamifiedScenes/Theme.tscn" type="PackedScene" id=5]
+[ext_resource path="res://NongamifiedScenes/Rating.tscn" type="PackedScene" id=6]
+[ext_resource path="res://NongamifiedScenes/Priority.tscn" type="PackedScene" id=7]
+[ext_resource path="res://NongamifiedScenes/Devices.tscn" type="PackedScene" id=8]
+[ext_resource path="res://NongamifiedScenes/Topics.tscn" type="PackedScene" id=9]
+[ext_resource path="res://NongamifiedScenes/Advertisement.tscn" type="PackedScene" id=10]
+[ext_resource path="res://NongamifiedScenes/Volume.tscn" type="PackedScene" id=11]
+[ext_resource path="res://NongamifiedScenes/Time.tscn" type="PackedScene" id=12]
+
+[node name="NongamifiedGame" type="Node"]
+script = ExtResource( 1 )
+
+[node name="TopBar" type="Sprite" parent="."]
+
+[node name="Teammates" parent="." instance=ExtResource( 2 )]
+margin_left = 18.0
+margin_top = 112.0
+margin_right = 18.0
+margin_bottom = 112.0
+
+[node name="Calendar" parent="." instance=ExtResource( 3 )]
+margin_left = 18.0
+margin_top = 637.0
+margin_right = 18.0
+margin_bottom = 637.0
+
+[node name="Position" parent="." instance=ExtResource( 4 )]
+margin_left = 520.0
+margin_top = 637.0
+margin_right = 520.0
+margin_bottom = 637.0
+
+[node name="Theme" parent="." instance=ExtResource( 5 )]
+margin_left = 644.0
+margin_top = 312.0
+margin_right = 644.0
+margin_bottom = 312.0
+
+[node name="Priority" parent="." instance=ExtResource( 7 )]
+margin_left = 864.0
+margin_top = 312.0
+margin_right = 864.0
+margin_bottom = 312.0
+
+[node name="Devices" parent="." instance=ExtResource( 8 )]
+margin_left = 1275.0
+margin_top = 312.0
+margin_right = 1275.0
+margin_bottom = 312.0
+
+[node name="Rating" parent="." instance=ExtResource( 6 )]
+margin_left = 1493.0
+margin_top = 554.0
+margin_right = 1493.0
+margin_bottom = 554.0
+
+[node name="Topics" parent="." instance=ExtResource( 9 )]
+margin_left = 870.0
+margin_top = 893.0
+margin_right = 870.0
+margin_bottom = 893.0
+
+[node name="Advertisement" parent="." instance=ExtResource( 10 )]
+margin_left = 870.0
+margin_top = 632.0
+margin_right = 870.0
+margin_bottom = 632.0
+
+[node name="Volume" parent="." instance=ExtResource( 11 )]
+margin_left = 666.0
+margin_top = 112.0
+margin_right = 666.0
+margin_bottom = 112.0
+
+[node name="Time" parent="." instance=ExtResource( 12 )]
+margin_left = 525.0
+margin_top = 960.0
+margin_right = 525.0
+margin_bottom = 960.0
+
+[node name="Ellipses" type="TextureRect" parent="."]
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ConfirmButton" type="TextureButton" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}

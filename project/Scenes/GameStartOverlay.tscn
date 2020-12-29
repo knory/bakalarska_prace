@@ -46,9 +46,8 @@ text = "Enter game code (or leave empty):"
 align = 1
 
 [node name="GameCodeValue" type="LineEdit" parent="MarginContainer/VBoxContainer"]
-margin_left = 540.0
 margin_top = 802.0
-margin_right = 1240.0
+margin_right = 1780.0
 margin_bottom = 826.0
 
 [node name="CodeErrorLabel" type="Label" parent="MarginContainer/VBoxContainer"]
@@ -59,15 +58,13 @@ text = "Entered code is invalid!"
 align = 1
 
 [node name="StartButton" type="Button" parent="MarginContainer/VBoxContainer"]
-margin_left = 640.0
 margin_top = 880.0
-margin_right = 1140.0
+margin_right = 1780.0
 margin_bottom = 900.0
 text = "Start Game"
 
 [node name="BackButton" type="Button" parent="MarginContainer/VBoxContainer"]
-margin_left = 640.0
 margin_top = 920.0
-margin_right = 1140.0
+margin_right = 1780.0
 margin_bottom = 940.0
 text = "Back to Main Menu"

@@ -11,7 +11,21 @@ namespace Controls
 {
     public class TeammatesSideScrollControl : SideScrollableClickControl<TeammateControl, Teammate, TeammateControlClickedEventArgs>
     {
-        private PackedScene _teammatePackedScene = (PackedScene)ResourceLoader.Load("res://Controls/Teammate/TeammateControl.tscn");
+        private PackedScene _teammatePackedScene = (PackedScene)GD.Load("res://Controls/Teammate/TeammateControl.tscn");
+        private Texture _addIcon;
+        private Texture _removeIcon;
+
+        public int VerticalSeparation { get; set; }
+        public DynamicFont Font { get; set; }
+
+        public virtual void Init(Teammate[] possibleValues, int valuesShown, bool canJumpBounds, 
+            EventHandler<TeammateControlClickedEventArgs> nodeClickedCallback, 
+            Texture leftButtonTexture, Texture rightButtonTexture, Texture addIcon, Texture removeIcon)
+        {
+            _addIcon = addIcon;
+            _removeIcon = removeIcon;
+            base.Init(possibleValues, valuesShown, canJumpBounds, nodeClickedCallback, leftButtonTexture, rightButtonTexture);
+        }
 
         public void AddPossibleTeammate(Teammate teammate)
         {
@@ -77,7 +91,9 @@ namespace Controls
         private TeammateControl CreateNodeFromTeammate(Teammate teammate)
         {
             var node = (TeammateControl)_teammatePackedScene.Instance();
-            node.Init(teammate);
+            node.Font = Font;
+            node.VerticalContainerSeparation = VerticalSeparation;
+            node.Init(teammate, _addIcon, _removeIcon);
             node.Clicked += _nodeClickedCallback;
             return node;
         }

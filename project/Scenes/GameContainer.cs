@@ -1,41 +1,17 @@
-using Components;
 using Godot;
 using Models;
 using Newtonsoft.Json;
-using Scenes;
+using Project.Scenes.HUD;
 using System;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-using System.IO;
 using Utils;
 
 namespace Scenes
 {
     public class GameContainer : Node
     {
-        private int _completedPerfectTasks;
-        private int _completedTasks;
-        private int _currentModifier;
-        private int _currentComboStreak;
-        private int _currentPerfectStreak;
-        private GameTask _gameTask;
-        private MultipleSelectComponent _multipleSelectComponent;
-        private SingleSelectComponent _singleSelectComponent;
-        private SwitchComponent _switchComponent;
-        private TeammateComponent _teammateComponent;
-        private ProgressBarComponent _progressBarComponent;
-        private DoubleDropdownComponent _doubleDropdownComponent;
-        private SideScrollSelectListComponent _sideScrollSelectListComponent;
-        private SideScrollButtonComponent _sideScrollButtonComponent;
-        private RatingComponent _ratingComponent;
-        private Timer _gameTimer;
-        private Timer _taskTimer;
-        private Timer _hudUpdateTimer;
-        private Timer _countdownTimer;
-        private HUD _hud;
         private GameStartOverlay _gameStartOverlay;
         private Config _config;
-        
+        private Game _gameScene;
         private GameData _gameData;
 
         public bool Init(string encodedConfig) 
@@ -44,29 +20,33 @@ namespace Scenes
 
             if (string.IsNullOrEmpty(encodedConfig))
             {
-                _config = new Config()
+                //_gameStartOverlay.ShowCodeErrorLabel();
+                //return false;
+
+                _config = new Config
                 {
                     ComboBreakStreak = 1,
-                    ComboStreak = 3,
+                    ComboStreak = 5,
+                    GameType = GameType.Nongamified,
+                    FeedbackType = FeedbackType.Simple,
                     MaxComboModifier = 5,
-                    PerfectTaskBonusPoints = 5,
-                    SuccessRatingType = SuccessRating.GainedPoints,
-                    TasksPerGame = 0,
-                    TimePerGame = 50,
-                    TimePerTask = 10,
-                    UnusedTimeGameBonus = 5,
-                    UnusedTimeTaskBonus = 1
+                    PerfectTaskBonusPoints = 3,
+                    TasksPerGame = 100,
+                    TimePerGame = 120,
+                    TimePerTask = 120,
+                    UnusedTimeGameBonus = 2,
+                    UnusedTimeTaskBonus = 1,
                 };
 
                 var serializedConfig = JsonConvert.SerializeObject(_config);
                 var configBytesArray = System.Text.Encoding.UTF8.GetBytes(serializedConfig);
-                _gameData.GameConfig = System.Convert.ToBase64String(configBytesArray);
+                _gameData.GameConfig = Convert.ToBase64String(configBytesArray);
             }
             else
             {
                 try 
                 {
-                    var decodedByteArray = System.Convert.FromBase64String(encodedConfig);
+                    var decodedByteArray = Convert.FromBase64String(encodedConfig);
                     var jsonConfig = System.Text.Encoding.UTF8.GetString(decodedByteArray);
                     var deserializedConfig = JsonConvert.DeserializeObject<Config>(jsonConfig);
 
@@ -75,7 +55,7 @@ namespace Scenes
                         _config = deserializedConfig;
                         var serializedConfig = JsonConvert.SerializeObject(_config);
                         var configBytesArray = System.Text.Encoding.UTF8.GetBytes(serializedConfig);
-                        _gameData.GameConfig = System.Convert.ToBase64String(configBytesArray);
+                        _gameData.GameConfig = Convert.ToBase64String(configBytesArray);
                     }
                     else
                     {
@@ -97,319 +77,41 @@ namespace Scenes
         // Called when the node enters the scene tree for the first time.
         public override void _Ready()
         {
-            _multipleSelectComponent = GetNode<MultipleSelectComponent>("MultipleSelectComponent");
-            _singleSelectComponent = GetNode<SingleSelectComponent>("SingleSelectComponent");
-            _switchComponent = GetNode<SwitchComponent>("SwitchComponent");
-            _teammateComponent = GetNode<TeammateComponent>("TeammateComponent");
-            _progressBarComponent = GetNode<ProgressBarComponent>("ProgressBarComponent");
-            _doubleDropdownComponent = GetNode<DoubleDropdownComponent>("DoubleDropdownComponent");
-            _sideScrollSelectListComponent = GetNode<SideScrollSelectListComponent>("SideScrollSelectListComponent");
-            _sideScrollButtonComponent = GetNode<SideScrollButtonComponent>("SideScrollButtonComponent");
-            _ratingComponent = GetNode<RatingComponent>("RatingComponent");
-            _hud = GetNode<HUD>("HUD");
             _gameStartOverlay = GetNode<GameStartOverlay>("GameStartOverlay");
-            _taskTimer = GetNode<Timer>("TaskTimer");
-            _gameTimer = GetNode<Timer>("GameTimer");
-            _hudUpdateTimer = GetNode<Timer>("HudUpdateTimer");
-            _countdownTimer = GetNode<Timer>("CountdownTimer");
-
-            //DisableComponents();
-
-            _gameStartOverlay.Connect("StartGame", this, "StartCountdownTimer");
-            _gameTimer.Connect("timeout", this, "StopGame");
-            _taskTimer.Connect("timeout", this, "GenerateNewTask");
-            _hudUpdateTimer.Connect("timeout", this, "UpdateLabels");
-            _countdownTimer.Connect("timeout", this, "StartGame");
+            _gameStartOverlay.StartGame += StartGame;
         }
 
-        // public void CheckCompletedTask()
-        // {
-        //     _taskTimer.Stop();
-        //     _gameData.TimeSpent += _config.TimePerTask - _taskTimer.TimeLeft;
-        //     var gainedScore = CountGainedScore();
-        //     _gameData.GainedPoints += gainedScore * _currentModifier;
-        //     _completedTasks++;
-        // }
-
-        // public void GenerateNewTask()
-        // {
-        //     CheckCompletedTask();
-        //     ResetComponents();
-        //     _gameTask = new GameTask();
-        //     _taskTimer.Start();
-        // }
-
-        // public void StopGame()
-        // {
-        //     _gameStartOverlay.ShowGameStatusLabel();
-        //     _gameStartOverlay.ShowOverlay();
-        //     UpdateLabels();
-        //     _gameTimer.Stop();
-        //     _taskTimer.Stop();
-        //     _hudUpdateTimer.Stop();
-        //     HideComponents();
-        //     DisableComponents();
-        //     CheckCompletedTask();
-        //     SendGameData();
-        // }
-
-        // public void StartGame() 
-        // {
-        //     _gameData.GainedPoints = 0;
-        //     _completedTasks = 0;
-        //     _currentModifier = 1;
-        //     _currentPerfectStreak = 0;
-        //     _currentComboStreak = 0;
-        //     _hud.HideCountdownLabel();
-        //     _gameStartOverlay.HideOverlay();
-        //     _gameStartOverlay.HideGameStatusLabel();
-        //     EnableComponents();
-        //     GenerateNewTask();
-        //     _taskTimer.Start();
-
-        //     if (_config.TimePerGame != 0)
-        //     {
-        //         _gameTimer.Start();
-        //     }
-        // }
-
-        // public void StartCountdownTimer(string encodedConfig)
-        // {
-        //     if (!Init(encodedConfig))
-        //     {
-        //         return;
-        //     }
-
-        //     ConfigSetup();
-        //     _hudUpdateTimer.Start();
-        //     _gameStartOverlay.HideOverlay();
-        //     _hud.ShowCountdownLabel();
-        //     ShowComponents();
-        //     ResetComponents();
-        //     _countdownTimer.Start();
-        // }
-
-        public void UpdateLabels()
+        public void StartGame(object sender, GameConfigEventArgs eventArgs)
         {
-            if (_countdownTimer.TimeLeft > 0)
-            {
-                _hud.UpdateCountdownLabel(_countdownTimer.TimeLeft);
-            }
-            else
-            {
-                if (_config.SuccessRatingType == SuccessRating.GainedPoints)
-                {
-                    _hud.UpdateLabels(_currentModifier, _gameTimer.TimeLeft, _taskTimer.TimeLeft, _gameData.GainedPoints);
-                }
-                else
-                {
-                    _hud.UpdateLabels(_currentModifier, _gameTimer.TimeLeft, _taskTimer.TimeLeft, _completedTasks, _completedPerfectTasks);
-                }
-            }
+            if (!Init(eventArgs.EncodedConfig))
+                return;
+
+            SetupGameScene();
+            _gameScene.Init(_config, _gameData);
+            _gameStartOverlay.HideOverlay();
         }
 
-        // private int CountGainedScore()
-        // {
-        //     if (_gameTask == null) return 0;
-
-        //     var correctComponents = 0;
-        //     bool perfectTask = true;
-
-        //     if (!CheckComponentValue(_multipleSelectComponent, _gameTask.MultipleSelectValues, ref correctComponents))
-        //     {
-        //         perfectTask = false;
-        //     }
-
-        //     if (!CheckComponentValue(_singleSelectComponent, _gameTask.SingleSelectValue, ref correctComponents))
-        //     {
-        //         perfectTask = false;
-        //     }
-
-        //     if (!CheckComponentValue(_switchComponent, _gameTask.SwitchValue, ref correctComponents))
-        //     {
-        //         perfectTask = false;
-        //     }
-
-        //     if (!CheckComponentValue(_teammateComponent, _gameTask.TeammatesValues, ref correctComponents))
-        //     {
-        //         perfectTask = false;
-        //     }
-
-        //     if (!CheckComponentValue(_progressBarComponent, _gameTask.ProgressBarValue, ref correctComponents))
-        //     {
-        //         perfectTask = false;
-        //     }
-
-        //     if (!CheckComponentValue(_doubleDropdownComponent, _gameTask.DoubleDropdownValue, ref correctComponents))
-        //     {
-        //         perfectTask = false;
-        //     }
-
-        //     if (!CheckComponentValue(_sideScrollSelectListComponent, _gameTask.SideScrollSelectListValue, ref correctComponents))
-        //     {
-        //         perfectTask = false;
-        //     }
-
-        //     if (!CheckComponentValue(_sideScrollButtonComponent, _gameTask.SideScrollButtonValue, ref correctComponents))
-        //     {
-        //         perfectTask = false;
-        //     }
-
-        //     if (!CheckComponentValue(_ratingComponent, _gameTask.RatingValue, ref correctComponents))
-        //     {
-        //         perfectTask = false;
-        //     }
-
-        //     EvaluateTaskData(perfectTask);
-
-        //     _gameData.TotalSequences++;
-            
-        //     return correctComponents;
-        // }
-
-        // private void EvaluateTaskData(bool perfectTask)
-        // {
-        //     if (perfectTask)
-        //     {
-        //         _gameData.CorrectSequences++;
-        //         _currentPerfectStreak++;
-                
-        //         if (_currentComboStreak < 0)
-        //         {
-        //             _currentComboStreak = 0;
-        //         }
-
-        //         _currentComboStreak++;
-
-        //         if (_currentComboStreak >= _config.ComboStreak)
-        //         {
-        //             IncrementComboModifier();
-        //         }
-        //     }
-        //     else
-        //     {
-        //         if (_currentPerfectStreak > _gameData.LongestPerfectStreak)
-        //         {
-        //             _gameData.LongestPerfectStreak = _currentPerfectStreak;
-        //         }
-
-        //         _currentPerfectStreak = 0;
-
-        //         if (_currentComboStreak > 0)
-        //         {
-        //             _currentComboStreak = 0;
-        //         }
-
-        //         _currentComboStreak--;
-
-        //         if (_currentComboStreak <= -_config.ComboBreakStreak)
-        //         {
-        //             DecrementComboModifier();
-        //         }
-        //     }
-        // }
-
-        private void ConfigSetup()
+        public void SendGameData(object sender, GameDataEventArgs eventArgs)
         {
-            _taskTimer.WaitTime = _config.TimePerTask;
-            _gameTimer.WaitTime = _config.TimePerGame;
+            var gameData = eventArgs.GameData;
 
-            if (_config.MaxComboModifier == 1)
-            {
-                _hud.HideComboModifierLabel();
-            }
-        }
+            gameData.Username = "Ingame test";
+            gameData.TimeLimit = _config.TimePerGame == 0 ? _config.TimePerTask * _config.TasksPerGame : _config.TimePerGame;
+            gameData.TimeAdded = DateTime.Now;
 
-        // private void IncrementComboModifier()
-        // {
-        //     if (_config.MaxComboModifier > 0 && _config.MaxComboModifier > _currentModifier)
-        //     {
-        //         _currentModifier++;
-        //     }
-            
-        //     _currentComboStreak = 0;
-        // }
-
-        // private void DecrementComboModifier()
-        // {
-        //     _currentModifier = 1;
-        //     _currentComboStreak = 0;
-        // }
-
-        // private void HideComponents()
-        // {
-        //     _multipleSelectComponent.Visible = false;
-        //     _singleSelectComponent.Visible = false;
-        //     _switchComponent.Visible = false;
-        // }
-
-        // private void ShowComponents()
-        // {
-        //     _multipleSelectComponent.Visible = true;
-        //     _singleSelectComponent.Visible = true;
-        //     _switchComponent.Visible = true;
-        // }
-
-        // private void DisableComponents()
-        // {
-        //     _multipleSelectComponent.DisableComponent();
-        //     _singleSelectComponent.DisableComponent();
-        //     _switchComponent.DisableComponent();
-        //     _doubleDropdownComponent.DisableComponent();
-        //     _progressBarComponent.DisableComponent();
-        //     _ratingComponent.DisableComponent();
-        //     _sideScrollButtonComponent.DisableComponent();
-        //     _sideScrollSelectListComponent.DisableComponent();
-        //     _teammateComponent.DisableComponent();
-        // }
-
-        // private void EnableComponents()
-        // {
-        //     _multipleSelectComponent.EnableComponent();
-        //     _singleSelectComponent.EnableComponent();
-        //     _switchComponent.EnableComponent();
-        //     _doubleDropdownComponent.EnableComponent();
-        //     _progressBarComponent.EnableComponent();
-        //     _ratingComponent.EnableComponent();
-        //     _sideScrollButtonComponent.EnableComponent();
-        //     _sideScrollSelectListComponent.EnableComponent();
-        //     _teammateComponent.EnableComponent();
-        // }
-
-        // private void ResetComponents()
-        // {
-        //     _multipleSelectComponent.ResetState();
-        //     _singleSelectComponent.ResetState();
-        //     _switchComponent.ResetState();
-        //     _ratingComponent.ResetState();
-        //     _teammateComponent.ResetState();
-        //     _progressBarComponent.ResetState();
-        //     _doubleDropdownComponent.ResetState();
-        //     _sideScrollButtonComponent.ResetState();
-        //     _sideScrollSelectListComponent.ResetState();
-        // }
-
-        private void SendGameData()
-        {
-            _gameData.Username = "Ingame test";
-            _gameData.TimeLimit = _config.TimePerGame == 0 ? _config.TimePerTask * _config.TasksPerGame : _config.TimePerGame;
-            _gameData.TimeAdded = DateTime.Now;
-
-            var host = "http://xknor-gamification.azurewebsites.net";
-            var url = "/api/GameDataCollector";
             var headers = new string[] { "Content-Type: application/json" };
-            var serializedData = JsonConvert.SerializeObject(_gameData);
+            var serializedData = JsonConvert.SerializeObject(gameData);
 
             using (var client = new HTTPClient())
             {
-                client.ConnectToHost(host);
+                client.ConnectToHost(Constants.ApiHost);
 
                 while (client.GetStatus() == HTTPClient.Status.Resolving || client.GetStatus() == HTTPClient.Status.Connecting)
                 {
                     client.Poll();
                 }
 
-                var e = client.Request(HTTPClient.Method.Post, url, headers, serializedData);
+                client.Request(HTTPClient.Method.Post, Constants.ApiDataCollectorUrl, headers, serializedData);
 
                 while (client.GetStatus() == HTTPClient.Status.Requesting)
                 {
@@ -418,35 +120,19 @@ namespace Scenes
             }
         }
 
-        // private bool CheckComponentValue<T>(Component<T> component, T value, ref int correctComponents)
-        // {
-        //     if (component.IsModified())
-        //     {
-        //         _gameData.TotalActions++;
-
-        //         if (component.IsCorrect(value))
-        //         {
-        //             correctComponents++;
-        //             _gameData.CorrectActions++;
-        //         }
-        //         else
-        //         {
-        //             return false;
-        //         }
-        //     }
-        //     else
-        //     {
-        //         if (component.IsCorrect(value))
-        //         {
-        //             correctComponents++;
-        //         }
-        //         else
-        //         {
-        //             return false;
-        //         }
-        //     }
-
-        //     return true;
-        // }
+        private void SetupGameScene()
+        {
+            switch (_config.GameType)
+            {
+                case GameType.Nongamified:
+                    var packedScene = (PackedScene)GD.Load("res://Scenes/NongamifiedGame.tscn");
+                    _gameScene = (NongamifiedGame)packedScene.Instance();
+                    _gameScene.SendGameData += SendGameData;
+                    AddChild(_gameScene);
+                    return;
+                default:
+                    throw new ArgumentOutOfRangeException("Specified game type does not exist.");
+            }
+        }
     }
 }

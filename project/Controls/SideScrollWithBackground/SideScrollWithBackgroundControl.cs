@@ -3,73 +3,47 @@ using Godot;
 using Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Utils;
 
 namespace Controls
 {
-    public class SideScrollWithBackgroundControl : SideScrollableControl<LabelWithButtonControl, LabelWithButtonResource>
+    public class SideScrollWithBackgroundControl : SideScrollableControl<ButtonWithBackgroundControl, Texture>
     {
-        private TextureRect _backgroundImage;
-        private EventHandler<SelectedValueEventArgs> _selectedHandler;
-        private EventHandler<SelectedValueEventArgs> _deselectedHandler;
+        private Texture _addButtonTexture;
+        private Texture _removeButtonTexture;
+        public EventHandler<SelectedValueEventArgs> OnSelected;
+        public EventHandler<SelectedValueEventArgs> OnDeselected;
+        public EventHandler<EventArgs> OnScrolled;
 
-        public void Init(LabelWithButtonResource[] possibleValues, EventHandler<SelectedValueEventArgs> selected, EventHandler<SelectedValueEventArgs> deselected)
+        public void Init(Texture[] possibleValues, Texture leftButtonTexture, Texture rightButtonTexture, 
+            Texture addButonTexture, Texture removeButtonTexture)
         {
-            _backgroundImage = GetNode<TextureRect>("BackgroundImage");
-            _selectedHandler = selected;
-            _deselectedHandler = deselected;
-            
-            //TODO FIX
-            base.Init(possibleValues, 1, true, null, null);
+            _addButtonTexture = addButonTexture;
+            _removeButtonTexture = removeButtonTexture;
 
-            SetBackgroundImage();
+            base.Init(possibleValues, 1, true, leftButtonTexture, rightButtonTexture);
         }
 
         // Called when the node enters the scene tree for the first time.
         public override void _Ready()
         {
-            //_backgroundImage = GetNode<TextureRect>("BackgroundImage");
+            base._Ready();
         }
 
-        protected override ICollection<LabelWithButtonControl> TransformPossibleValues(LabelWithButtonResource[] possibleValues)
+        protected override ICollection<ButtonWithBackgroundControl> TransformPossibleValues(Texture[] possibleValues)
         {
-            var controls = new List<LabelWithButtonControl>();
-            var packedScene = (PackedScene)ResourceLoader.Load("res://Controls/LabelWithButton/LabelWithButtonControl.tscn");
+            var controls = new List<ButtonWithBackgroundControl>();
+            var packedScene = (PackedScene)GD.Load("res://Controls/ButtonWithBackground/ButtonWithBackgroundControl.tscn");
 
             for (int i = 0; i < possibleValues.Length; i++)
             {
-                var control = (LabelWithButtonControl)packedScene.Instance();
-                control.Init(possibleValues[i].Text, i, possibleValues[i].BackgroundImage, _selectedHandler, _deselectedHandler);
+                var control = (ButtonWithBackgroundControl)packedScene.Instance();
+                control.Init(_addButtonTexture, _removeButtonTexture, i, OnSelected, OnDeselected, possibleValues[i]);
                 controls.Add(control);
             }
 
             return controls;
-        }
-
-        protected override void OnScrollLeft()
-        {
-            base.OnScrollLeft();
-
-            SetBackgroundImage();
-        }
-
-        protected override void OnScrollRight()
-        {
-            base.OnScrollRight();
-
-            SetBackgroundImage();
-        }
-
-        public override void ResetState()
-        {
-            base.ResetState();
-
-            SetBackgroundImage();
-        }
-
-        private void SetBackgroundImage()
-        {
-            _backgroundImage.Texture = ((List<LabelWithButtonControl>)_possibleValues)[_leftMostIndex].BackgroundImage;
         }
 
         public void DeselectAll()
@@ -84,9 +58,11 @@ namespace Controls
         {
             base.EnableControl();
 
-            foreach (var item in _possibleValues)
+            foreach (var item in _contentContainer.GetChildren())
             {
-                item.EnableControl();
+                if (!(item is ButtonWithBackgroundControl control)) return;
+
+                control.EnableControl();
             }
         }
 
@@ -94,10 +70,24 @@ namespace Controls
         {
             base.DisableControl();
 
-            foreach (var item in _possibleValues)
+            foreach (var item in _contentContainer.GetChildren())
             {
-                item.DisableControl();
+                if (!(item is ButtonWithBackgroundControl control)) return;
+                
+                control.DisableControl();
             }
+        }
+
+        protected override void OnScrollLeft()
+        {
+            base.OnScrollLeft();
+            OnScrolled?.Invoke(this, new EventArgs());
+        }
+
+        protected override void OnScrollRight()
+        {
+            base.OnScrollRight();
+            OnScrolled?.Invoke(this, new EventArgs());
         }
     }
 }

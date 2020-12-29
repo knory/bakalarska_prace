@@ -1,155 +1,150 @@
-using Godot;
-using Models;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-
 namespace Utils
 {
     public static class Constants
     {
-        // resources path constants
-        private static readonly string _resourcesPath = "res://Resources/";
-        private static readonly string _resourcesTeammatesPath = _resourcesPath + "Teammates/";
-        private static readonly string _resourcesProgressBarPath = _resourcesPath + "ProgressBar/";
-        private static readonly string _resourcesLabelWithBackgroundPath = _resourcesPath + "LabelWithBackground/";
+        public static readonly string ApiHost = "http://xknor-gamification.azurewebsites.net";
+        public static readonly string ApiDataCollectorUrl = "/api/GameDataCollector";
 
-        // resources constants
-        public static string[] SpriteNames { get; } = {$"{_resourcesPath}blue_node.png", $"{_resourcesPath}green_node.png", $"{_resourcesPath}purple_node.png", $"{_resourcesPath}red_node.png", $"{_resourcesPath}yellow_node.png"};
-        public static ProgressBarResource[] ProgressBarResources { get; } = new ProgressBarResource[]
-        {
-            new ProgressBarResource{ Id = 1, TexturePath = $"{_resourcesProgressBarPath}one.png"},
-            new ProgressBarResource{ Id = 2, TexturePath = $"{_resourcesProgressBarPath}two.png"},
-            new ProgressBarResource{ Id = 3, TexturePath = $"{_resourcesProgressBarPath}three.png"},
-            new ProgressBarResource{ Id = 4, TexturePath = $"{_resourcesProgressBarPath}four.png"},
-            new ProgressBarResource{ Id = 5, TexturePath = $"{_resourcesProgressBarPath}five.png"},
-        };
+        public static readonly string ResourcesPath = "res://Resources/";
+        public static readonly string NongamifiedResourcesPath = ResourcesPath + "Nongamified/";
 
-        // Multiple Select component constants
-        public static int MULTIPLE_SELECT_VALUES_COUNT { get; } = 3;
-        
-        // Teammates component constants
-        public static int POSSIBLE_TEAMMATES_COUNT { get; } = 3;
-        public static int ADDED_TEAMMATES_COUNT { get; } = 5;
+        public static int GAME_COUNTDOWN_WAIT_TIME { get; } = 5;
 
-        // Double Dropdown component constants
-        public static int DOUBLE_DROPDOWN_OPTIONS_COUNT { get; } = 12;
+        // Advertisement (or equivalent) component constants
+        public static int ADVERTISEMENT_NUMBER_OF_ITEMS { get; } = 3;
 
-        // Side Scroll Select List component constants
-        public static int[] VALUES_PER_LIST { get; } = new int[12] { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
-        public static string[] MONTH_NAMES { get; } = new string[12] { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
-        public static string[] DAY_NAMES { get; } = new string[7] { "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun" };
+        // Calendar (or equivalent) component constants
+        public static int[] CALENDAR_VALUES_PER_LIST { get; } = new int[12] { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
-        // Side Scroll Button component constants
-        public static LabelWithButtonResource[] LABEL_WITH_BUTTON_RESOURCES { get; } = new LabelWithButtonResource[] 
-        {
-            new LabelWithButtonResource { Text = "Kava zdarma", BackgroundImage = (Texture)GD.Load($"{_resourcesLabelWithBackgroundPath}kava_zdarma.png") },
-            new LabelWithButtonResource { Text = "Aj lav ju mucho grande", BackgroundImage = (Texture)GD.Load($"{_resourcesLabelWithBackgroundPath}maj_lav.png") }
-        };
+        // Devices (or equivalent) component constants
+        public static int DEVICES_NUMBER_OF_ITEMS { get; } = 3;
 
-        // Rating component constants
-        public static int RATING_POSSIBLE_VALUES { get; } = 5;
+        // Priority (or equivalent) component constants
+        public static int PRIORITY_NUMBER_OF_ITEMS { get; } = 3;
 
-        public static Random RANDOM { get; } = new Random();
+        // Rating (or equivalent) component constants
+        public static int RATING_NUMBER_OF_ITEMS { get; } = 5;
+
+        // Teammates (or equivalent) component constants
+        public static int TEAMMATES_POSSIBLE_COUNT { get; } = 3;
+        public static int TEAMMATES_ADDED_COUNT { get; } = 5;
+        public static int TEAMMATES_NUMBER_OF_ITEMS { get; } = 8;
+
+        // Time (or equivalent) component constants
+        public static int TIME_OPTIONS_COUNT { get; } = 12;
+
+        // Topics (or equivalent) component constants
+        public static int TOPICS_OPTIONS_COUNT { get; } = 6;
+
+        // Volume (or equivalent) component constants
+        public static int VOLUME_OPTIONS_COUNT { get; } = 3;
     }
 
-    public static class Resources
+    public static class ResourceStrings
     {
-        private static readonly string _resourcesPath = "res://Resources/";
-        private static readonly string _resourcesTeammatesPath = _resourcesPath + "Teammates/";
-        private static readonly string _resourcesSharedPath = _resourcesPath + "Shared/";
+        public static readonly string CompletedTasksCount = "počet sekvencí: ";
+        public static readonly string TotalActions = "hotové úkony: ";
+        public static readonly string CorrectActions = "správně: ";
 
-        public static ResourceObject Nongamified = new ResourceObject
+        public static class Nongamified
         {
-            TeammateResources = new TeammateResource[]
-            {
-                new TeammateResource 
-                { 
-                    Id = 1, 
-                    Name = "Evžen", 
-                    BigTexturePath = $"{_resourcesTeammatesPath}evzen_big.png",
-                    SmallTexturePath = $"{_resourcesTeammatesPath}evzen_small.png" 
-                },
-                new TeammateResource
-                {
-                    Id = 2,
-                    Name = "Jonáš",
-                    BigTexturePath = $"{_resourcesTeammatesPath}jonas_big.png",
-                    SmallTexturePath = $"{_resourcesTeammatesPath}jonas_small.png"
-                },
-                new TeammateResource
-                {
-                    Id = 3,
-                    Name = "Katka",
-                    BigTexturePath = $"{_resourcesTeammatesPath}katka_big.png",
-                    SmallTexturePath = $"{_resourcesTeammatesPath}katka_small.png"
-                },
-                new TeammateResource
-                {
-                    Id = 4,
-                    Name = "Lukáš",
-                    BigTexturePath = $"{_resourcesTeammatesPath}lukas_big.png",
-                    SmallTexturePath = $"{_resourcesTeammatesPath}lukas_small.png"
-                },
-                new TeammateResource
-                {
-                    Id = 5,
-                    Name = "Milena",
-                    BigTexturePath = $"{_resourcesTeammatesPath}milena_big.png",
-                    SmallTexturePath = $"{_resourcesTeammatesPath}milena_small.png"
-                },
-                new TeammateResource
-                {
-                    Id = 6,
-                    Name = "Pavel",
-                    BigTexturePath = $"{_resourcesTeammatesPath}pavel_big.png",
-                    SmallTexturePath = $"{_resourcesTeammatesPath}pavel_small.png"
-                },
-                new TeammateResource
-                {
-                    Id = 7,
-                    Name = "Renata",
-                    BigTexturePath = $"{_resourcesTeammatesPath}renata_big.png",
-                    SmallTexturePath = $"{_resourcesTeammatesPath}renata_small.png"
-                },
-                new TeammateResource
-                {
-                    Id = 8,
-                    Name = "Tereza",
-                    BigTexturePath = $"{_resourcesTeammatesPath}tereza_big.png",
-                    SmallTexturePath = $"{_resourcesTeammatesPath}tereza_small.png"
-                }
-            },
-            TeammateActionIcons = new Dictionary<string, Texture>
-            {
-                {"plus", (Texture)GD.Load($"{_resourcesTeammatesPath}plus_button.png") },
-                {"minus", (Texture)GD.Load($"{_resourcesTeammatesPath}minus_button.png") }
-            },
-            SideButtonTextures = new Dictionary<string, Texture>
-            {
-                {"left", (Texture)GD.Load($"{_resourcesSharedPath}left_arrow.png")},
-                {"right", (Texture)GD.Load($"{_resourcesSharedPath}right_arrow.png")}
-            }
-        };
-    }
+            // Advertisement task constants
+            public static readonly string ADVERTISEMENT_TASK_BASE = "Přidej ke schůzce akci";
+            public static string[] ADVERTISEMENT_VALUES = 
+            { 
+                "káva zdarma", 
+                "wellness pobyt", 
+                "let balonem" 
+            };
 
-    public class ResourceObject
-    {
-        public TeammateResource[] TeammateResources { get; set; }
-        public Dictionary<string, Texture> TeammateActionIcons { get; set; }
-        public Dictionary<string, Texture> SideButtonTextures { get; set; }
-    }
+            // Calendar task constants
+            public static readonly string CALENDAR_TASK_BASE = "Nastav datum schůzky na";
+            public static string[] CALENDAR_VALUES = 
+            { 
+                "leden", "únor", "březen", 
+                "duben", "květen", "červen", 
+                "červenec", "srpen", "září", 
+                "říjen", "listopad", "prosinec" 
+            };
 
-    public struct ResourceStrings
-    {
-        public static string CompletedTasks => "Completed tasks";
-        public static string CurrentCombo => "Current combo";
-        public static string GameOver => "Game Over";
-        public static string GameStartsIn => "Game starts in";
-        public static string PerfectTasks => "Perfect tasks";
-        public static string Score => "Score";
-        public static string StartGame => "Start Game";
-        public static string TaskTimeLeft => "Task time left";
-        public static string TotalTimeLeft => "Total time left";
+            // Devices task constants
+            public static readonly string DEVICES_TASK_BASE = "Zatrhni, že je potřeba mít";
+            public static string[] DEVICES_VALUES = 
+            { 
+                "sluchátka", 
+                "mikrofon", 
+                "kameru" 
+            };
+
+            // Position task constants
+            public static readonly string POSITION_VALUE = "Nastav uživatele na administrátora";
+
+            // Priority task constants
+            public static readonly string PRIORITY_TASK_BASE = "Zvol pro schůzku";
+            public static string[] PRIORITY_VALUES = 
+            { 
+                "nízkou prioritu",
+                "střední prioritu",
+                "vysokou prioritu"
+            };
+
+            // Rating task constants
+            public static readonly string RATING_TASK_BASE = "Ohodnoť týmové řešení";
+            public static string[] RATING_VALUES =
+            {
+                "1 hvězdičkou",
+                "2 hvězdičkami",
+                "3 hvězdičkami",
+                "4 hvězdičkami",
+                "5 hvězdičkami"
+            };
+
+            // Teammates task constants
+            public static readonly string TEAMMATES_TASK_BASE = "Přidej do týmu na schůzku:";
+            public static string[] TEAMMATES_VALUES =
+            {
+                "Evžen", "Jonáš", "Katka", "Lukáš",
+                "Milena", "Pavel", "Renata", "Tereza",
+            };
+
+            // Theme task constants
+            public static readonly string THEME_VALUE = "Změň motiv aplikace ze šedé na červenou";
+
+            // Time task constants
+            public static readonly string TIME_TASK_BASE = "Nastav čas schůzky na";
+            public static string[] TIME_HOUR_VALUES =
+            {
+                "0 hodin", "2 hodiny", "4 hodiny", "6 hodin", 
+                "8 hodin", "10 hodin", "12 hodin", "14 hodin",
+                "16 hodin", "18 hodin", "20 hodin", "22 hodin"
+            };
+            public static string[] TIME_MINUTE_VALUES =
+            {
+                "00 minut", "5 minut", "10 minut", "15 minut",
+                "20 minut", "25 minut", "30 minut", "35 minut",
+                "40 minut", "45 minut", "50 minut", "55 minut"
+            };
+
+            // Topics task constants
+            public static readonly string TOPICS_TASK_BASE = "Nastav téma schůzky na";
+            public static string[] TOPICS_VALUES =
+            {
+                "Finance",
+                "Statistiky",
+                "Zdravotnictví",
+                "Vědu",
+                "Sport",
+                "Jiné"
+            };
+
+            // Volume task constants
+            public static readonly string VOLUME_TASK_BASE = "Nastav hlasitost zvuku aplikace na";
+            public static string[] VOLUME_VALUES =
+            {
+                "nízkou",
+                "střední",
+                "vysokou"
+            };
+        }
     }
 }

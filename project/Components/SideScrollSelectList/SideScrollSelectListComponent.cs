@@ -7,19 +7,25 @@ using Utils;
 
 namespace Components
 {
-    public class SideScrollSelectListComponent : Component<(int, int)>
+    public abstract class SideScrollSelectListComponent : Component<(int, int)>
     {
-        private VBoxContainer _verticalContainer;
-        private SideScrollTabControl _sideScrollTabControl;
-        private HBoxContainer _gridHeadline;
-        private GridContainer _gridContainer;
-        private SelectListModel[] _selectLists;
-        private Texture _deselectedTexture;
-        private Texture _selectedTexture;
-        private int _currentTab;
-        private readonly int _defaultModelSelectedValue = -1;
+        protected VBoxContainer _verticalContainer;
+        protected SideScrollTabControl _sideScrollTabControl;
+        protected VBoxContainer _tableContainer;
+        protected MarginContainer _marginContainer;
+        protected HBoxContainer _gridHeadline;
+        protected GridContainer _gridContainer;
+        protected SelectListModel[] _selectLists;
+        protected Texture _deselectedTexture;
+        protected Texture _selectedTexture;
+        protected Texture _leftButton;
+        protected Texture _rightButton;
+        protected int _currentTab;
+        protected readonly int _defaultModelSelectedValue = -1;
+        protected DynamicFont _tabHeaderFont;
+        protected DynamicFont _gridDataLabelFont;
+        protected DynamicFont _gridHeaderFont;
 
-        //TODO send init object
         public void Init(int[] valuesArray, string[] listNames, int numberOfColumns, string[] gridHeadline, Texture leftButton, Texture rightButton)
         {
             if (valuesArray.Length != listNames.Length)
@@ -32,13 +38,12 @@ namespace Components
                 throw new ArgumentOutOfRangeException("Unexpected grid headline length.");
             }
 
+            SetupView();
+
+            _sideScrollTabControl.Font = _tabHeaderFont;
             _sideScrollTabControl.Init(listNames, 1, true, leftButton, rightButton);
             _sideScrollTabControl.TabChanged += TabChanged;
-
-            // _deselectedTexture = Constants.TeammateActionIcons["plus"];
-            // _selectedTexture = Constants.TeammateActionIcons["minus"];
-            _deselectedTexture = Resources.Nongamified.TeammateActionIcons["plus"];
-            _selectedTexture = Resources.Nongamified.TeammateActionIcons["minus"];
+            _sideScrollTabControl.RectMinSize = new Vector2(422, 27);
 
             _gridContainer.Columns = numberOfColumns;
             
@@ -46,10 +51,10 @@ namespace Components
             {
                 var label = new Label();
                 label.Text = item;
+                label.AddFontOverride("font", _gridHeaderFont);
+                
                 _gridHeadline.AddChild(label);
             }
-
-            _gridContainer.RectSize = _gridHeadline.RectSize;
 
             var listCount = valuesArray.Length;
             _selectLists = new SelectListModel[listCount];
@@ -70,18 +75,20 @@ namespace Components
             SetValue(DefaultValue);
 
             PopulateGrid(_selectLists[0]);
+
         }
 
         // Called when the node enters the scene tree for the first time.
         public override void _Ready()
         {
-            _verticalContainer = GetNode<VBoxContainer>("VerticalContainer");
-            _sideScrollTabControl = _verticalContainer.GetNode<SideScrollTabControl>("SideScrollTabControl");
-            _gridHeadline = _verticalContainer.GetNode<HBoxContainer>("GridHeadline");
-            _gridContainer = _verticalContainer.GetNode<GridContainer>("GridContainer");
+            GetCommonNodes();
 
-            //TODO FIX
-            Init(Constants.VALUES_PER_LIST, Constants.MONTH_NAMES, 7, Constants.DAY_NAMES, null, null);
+            _verticalContainer = _windowWrapper.GetNode<VBoxContainer>("VerticalContainer");
+            _sideScrollTabControl = _verticalContainer.GetNode<SideScrollTabControl>("SideScrollTabControl");
+            _tableContainer = _verticalContainer.GetNode<VBoxContainer>("TableContainer");
+            _marginContainer = _tableContainer.GetNode<MarginContainer>("MarginContainer");
+            _gridHeadline = _marginContainer.GetNode<HBoxContainer>("GridHeadline");
+            _gridContainer = _tableContainer.GetNode<GridContainer>("GridContainer");
         }
 
         private void PopulateGrid(SelectListModel listModel)
@@ -93,12 +100,14 @@ namespace Components
 
             for (int i = 0; i < listModel.NumberOfItems; i++)
             {
-                var item = new ClickableControl();
-                item.Init(_deselectedTexture, _selectedTexture, i, listModel.SelectedItem == i);
+                var packedScene = (PackedScene)GD.Load("res://Controls/Clickable/ClickableControlCenteredLabel.tscn");
+                var item = (ClickableControlCenteredLabel)packedScene.Instance();
+                _gridContainer.AddChild(item);
+
+                item.Init(_deselectedTexture, _selectedTexture, i, listModel.SelectedItem == i, labelText: (i + 1).ToString(), font: _gridDataLabelFont);
                 item.Selected += ValueSelected;
                 item.Deselected += ValueDeselected;
                 item.AddToGroup("GridItems");
-                _gridContainer.AddChild(item);
             }
         }
 

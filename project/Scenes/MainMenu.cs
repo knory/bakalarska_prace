@@ -13,8 +13,8 @@ namespace Scenes
         {
             _newGameButton = GetNode<TextureButton>("VerticalWrapper/MenuOptions/NewGameButton");
             _settingsButton = GetNode<TextureButton>("VerticalWrapper/MenuOptions/SettingsButton");
-            _newGameButton.Connect("pressed", this, "OpenGameScene");
-            _settingsButton.Connect("pressed", this, "OpenSettingsScene");
+            _newGameButton.Connect("pressed", this, nameof(OpenGameScene));
+            _settingsButton.Connect("pressed", this, nameof(OpenSettingsScene));
         }
         
         private void OpenGameScene()

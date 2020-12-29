@@ -1,16 +1,18 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://Components/MultipleSelect/MultipleSelectComponent.cs" type="Script" id=1]
+[ext_resource path="res://Components/Component.tscn" type="PackedScene" id=2]
 
-[node name="MultipleSelectComponent" type="Control"]
+[node name="MultipleSelectComponent" instance=ExtResource( 2 )]
 script = ExtResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
-[node name="HorizontalContainer" type="HBoxContainer" parent="."]
-margin_right = 372.0
-margin_bottom = 204.0
+[node name="MarginContainer" type="MarginContainer" parent="WindowWrapper" index="1"]
+margin_top = 18.0
+margin_right = 40.0
+margin_bottom = 18.0
+
+[node name="HorizontalContainer" type="HBoxContainer" parent="WindowWrapper/MarginContainer" index="0"]
+margin_right = 40.0
 size_flags_vertical = 3
 custom_constants/separation = 10
 alignment = 1

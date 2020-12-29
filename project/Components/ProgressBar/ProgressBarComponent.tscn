@@ -1,12 +1,16 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Components/ProgressBar/ProgressBarComponent.cs" type="Script" id=1]
 [ext_resource path="res://Controls/ProgressBarSideScroll/ProgressBarSideScrollControl.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Components/Component.tscn" type="PackedScene" id=3]
 
-[node name="ProgressBarComponent" type="Control"]
+[node name="ProgressBarComponent" instance=ExtResource( 3 )]
 script = ExtResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
-[node name="ProgressBarSideScrollControl" parent="." instance=ExtResource( 2 )]
+[node name="MarginContainer" type="MarginContainer" parent="WindowWrapper" index="1"]
+margin_top = 18.0
+margin_right = 40.0
+margin_bottom = 18.0
+
+[node name="ProgressBarSideScrollControl" parent="WindowWrapper/MarginContainer" index="0" instance=ExtResource( 2 )]
+margin_right = 40.0

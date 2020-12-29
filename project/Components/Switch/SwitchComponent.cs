@@ -6,9 +6,12 @@ using Utils;
 
 namespace Components
 {
-    public class SwitchComponent : Component<bool>
+    public abstract class SwitchComponent : Component<bool>
     {
-        private ClickableControl _clickableControl;
+        protected Texture _textureOn;
+        protected Texture _textureOff;
+        protected MarginContainer _marginContainer;
+        protected ClickableControl _clickableControl;
 
         public void Init()
         {
@@ -19,11 +22,14 @@ namespace Components
         // Called when the node enters the scene tree for the first time.
         public override void _Ready()
         {
-            var text1 = (Texture)GD.Load($"{Constants.SpriteNames[0]}");
-            var text2 = (Texture)GD.Load($"{Constants.SpriteNames[1]}");
+            GetCommonNodes();
 
-            _clickableControl = GetNode<ClickableControl>("ClickableControl");
-            _clickableControl.Init(text1, text2, 0);
+            _marginContainer = _windowWrapper.GetNode<MarginContainer>("MarginContainer");
+            _clickableControl = _marginContainer.GetNode<ClickableControl>("ClickableControl");
+            
+            SetupView();
+
+            _clickableControl.Init(_textureOff, _textureOn, 0);
             _clickableControl.Selected += OnSelected;
             _clickableControl.Deselected += OnDeselected;
         }

@@ -6,23 +6,24 @@ using Utils;
 
 namespace Components
 {
-    public class RatingComponent : Component<int>
+    public abstract class RatingComponent : Component<int>
     {
-        private HBoxContainer _horizontalContainer;
+        protected MarginContainer _marginContainer;
+        protected HBoxContainer _horizontalContainer;
+        protected Texture _textureOff;
+        protected Texture _textureOn;
 
-        public void Init()
+        public void Init(int numberOfItems)
         {
             DefaultValue = -1;
             SetValue(DefaultValue);
 
-            var clickableControlPackedScene = (PackedScene)ResourceLoader.Load("res://Controls/Clickable/ClickableControl.tscn");
-            var text1 = (Texture)GD.Load($"{Constants.SpriteNames[0]}");
-            var text2 = (Texture)GD.Load($"{Constants.SpriteNames[1]}");
+            var clickableControlPackedScene = (PackedScene)GD.Load("res://Controls/Clickable/ClickableControl.tscn");
 
-            for (int i = 0; i < Constants.RATING_POSSIBLE_VALUES; i++)
+            for (int i = 0; i < numberOfItems; i++)
             {
                 var control = (ClickableControl)clickableControlPackedScene.Instance();
-                control.Init(text1, text2, i);
+                control.Init(_textureOff, _textureOn, i);
                 control.Selected += OnValueSelected;
                 control.Deselected += OnValueDeselected;
                 _horizontalContainer.AddChild(control);
@@ -32,8 +33,10 @@ namespace Components
         // Called when the node enters the scene tree for the first time.
         public override void _Ready()
         {
-            _horizontalContainer = GetNode<HBoxContainer>("HorizontalContainer");
-            Init();
+            GetCommonNodes();
+            _marginContainer = _windowWrapper.GetNode<MarginContainer>("MarginContainer");
+            _horizontalContainer = _marginContainer.GetNode<HBoxContainer>("HorizontalContainer");
+            SetupView();
         }
 
         public override void ResetState()

@@ -10,6 +10,17 @@ namespace Components
         protected T SelectedValue { get; private set; }
         public T DefaultValue { get; protected set; }
 
+        protected Sprite _background;
+        protected VBoxContainer _windowWrapper;
+        protected Label _title;
+
+        protected void GetCommonNodes()
+        {
+            _background = GetNode<Sprite>("Background");
+            _windowWrapper = GetNode<VBoxContainer>("WindowWrapper");
+            _title = _windowWrapper.GetNode<Label>("Title");
+        }
+
         protected virtual void SetValue(T newValue)
         {
             SelectedValue = newValue;
@@ -45,5 +56,7 @@ namespace Components
         public abstract void EnableComponent();
 
         public abstract void DisableComponent();
+
+        protected abstract void SetupView();
     }
 }

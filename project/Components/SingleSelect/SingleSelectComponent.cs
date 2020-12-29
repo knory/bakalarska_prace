@@ -3,25 +3,29 @@ using Controls;
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Utils;
 
 namespace Components
 {
-    public class SingleSelectComponent : Component<int>
+    public abstract class SingleSelectComponent : Component<int>
     {
-        private HBoxContainer _horizontalContainer;
         private List<ClickableControl> _clickableComponents;
+        protected MarginContainer _marginContainer;
+        protected HBoxContainer _horizontalContainer;
+        protected (Texture, Texture)[] _textures;
 
         public void Init() 
         {
-            var clickableComponentScene = (PackedScene)ResourceLoader.Load("res://Controls/Clickable/ClickableControl.tscn");
-            var text1 = (Texture)GD.Load($"{Constants.SpriteNames[0]}");
-            var text2 = (Texture)GD.Load($"{Constants.SpriteNames[1]}");
+            var clickableComponentScene = (PackedScene)GD.Load("res://Controls/Clickable/ClickableControl.tscn");
 
-            for (int i = 1; i <= 3; i++) {
+            for (int i = 0; i < _textures.Length; i++) 
+            {
                 var clickableComponentInstance = (ClickableControl)clickableComponentScene.Instance();
-                
-                clickableComponentInstance.Init(text1, text2, i);
+
+                var texturePair = _textures[i];
+
+                clickableComponentInstance.Init(texturePair.Item1, texturePair.Item2, i);
                 clickableComponentInstance.Selected += OnValueSelected;
                 clickableComponentInstance.Deselected += OnValueDeselected;
 
@@ -36,9 +40,11 @@ namespace Components
         // Called when the node enters the scene tree for the first time.
         public override void _Ready()
         {
+            GetCommonNodes();
+
             _clickableComponents = new List<ClickableControl>();
-            _horizontalContainer = GetNode<HBoxContainer>("HorizontalContainer");
-            Init();
+            _marginContainer = _windowWrapper.GetNode<MarginContainer>("MarginContainer");
+            _horizontalContainer = _marginContainer.GetNode<HBoxContainer>("HorizontalContainer");
         }
 
         public void OnValueSelected(object sender, SelectedValueEventArgs e)

@@ -7,35 +7,30 @@ using Utils;
 
 namespace Components
 {
-    public class ProgressBarComponent : Component<int>
+    public abstract class ProgressBarComponent : Component<int>
     {
-        private ProgressBarSideScrollControl _progressBarSideScrollControl;
-        private ProgressBarState[] _progressBarStates;
+        protected MarginContainer _marginContainer;
+        protected ProgressBarSideScrollControl _progressBarSideScrollControl;
+        protected ProgressBarState[] _progressBarStates;
+        protected Texture _leftButtonTexture;
+        protected Texture _rightButtonTexture;
 
-        public void Init(Texture leftButton, Texture rightButton)
+        public void Init()
         {
-            _progressBarSideScrollControl.Init(_progressBarStates, 1, false, leftButton, rightButton);
+            _progressBarSideScrollControl.Init(_progressBarStates, 1, false, _leftButtonTexture, _rightButtonTexture);
         }
 
         // Called when the node enters the scene tree for the first time.
         public override void _Ready()
         {
-            _progressBarSideScrollControl = GetNode<ProgressBarSideScrollControl>("ProgressBarSideScrollControl");
+            GetCommonNodes();
+
+            _marginContainer = _windowWrapper.GetNode<MarginContainer>("MarginContainer");
+            _progressBarSideScrollControl = _marginContainer.GetNode<ProgressBarSideScrollControl>("ProgressBarSideScrollControl");
             _progressBarSideScrollControl.ValueChanged += ChangeValue;
 
-            var statesCount = Constants.ProgressBarResources.Length;
-            _progressBarStates = new ProgressBarState[statesCount];
-
-            DefaultValue = 1;
+            DefaultValue = 0;
             SetValue(DefaultValue);
-            
-            for (int i = 0; i < statesCount; i++)
-            {
-                _progressBarStates[i] = new ProgressBarState{ Id = i + 1, Texture = (Texture)GD.Load(Constants.ProgressBarResources[i].TexturePath)};
-            }
-
-            //TODO FIX
-            Init(null, null);
         }
 
         public void ChangeValue(object sender, SelectedValueEventArgs e)
@@ -47,12 +42,6 @@ namespace Components
         {
             _progressBarSideScrollControl.ResetState();
             base.ResetState();
-        }
-
-        public override bool IsModified()
-        {
-            //default value is valid action as well
-            return true;
         }
 
         public override void EnableComponent()

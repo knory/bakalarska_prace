@@ -8,31 +8,27 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="HorizontalContainer" type="HBoxContainer" parent="."]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -4.0
-margin_right = 4.0
-custom_constants/separation = 20
-alignment = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="LeftButton" type="TextureButton" parent="HorizontalContainer"]
+[node name="LeftButton" type="TextureButton" parent="."]
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="ContentContainer" type="HBoxContainer" parent="HorizontalContainer"]
-margin_left = 20.0
-margin_right = 20.0
-custom_constants/separation = 38
-alignment = 1
-
-[node name="RightButton" type="TextureButton" parent="HorizontalContainer"]
+[node name="RightButton" type="TextureButton" parent="."]
 margin_left = 40.0
 margin_right = 40.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="ContentContainer" type="HBoxContainer" parent="CenterContainer"]
+margin_left = 20.0
+margin_top = 20.0
+margin_right = 20.0
+margin_bottom = 20.0
+custom_constants/separation = 38
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
