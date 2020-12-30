@@ -15,12 +15,14 @@ namespace Components
         protected Texture _leftButtonTexture;
         protected Texture _rightButtonTexture;
 
+        /// <summary>
+        /// Initializes component's value and possible values.
+        /// </summary>
         public void Init()
         {
-            _progressBarSideScrollControl.Init(_progressBarStates, 1, false, _leftButtonTexture, _rightButtonTexture);
+            _progressBarSideScrollControl.Init(_progressBarStates, false, _leftButtonTexture, _rightButtonTexture);
         }
 
-        // Called when the node enters the scene tree for the first time.
         public override void _Ready()
         {
             GetCommonNodes();
@@ -33,6 +35,11 @@ namespace Components
             SetValue(DefaultValue);
         }
 
+        /// <summary>
+        /// Changes the selected value to the specified value.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void ChangeValue(object sender, SelectedValueEventArgs e)
         {
             SetValue(e.SelectedValue);

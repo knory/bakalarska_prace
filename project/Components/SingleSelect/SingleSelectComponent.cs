@@ -15,6 +15,9 @@ namespace Components
         protected HBoxContainer _horizontalContainer;
         protected (Texture, Texture)[] _textures;
 
+        /// <summary>
+        /// Initializes component's value and possible values.
+        /// </summary>
         public void Init() 
         {
             var clickableComponentScene = (PackedScene)GD.Load("res://Controls/Clickable/ClickableControl.tscn");
@@ -37,7 +40,6 @@ namespace Components
             SetValue(DefaultValue);
         }
 
-        // Called when the node enters the scene tree for the first time.
         public override void _Ready()
         {
             GetCommonNodes();
@@ -47,6 +49,11 @@ namespace Components
             _horizontalContainer = _marginContainer.GetNode<HBoxContainer>("HorizontalContainer");
         }
 
+        /// <summary>
+        /// Sets the specified value as the selected value and deselects all other control nodes.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void OnValueSelected(object sender, SelectedValueEventArgs e)
         {
             foreach (var item in _clickableComponents)
@@ -64,6 +71,11 @@ namespace Components
             SetValue(e.SelectedValue);
         }
 
+        /// <summary>
+        /// Deselects all control nodes and resets the selected value to default.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void OnValueDeselected(object sender, SelectedValueEventArgs e)
         {
             foreach (var item in _clickableComponents)

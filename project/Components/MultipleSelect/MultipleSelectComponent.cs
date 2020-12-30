@@ -16,6 +16,9 @@ namespace Components
         protected (Texture, Texture)[] _textures;
         private List<ClickableControl> _clickableControls;
 
+        /// <summary>
+        /// Initializes component's value and possible values.
+        /// </summary>
         public void Init() 
         {
             var clickableComponentScene = (PackedScene)GD.Load("res://Controls/Clickable/ClickableControl.tscn");
@@ -38,7 +41,6 @@ namespace Components
             }
         }
 
-        // Called when the node enters the scene tree for the first time.
         public override void _Ready()
         {
             GetCommonNodes();
@@ -58,23 +60,21 @@ namespace Components
             SetValue(new HashSet<int>());
         }
 
-        public List<int> GetSelectedValues()
-        {
-            var result = new List<int>();
-            foreach (var item in _clickableControls)
-            {
-                if (item.IsSelected)
-                    result.Add(item.Value);
-            }
-
-            return result;
-        }
-
+        /// <summary>
+        /// Adds the specified value to the set of selected values.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="eventArgs"></param>
         public void AddSelectedValue(object sender, SelectedValueEventArgs eventArgs)
         {
             SelectedValue.Add(eventArgs.SelectedValue);
         }
 
+        /// <summary>
+        /// Removes the specified value from the set of selected values.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="eventArgs"></param>
         public void RemoveSelectedValue(object sender, SelectedValueEventArgs eventArgs)
         {
             SelectedValue.Remove(eventArgs.SelectedValue);

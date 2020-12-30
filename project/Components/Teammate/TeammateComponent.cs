@@ -28,6 +28,9 @@ namespace Components
         protected int _teammateVerticalSeparation;
         protected DynamicFont _teammateNameFont;
 
+        /// <summary>
+        /// Initializes component's value and possible values.
+        /// </summary>
         public void Init(TeammateResource[] teammateResources, Texture leftButtonTexture, Texture rightButtonTexture)
         {
             var teammatesCount = teammateResources.Length;
@@ -56,7 +59,6 @@ namespace Components
             SetupView();
         }
 
-        // Called when the node enters the scene tree for the first time.
         public override void _Ready()
         {
             _teammateScene = (PackedScene)GD.Load("res://Controls/Teammate/TeammateControl.tscn");
@@ -75,6 +77,12 @@ namespace Components
             _addedTeammatesLabel = _addedTeammatesWrapper.GetNode<Label>("AddedTeammatesLabel");
         }
 
+        /// <summary>
+        /// If the set of selected values is not full, adds the specified value to the set of selected values, 
+        /// removes the relevant node from possible values and adds it to the added nodes.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void TeammateAdded(object sender, TeammateControlClickedEventArgs e)
         {
             if (SelectedValue.Count >= Constants.TEAMMATES_ADDED_COUNT) return;
@@ -91,6 +99,13 @@ namespace Components
             AddSelectedValueToComponent(selectedTeammateId);
         }
 
+        /// <summary>
+        /// Removes the specified value from the set of selected values.
+        /// 
+        /// Removes the relevant node from the list of added nodes and adds it to the list of possible values.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void TeammateRemoved(object sender, TeammateControlClickedEventArgs e)
         {
             var selectedTeammateId = e.SelectedValue.Teammate.Id;
@@ -102,11 +117,19 @@ namespace Components
             RemoveSelectedValueFromComponent(selectedTeammateId);
         }
 
+        /// <summary>
+        /// Adds the provided value to the set of selected values.
+        /// </summary>
+        /// <param name="teammateId">Value to be added</param>
         private void AddSelectedValueToComponent(int teammateId)
         {
             SelectedValue.Add(teammateId);
         }
 
+        /// <summary>
+        /// Removes the provided value from the set of selected values.
+        /// </summary>
+        /// <param name="teammateId">Value to be removed</param>
         private void RemoveSelectedValueFromComponent(int teammateId)
         {
             SelectedValue.Remove(teammateId);
@@ -162,6 +185,11 @@ namespace Components
             }
         }
 
+        /// <summary>
+        /// Creates teammate control node based on the provided model.
+        /// </summary>
+        /// <param name="teammate">Teammate model</param>
+        /// <returns>The newly created teammate control node</returns>
         private TeammateControl CreateTeammateNodeFromTeammate(Teammate teammate)
         {
             var teammateNode = (TeammateControl)_teammateScene.Instance();

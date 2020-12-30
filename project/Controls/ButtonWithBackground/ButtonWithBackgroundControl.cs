@@ -18,7 +18,6 @@ namespace Controls
         protected Sprite _background;
         protected ClickableControl _clickableControl;
 
-        // Called when the node enters the scene tree for the first time.
         public override void _Ready()
         {
             _background = GetNode<Sprite>("Background");
@@ -31,6 +30,15 @@ namespace Controls
             _clickableControl.Deselected += _deselectedHandler;
         }
 
+        /// <summary>
+        /// Initializes the control with provided values.
+        /// </summary>
+        /// <param name="addButtonTexture">Texture of deactivated button</param>
+        /// <param name="removeButtonTexture">Texture of activated button</param>
+        /// <param name="value">Value of the control</param>
+        /// <param name="selectedHandler">Handler of the Selected event</param>
+        /// <param name="deselectedHandler">Handler of the Deselected event</param>
+        /// <param name="background">Background texture</param>
         public void Init(Texture addButtonTexture, Texture removeButtonTexture, int value, EventHandler<SelectedValueEventArgs> selectedHandler,
             EventHandler<SelectedValueEventArgs> deselectedHandler, Texture background)
         {
@@ -42,17 +50,26 @@ namespace Controls
             _backgroundTexture = background;
         }
 
+        /// <summary>
+        /// Deselects the control.
+        /// </summary>
         public void Deselect()
         {
             IsSelected = false;
             _clickableControl?.Deselect();
         }
 
+        /// <summary>
+        /// Enables the control.
+        /// </summary>
         public void EnableControl()
         {
             _clickableControl.Disabled = false;
         }
 
+        /// <summary>
+        /// Disables the control.
+        /// </summary>
         public void DisableControl()
         {
             _clickableControl.Disabled = true;

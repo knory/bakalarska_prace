@@ -16,6 +16,9 @@ namespace Components
         protected DropdownModel[] _listOfOptions1;
         protected DropdownModel[] _listOfOptions2;
 
+        /// <summary>
+        /// Initializes component's value and possible values.
+        /// </summary>
         public void Init()
         {
             PopulateDropdown(_listOfOptions1, _optionButton1);
@@ -25,7 +28,6 @@ namespace Components
             SetValue((_optionButton1.Selected, _optionButton2.Selected));
         }
 
-        // Called when the node enters the scene tree for the first time.
         public override void _Ready()
         {
             GetCommonNodes();
@@ -39,11 +41,20 @@ namespace Components
             _optionButton2.Connect("item_selected", this, nameof(DropdownValueChanged));
         }
 
+        /// <summary>
+        /// Called on the change of the dropdown value. Sets the component's value.
+        /// </summary>
+        /// <param name="selectedId">ID of the selected item</param>
         public void DropdownValueChanged(int selectedId)
         {
             SetValue((_optionButton1.Selected, _optionButton2.Selected));
         }
 
+        /// <summary>
+        /// Sets the dropdown's possible values.
+        /// </summary>
+        /// <param name="listOfOptions">List of options</param>
+        /// <param name="dropdown">Dropdown to be bound</param>
         private void PopulateDropdown(DropdownModel[] listOfOptions, OptionButton dropdown)
         {
             foreach (var item in listOfOptions)

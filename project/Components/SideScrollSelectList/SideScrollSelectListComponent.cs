@@ -26,6 +26,9 @@ namespace Components
         protected DynamicFont _gridDataLabelFont;
         protected DynamicFont _gridHeaderFont;
 
+        /// <summary>
+        /// Initializes component's value and possible values.
+        /// </summary>
         public void Init(int[] valuesArray, string[] listNames, int numberOfColumns, string[] gridHeadline, Texture leftButton, Texture rightButton)
         {
             if (valuesArray.Length != listNames.Length)
@@ -75,10 +78,8 @@ namespace Components
             SetValue(DefaultValue);
 
             PopulateGrid(_selectLists[0]);
-
         }
 
-        // Called when the node enters the scene tree for the first time.
         public override void _Ready()
         {
             GetCommonNodes();
@@ -91,6 +92,10 @@ namespace Components
             _gridContainer = _tableContainer.GetNode<GridContainer>("GridContainer");
         }
 
+        /// <summary>
+        /// Populates the content grid with clickable controls based on the provided model.
+        /// </summary>
+        /// <param name="listModel">Model of options for the grid</param>
         private void PopulateGrid(SelectListModel listModel)
         {
             foreach (ClickableControl child in GetTree().GetNodesInGroup("GridItems"))
@@ -111,6 +116,11 @@ namespace Components
             }
         }
 
+        /// <summary>
+        /// Sets the specified value as the selected value, deselects all other control nodes.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="eventArgs"></param>
         public void ValueSelected(object sender, SelectedValueEventArgs eventArgs)
         {
             foreach (ClickableControl item in GetTree().GetNodesInGroup("GridItems"))
@@ -131,6 +141,11 @@ namespace Components
             SetValue((_currentTab, eventArgs.SelectedValue));
         }
 
+        /// <summary>
+        /// Resets the selected value to default.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="eventArgs"></param>
         public void ValueDeselected(object sender, SelectedValueEventArgs eventArgs)
         {
             _selectLists[_currentTab].SelectedItem = -1;
@@ -138,6 +153,11 @@ namespace Components
             SetValue(DefaultValue);
         }
 
+        /// <summary>
+        /// Changes the current tab index and repopulates the grid with the new tab's values.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="eventArgs"></param>
         public void TabChanged(object sender, SelectedValueEventArgs eventArgs)
         {
             _currentTab = eventArgs.SelectedValue;

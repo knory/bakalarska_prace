@@ -7,9 +7,20 @@ namespace Controls
     {
         private string _labelText;
         private DynamicFont _font;
+        
         protected CenterContainer _centerContainer;
+        
         public Label Label { get; private set; }
 
+        /// <summary>
+        /// Initializes the control with provided values.
+        /// </summary>
+        /// <param name="deselectedTexture">Texture of deactivated control</param>
+        /// <param name="selectedTexture">Texture of activated control</param>
+        /// <param name="controlValue">Value of the control</param>
+        /// <param name="defaultSelected">Sets whether the control is selected by default</param>
+        /// <param name="labelText">Text of the control's label</param>
+        /// <param name="font">Font of the control's label</param>
         public void Init(Texture deselectedTexture, Texture selectedTexture, int controlValue, bool defaultSelected = false,
             string labelText = null, DynamicFont font = null)
         {
@@ -32,8 +43,6 @@ namespace Controls
         }
 
         public override void _Ready()
-        {
-
-        }
+        { }
     }
 }

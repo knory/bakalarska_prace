@@ -13,6 +13,9 @@ namespace Components
         protected Texture _textureOff;
         protected Texture _textureOn;
 
+        /// <summary>
+        /// Initializes component's value and possible values.
+        /// </summary>
         public void Init(int numberOfItems)
         {
             DefaultValue = -1;
@@ -30,7 +33,6 @@ namespace Components
             }
         }
 
-        // Called when the node enters the scene tree for the first time.
         public override void _Ready()
         {
             GetCommonNodes();
@@ -52,6 +54,11 @@ namespace Components
             base.ResetState();
         }
 
+        /// <summary>
+        /// Changes the selected value to the specified value and deselects all other control nodes.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="eventArgs"></param>
         public void OnValueSelected(object sender, SelectedValueEventArgs eventArgs)
         {
             SetValue(eventArgs.SelectedValue);
@@ -72,6 +79,11 @@ namespace Components
             }
         }
 
+        /// <summary>
+        /// Sets the selected value to default and deselects all control nodes.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="eventArgs"></param>
         public void OnValueDeselected(object sender, SelectedValueEventArgs eventArgs)
         {
             SetValue(DefaultValue);

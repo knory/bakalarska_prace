@@ -13,13 +13,15 @@ namespace Components
         protected MarginContainer _marginContainer;
         protected ClickableControl _clickableControl;
 
+        /// <summary>
+        /// Initializes component's value and possible values.
+        /// </summary>
         public void Init()
         {
             DefaultValue = false;
             SetValue(DefaultValue);
         }
 
-        // Called when the node enters the scene tree for the first time.
         public override void _Ready()
         {
             GetCommonNodes();
@@ -40,11 +42,21 @@ namespace Components
             base.ResetState();
         }
 
+        /// <summary>
+        /// Sets the selected value to true.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="eventArgs"></param>
         public void OnSelected(object sender, EventArgs eventArgs)
         {
             SetValue(true);
         }
 
+        /// <summary>
+        /// Sets the selected value to false.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="eventArgs"></param>
         public void OnDeselected(object sender, EventArgs eventArgs)
         {
             SetValue(false);

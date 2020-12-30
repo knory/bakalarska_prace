@@ -28,7 +28,7 @@ namespace Scenes
                     ComboBreakStreak = 1,
                     ComboStreak = 5,
                     GameType = GameType.Nongamified,
-                    FeedbackType = FeedbackType.Simple,
+                    FeedbackType = FeedbackType.Quality,
                     MaxComboModifier = 5,
                     PerfectTaskBonusPoints = 3,
                     TasksPerGame = 100,

@@ -16,6 +16,9 @@ namespace Components
         protected Texture _addButtonTexture;
         protected Texture _removeButtonTexture;
 
+        /// <summary>
+        /// Initializes component's value and possible values.
+        /// </summary>
         public void Init()
         {
             _sideScrollWithBackgroundControl.OnSelected += OnValueAdded;
@@ -29,7 +32,6 @@ namespace Components
             DefaultValue = new HashSet<int>();
         }
 
-        // Called when the node enters the scene tree for the first time.
         public override void _Ready()
         {
             GetCommonNodes();
@@ -39,18 +41,32 @@ namespace Components
             Init();
         }
 
+        /// <summary>
+        /// Adds the specified value to the set of selected values.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="eventArgs"></param>
         public void OnValueAdded(object sender, SelectedValueEventArgs eventArgs)
         {
             SelectedValue.Add(eventArgs.SelectedValue);
         }
 
+        /// <summary>
+        /// Removes the specified value from the set of selected values.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="eventArgs"></param>
         public void OnValueRemoved(object sender, SelectedValueEventArgs eventArgs)
         {
             SelectedValue.Remove(eventArgs.SelectedValue);
         }
 
-        public virtual void OnScrolled(object sender, EventArgs eventArgs)
-        { }
+        /// <summary>
+        /// Event called on scroll of the side scroll control.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="eventArgs"></param>
+        public abstract void OnScrolled(object sender, EventArgs eventArgs);
 
         public override void ResetState()
         {

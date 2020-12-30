@@ -13,8 +13,6 @@ namespace Scenes.HUD.Nongamified
         private RichTextLabel _completedActionsLabel;
         private RichTextLabel _correctActionsLabel;
 
-        private DynamicFont _labelsFont;
-
         public override void _Ready()
         {
             base._Ready();
@@ -24,11 +22,11 @@ namespace Scenes.HUD.Nongamified
             _completedActionsLabel = _actionsLabelsContainer.GetNode<RichTextLabel>("CompletedActionsLabel");
             _correctActionsLabel = _actionsLabelsContainer.GetNode<RichTextLabel>("CorrectActionsLabel");
 
-            _labelsFont = (DynamicFont)GD.Load($"{_simpleHudResourcesPath}montserrat_bold.tres");
-            _labelsFont.Size = 24;
+            var labelsFont = (DynamicFont)GD.Load($"{_simpleHudResourcesPath}montserrat_bold.tres");
+            labelsFont.Size = 24;
 
-            _completedActionsLabel.AddFontOverride("normal_font", _labelsFont);
-            _correctActionsLabel.AddFontOverride("normal_font", _labelsFont);
+            _completedActionsLabel.AddFontOverride("normal_font", labelsFont);
+            _correctActionsLabel.AddFontOverride("normal_font", labelsFont);
 
             _actionsBackground.Texture = (Texture)GD.Load($"{_simpleHudResourcesPath}actions_background.png");
             _actionsBackground.RectPosition = new Vector2(650, 0);

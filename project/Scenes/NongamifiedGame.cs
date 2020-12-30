@@ -60,13 +60,17 @@ namespace Scenes
 
         protected override BaseHUD GetHUDScene(FeedbackType feedbackType)
         {
+            var hudScenesPath = "res://Scenes/HUD/Nongamified/";
+            PackedScene packedScene;
+
             switch (feedbackType)
             {
                 case FeedbackType.Simple:
-                    var packedScene = (PackedScene)GD.Load($"res://Scenes/HUD/Nongamified/NongamifiedSimpleHUD.tscn");
+                    packedScene = (PackedScene)GD.Load($"{hudScenesPath}NongamifiedSimpleHUD.tscn");
                     return (NongamifiedSimpleHUD)packedScene.Instance();
                 case FeedbackType.Quality:
-                    return null;
+                    packedScene = (PackedScene)GD.Load($"{hudScenesPath}NongamifiedQualityHUD.tscn");
+                    return (NongamifiedQualityHUD)packedScene.Instance();
                 default:
                     throw new ArgumentOutOfRangeException("Specified feedback type does not exist.");
             }
