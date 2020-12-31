@@ -33,7 +33,7 @@ namespace Scenes
                     MaxComboModifier = 5,
                     PerfectTaskBonusPoints = 3,
                     TasksPerGame = 100,
-                    TimePerGame = 120,
+                    TimePerGame = 30,
                     TimePerTask = 120,
                     UnusedTimeGameBonus = 2,
                     UnusedTimeTaskBonus = 0,

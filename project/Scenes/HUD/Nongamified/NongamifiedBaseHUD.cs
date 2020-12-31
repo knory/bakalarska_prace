@@ -32,7 +32,7 @@ namespace Scenes.HUD.Nongamified
             _instructionsColor = new Color("000000");
 
             _instructionsContainer.Set("custom_constants/separation", 10);
-            _instructionsContainer.RectPosition = new Vector2(10, 30);
+            _instructionsContainer.RectPosition = new Vector2(10, 10);
 
             var tasksFont = (DynamicFont)GD.Load($"{_resourcesPath}montserrat_extra_bold.tres");
             tasksFont.Size = 24;

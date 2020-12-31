@@ -127,7 +127,7 @@ namespace Project.Scenes.HUD.Nongamified
             SetTrendTexture(_comparison1, correctActionsInSequence, correctActionsAverage, _upArrowBlue, _downArrowRed);
 
             _current2.Text = $"{correctActionsStreak}";
-            _previous2.Text = $"{correctActionsStreakAverage}";
+            _previous2.Text = $"{correctActionsStreakAverage:0.##}";
             SetTrendTexture(_comparison2, correctActionsStreak, correctActionsStreakAverage, _upArrowBlue, _downArrowRed);
 
             _current3.Text = $"{taskTimeLeft:0.#} s";

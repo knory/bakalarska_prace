@@ -2,7 +2,7 @@ namespace Utils
 {
     public static class Constants
     {
-        public static readonly string ApiHost = "http://xknor-gamification.azurewebsites.net";
+        public static readonly string ApiHost = "https://xknor-gamification.azurewebsites.net";
         public static readonly string ApiDataCollectorUrl = "/api/GameDataCollector";
 
         public static readonly string ResourcesPath = "res://Resources/";
@@ -49,6 +49,7 @@ namespace Utils
         public static readonly string TotalActions = "hotové úkony: ";
         public static readonly string CorrectActions = "správně: ";
         public static readonly string StreakNotification = "x v řadě!";
+        public static readonly string CompleteSequence = "Sjednej schůzku.";
 
         // Nongamified task completed popup constants
         public static readonly string CorrectActionsInSequence = "Správné úkony v sekvenci";

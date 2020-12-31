@@ -64,7 +64,16 @@ namespace Project.Scenes.HUD
                 label.RectMinSize = new Vector2(_instructionsBackground.RectSize.x - 10, 0);
                 label.Text = item;
                 _instructionsContainer.AddChild(label);
-            }    
+            }
+
+            var confirmLabel = new Label();
+            confirmLabel.AddFontOverride("font", _instructionsFont);
+            confirmLabel.AddColorOverride("font_color", _instructionsColor);
+            confirmLabel.Autowrap = true;
+            confirmLabel.RectSize = _instructionsBackground.RectSize;
+            confirmLabel.RectMinSize = new Vector2(_instructionsBackground.RectSize.x - 10, 0);
+            confirmLabel.Text = ResourceStrings.CompleteSequence;
+            _instructionsContainer.AddChild(confirmLabel);
         }
 
         /// <summary>

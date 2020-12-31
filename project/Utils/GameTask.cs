@@ -146,7 +146,7 @@ namespace Utils
 
         private void GenerateVolumeAssignment()
         {
-            Volume = _random.Next(Constants.VOLUME_OPTIONS_COUNT);
+            Volume = _random.Next(1, Constants.VOLUME_OPTIONS_COUNT);
         }
 
         private void GenerateTaskAssignmentTexts()
