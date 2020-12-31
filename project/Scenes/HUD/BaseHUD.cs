@@ -17,6 +17,17 @@ namespace Project.Scenes.HUD
         protected DynamicFont _instructionsFont;
         protected Color _instructionsColor;
 
+        protected Timer _streakNotificationTimer;
+        protected bool _streakIsShown = false;
+
+        public override void _Ready()
+        {
+            _streakNotificationTimer = GetNode<Timer>("StreakNotificationTimer");
+            _streakNotificationTimer.WaitTime = Constants.STREAK_NOTIFICATION_TIME;
+            _streakNotificationTimer.OneShot = true;
+            _streakNotificationTimer.Connect("timeout", this, nameof(HideStreakNotification));
+        }
+
         /// <summary>
         /// Updates all HUD labels' information based on the provided values.
         /// </summary>
@@ -27,8 +38,13 @@ namespace Project.Scenes.HUD
         public virtual void UpdateLabels(float timeLeft, int completedTasks, int totalActions, int correctActions)
         {
             _timeLeftLabel.Text = TimeSpan.FromSeconds(timeLeft).ToString("mm\\:ss");
-            _tasksCountLabel.Text = $"{ResourceStrings.CompletedTasksCount} {completedTasks}";
+            
+            if (!_streakIsShown)
+            {
+                _tasksCountLabel.Text = $"{ResourceStrings.CompletedTasksCount} {completedTasks}";
+            }
         }
+
 
         /// <summary>
         /// Updates the list of instructions.
@@ -60,6 +76,23 @@ namespace Project.Scenes.HUD
             {
                 item.QueueFree();
             }
+        }
+
+        /// <summary>
+        /// Shows perfect task streak notification.
+        /// </summary>
+        /// <param name="streak">Perfect task streak number</param>
+        public virtual void ShowStreakNotification(int streak)
+        {
+            return;
+        }
+
+        /// <summary>
+        /// Turns off the flag to show streak notification.
+        /// </summary>
+        public void HideStreakNotification()
+        {
+            _streakIsShown = false;
         }
     }
 }

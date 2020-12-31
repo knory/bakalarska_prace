@@ -25,7 +25,7 @@ namespace Components
             PopulateDropdown(_listOfOptions2, _optionButton2);
 
             DefaultValue = (_listOfOptions1[0].Id, _listOfOptions2[0].Id);
-            SetValue((_optionButton1.Selected, _optionButton2.Selected));
+            SetValue((_listOfOptions1[_optionButton1.Selected].Id, _listOfOptions2[_optionButton2.Selected].Id));
         }
 
         public override void _Ready()
@@ -47,7 +47,7 @@ namespace Components
         /// <param name="selectedId">ID of the selected item</param>
         public void DropdownValueChanged(int selectedId)
         {
-            SetValue((_optionButton1.Selected, _optionButton2.Selected));
+            SetValue((_listOfOptions1[_optionButton1.Selected].Id, _listOfOptions2[_optionButton2.Selected].Id));
         }
 
         /// <summary>

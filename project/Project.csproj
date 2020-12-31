@@ -89,18 +89,20 @@
     <Compile Include="Scenes\HUD\BaseHUD.cs" />
     <Compile Include="Scenes\HUD\Nongamified\NongamifiedQualityHUD.cs" />
     <Compile Include="Scenes\HUD\Nongamified\NongamifiedSimpleHUD.cs" />
-    <Compile Include="Scenes\NongamifiedGame.cs" />
-    <Compile Include="NongamifiedScenes\Advertisement.cs" />
-    <Compile Include="NongamifiedScenes\Calendar.cs" />
-    <Compile Include="NongamifiedScenes\Devices.cs" />
-    <Compile Include="NongamifiedScenes\Position.cs" />
-    <Compile Include="NongamifiedScenes\Priority.cs" />
-    <Compile Include="NongamifiedScenes\Rating.cs" />
-    <Compile Include="NongamifiedScenes\Teammates.cs" />
-    <Compile Include="NongamifiedScenes\Theme.cs" />
-    <Compile Include="NongamifiedScenes\Time.cs" />
-    <Compile Include="NongamifiedScenes\Topics.cs" />
-    <Compile Include="NongamifiedScenes\Volume.cs" />
+    <Compile Include="Scenes\HUD\Nongamified\NongamifiedTaskCompletedPopup.cs" />
+    <Compile Include="Scenes\HUD\TaskCompletedPopupBase.cs" />
+    <Compile Include="Scenes\Nongamified\NongamifiedGame.cs" />
+    <Compile Include="Scenes\Nongamified\Advertisement.cs" />
+    <Compile Include="Scenes\Nongamified\Calendar.cs" />
+    <Compile Include="Scenes\Nongamified\Devices.cs" />
+    <Compile Include="Scenes\Nongamified\Position.cs" />
+    <Compile Include="Scenes\Nongamified\Priority.cs" />
+    <Compile Include="Scenes\Nongamified\Rating.cs" />
+    <Compile Include="Scenes\Nongamified\Teammates.cs" />
+    <Compile Include="Scenes\Nongamified\Theme.cs" />
+    <Compile Include="Scenes\Nongamified\Time.cs" />
+    <Compile Include="Scenes\Nongamified\Topics.cs" />
+    <Compile Include="Scenes\Nongamified\Volume.cs" />
     <Compile Include="Scenes\Game.cs" />
     <Compile Include="Scenes\GameContainer.cs" />
     <Compile Include="Scenes\GameStartOverlay.cs" />
@@ -233,6 +235,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include=".mono\temp\obj\Tools\" />
+    <Folder Include="NongamifiedScenes\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\Nongamified\Advertisement\add_button.png" />

@@ -2,6 +2,7 @@ using Godot;
 using Models;
 using Newtonsoft.Json;
 using Project.Scenes.HUD;
+using Scenes.Nongamified;
 using System;
 using Utils;
 
@@ -35,7 +36,7 @@ namespace Scenes
                     TimePerGame = 120,
                     TimePerTask = 120,
                     UnusedTimeGameBonus = 2,
-                    UnusedTimeTaskBonus = 1,
+                    UnusedTimeTaskBonus = 0,
                 };
 
                 var serializedConfig = JsonConvert.SerializeObject(_config);
@@ -125,7 +126,7 @@ namespace Scenes
             switch (_config.GameType)
             {
                 case GameType.Nongamified:
-                    var packedScene = (PackedScene)GD.Load("res://Scenes/NongamifiedGame.tscn");
+                    var packedScene = (PackedScene)GD.Load("res://Scenes/Nongamified/NongamifiedGame.tscn");
                     _gameScene = (NongamifiedGame)packedScene.Instance();
                     _gameScene.SendGameData += SendGameData;
                     AddChild(_gameScene);

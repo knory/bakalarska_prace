@@ -1,4 +1,5 @@
 using Godot;
+using Project.Scenes.HUD.Nongamified;
 using System;
 using Utils;
 
@@ -15,6 +16,8 @@ namespace Scenes.HUD.Nongamified
         private RichTextLabel _totalActionsLabel;
         private TextureRect _correctActionsBackground;
         private TextureRect _correctActionsMarker;
+
+        private PackedScene _popupPackedScene;
 
         public override void _Ready()
         {
@@ -44,12 +47,13 @@ namespace Scenes.HUD.Nongamified
             _totalActionsLabel.AddFontOverride("normal_font", labelFont);
             _totalActionsLabel.BbcodeEnabled = true;
             _totalActionsLabel.ScrollActive = false;
+
+            _popupPackedScene = (PackedScene)GD.Load($"res://Scenes/HUD/Nongamified/NongamifiedTaskCompletedPopup.tscn");
         }
 
         public override void UpdateLabels(float timeLeft, int completedTasks, int totalActions, int correctActions)
         {
             base.UpdateLabels(timeLeft, completedTasks, totalActions, correctActions);
-
 
             float correctActionsPercent = 0;
 
@@ -60,6 +64,25 @@ namespace Scenes.HUD.Nongamified
 
             _correctActionsMarker.RectRotation = (ACTIONS_MARKER_ROTATION_RANGE * correctActionsPercent) + ACTIONS_MARKER_BASE_ROTATION;
             _totalActionsLabel.BbcodeText = $"[color=#000000]{ResourceStrings.TotalActions}[/color] [color=#EB5757]{totalActions}[/color]";
+        }
+
+        public override void ShowStreakNotification(int streak)
+        {
+            _streakNotificationTimer.Start();
+            _streakIsShown = true;
+
+            _tasksCountLabel.Text = $"{streak}{ResourceStrings.StreakNotification}";
+        }
+
+        public void ShowTaskCompletedPopup(EventHandler<EventArgs> eventHandler, int sequenceOrder, double correctActionsInSequence, 
+            double correctActionsAverage, double correctActionsStreak, double correctActionsStreakAverage, double taskTimeLeft, 
+            double taskTimeLeftAverage)
+        {
+            var popupInstance = (NongamifiedTaskCompletedPopup)_popupPackedScene.Instance();
+            popupInstance.ConfirmButtonHandler += eventHandler;
+            AddChild(popupInstance);
+            popupInstance.SetPopupData(sequenceOrder, correctActionsInSequence, correctActionsAverage, correctActionsStreak, correctActionsStreakAverage,
+                taskTimeLeft, taskTimeLeftAverage);
         }
     }
 }

@@ -11,6 +11,8 @@ namespace Scenes.HUD.Nongamified
 
         public override void _Ready()
         {
+            base._Ready();
+
             _tasksCountBackground = GetNode<TextureRect>("TasksCountBackground");
             _tasksCountLabel = _tasksCountBackground.GetNode<Label>("TasksCountLabel");
             _timeLeftBackground = GetNode<TextureRect>("TimeLeftBackground");

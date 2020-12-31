@@ -8,7 +8,10 @@ namespace Utils
         public static readonly string ResourcesPath = "res://Resources/";
         public static readonly string NongamifiedResourcesPath = ResourcesPath + "Nongamified/";
 
+        public static int NUMBER_OF_ASSIGNMENTS_PER_TASK { get; } = 5;
         public static int GAME_COUNTDOWN_WAIT_TIME { get; } = 5;
+        public static int STREAK_NOTIFICATION_TIME { get; } = 5;
+        public static int MINIMAL_STREAK_NOTIFICATION { get; } = 3;
 
         // Advertisement (or equivalent) component constants
         public static int ADVERTISEMENT_NUMBER_OF_ITEMS { get; } = 3;
@@ -45,6 +48,15 @@ namespace Utils
         public static readonly string CompletedTasksCount = "počet sekvencí: ";
         public static readonly string TotalActions = "hotové úkony: ";
         public static readonly string CorrectActions = "správně: ";
+        public static readonly string StreakNotification = "x v řadě!";
+
+        // Nongamified task completed popup constants
+        public static readonly string CorrectActionsInSequence = "Správné úkony v sekvenci";
+        public static readonly string CorrectActionsStreak = "Úkony bez chyby v řadě";
+        public static readonly string TaskTimeLeft = "Ušetřený čas v sekvenci";
+        public static readonly string CurrentPerformance = "Aktuální výkon";
+        public static readonly string PreviousAverage = "Průměr předchozích";
+        public static readonly string PopupHeadline = "Zkontrolovali jste $ORDER$. sekvenci funkcí!\nDobrá práce!";
 
         public static class Nongamified
         {

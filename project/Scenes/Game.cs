@@ -2,14 +2,19 @@ using Components;
 using Godot;
 using Models;
 using Project.Scenes.HUD;
-using Scenes.HUD.Nongamified;
 using System;
+using System.Collections.Generic;
 using Utils;
 
 namespace Scenes
 {
     public abstract class Game : Node
     {
+        protected List<int> _correctComponentsPerSequence;
+        protected int _currentCorrectActionStreak;
+        protected List<int> _correctActionsStreaks;
+        protected List<float> _tasksTimeLeft;
+
         protected Config _config;
         protected GameData _gameData;
         protected GameTask _gameTask;
@@ -28,6 +33,11 @@ namespace Scenes
         {
             _confirmButton = GetNode<TextureButton>("ConfirmButton");
             _confirmButton.Connect("pressed", this, nameof(EndTaskButton));
+
+            _correctComponentsPerSequence = new List<int>();
+            _correctActionsStreaks = new List<int>();
+            _tasksTimeLeft = new List<float>();
+            _currentCorrectActionStreak = 0;
 
             _gameTimer = new Timer();
             _gameTimer.WaitTime = 20;
@@ -95,6 +105,7 @@ namespace Scenes
             _currentComboStreak = 0;
             EnableComponents();
             GenerateNewTask();
+
             _taskTimer.Start();
 
             if (_config.TimePerGame != 0)
@@ -140,8 +151,13 @@ namespace Scenes
                 return;
             }
 
+            PauseTimers();
+            ShowTaskCompletedPopup();
+
             GenerateNewTask();
             ResetComponents();
+
+            _tasksTimeLeft.Add(_taskTimer.TimeLeft);
             _taskTimer.Paused = false;
             _taskTimer.Start();
         }
@@ -156,7 +172,10 @@ namespace Scenes
         {
             _gameData.TimeSpent += _config.TimePerTask - _taskTimer.TimeLeft;
             var correctComponents = CountCorrectComponents(endedByButton);
+            _correctComponentsPerSequence.Add(correctComponents);
             _gameData.GainedPoints += correctComponents * _currentModifier;
+            _gameData.GainedPoints += (int)Math.Floor(_taskTimer.TimeLeft * _config.UnusedTimeTaskBonus);
+
             _completedTasks++;
         }
 
@@ -178,11 +197,7 @@ namespace Scenes
             }
             else
             {
-                if (component.IsCorrect(value))
-                {
-                    correctComponents++;
-                }
-                else
+                if (!component.IsCorrect(value))
                 {
                     return false;
                 }
@@ -197,6 +212,11 @@ namespace Scenes
             {
                 _gameData.CorrectSequences++;
                 _currentPerfectStreak++;
+
+                if (_currentPerfectStreak >= Constants.MINIMAL_STREAK_NOTIFICATION)
+                {
+                    _hud.ShowStreakNotification(_currentPerfectStreak);
+                }
                 
                 if (_currentComboStreak < 0)
                 {
@@ -249,6 +269,24 @@ namespace Scenes
             _currentComboStreak = 0;
         }
 
+        private void PauseTimers()
+        {
+            _gameTimer.Paused = true;
+            _taskTimer.Paused = true;
+        }
+
+        private void ResumeTimers()
+        {
+            _gameTimer.Paused = false;
+            _taskTimer.Paused = false;
+        }
+
+        public void TaskCompletedPopupClosedCallback(object sender, EventArgs eventArgs)
+        {
+            ResumeTimers();
+        }
+
+        protected abstract void ShowTaskCompletedPopup();
         protected abstract BaseHUD GetHUDScene(FeedbackType feedbackType);
         protected abstract int CountCorrectComponents(bool endedByButton);
         protected abstract void DisableComponents();

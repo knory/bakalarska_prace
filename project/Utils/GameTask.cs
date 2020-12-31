@@ -18,7 +18,7 @@ namespace Utils
         public bool Theme { get; private set; } = false;
         public (int, int) Time { get; private set; } = (-1, -1);
         public int Topics { get; private set; } = -1;
-        public int Volume { get; private set; } = -1;
+        public int Volume { get; private set; } = 0;
 
         public List<string> TaskAssignments;
 
@@ -67,6 +67,11 @@ namespace Utils
                     Advertisement.Add(i);
                 }
             }
+
+            if (Advertisement.Count == 0)
+            {
+                Advertisement.Add(_random.Next(Constants.ADVERTISEMENT_NUMBER_OF_ITEMS));
+            }
         }
 
         private void GenerateCalendarAssignment()
@@ -85,6 +90,11 @@ namespace Utils
                 {
                     Devices.Add(i);
                 }
+            }
+
+            if (Devices.Count == 0)
+            {
+                Devices.Add(_random.Next(Constants.DEVICES_NUMBER_OF_ITEMS));
             }
         }
 
@@ -111,6 +121,11 @@ namespace Utils
                 {
                     Teammates.Add(i);
                 }
+            }
+
+            if (Teammates.Count == 0)
+            {
+                Teammates.Add(_random.Next(Constants.TEAMMATES_NUMBER_OF_ITEMS));
             }
         }
 
@@ -201,7 +216,7 @@ namespace Utils
                 TaskAssignments.Add($"{ResourceStrings.Nongamified.TOPICS_TASK_BASE} {ResourceStrings.Nongamified.TOPICS_VALUES[Topics]}.");
             }
 
-            if (Volume != -1)
+            if (Volume != 0)
             {
                 TaskAssignments.Add($"{ResourceStrings.Nongamified.VOLUME_TASK_BASE} {ResourceStrings.Nongamified.VOLUME_VALUES[Volume]}.");
             }
