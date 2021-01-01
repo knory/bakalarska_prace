@@ -86,7 +86,23 @@
     <Compile Include="Models\SelectList\SelectListModel.cs" />
     <Compile Include="Models\Teammate\Teammate.cs" />
     <Compile Include="Models\Teammate\TeammateResource.cs" />
+    <Compile Include="Scenes\Gamified\Animals.cs" />
+    <Compile Include="Scenes\Gamified\Armor.cs" />
+    <Compile Include="Scenes\Gamified\Candles.cs" />
+    <Compile Include="Scenes\Gamified\Chest.cs" />
+    <Compile Include="Scenes\Gamified\Daytime.cs" />
+    <Compile Include="Scenes\Gamified\EnergyBooster.cs" />
+    <Compile Include="Scenes\Gamified\Fighters.cs" />
+    <Compile Include="Scenes\Gamified\GamifiedGame.cs" />
+    <Compile Include="Scenes\Gamified\Merchant.cs" />
+    <Compile Include="Scenes\Gamified\Potions.cs" />
+    <Compile Include="Scenes\Gamified\Superpowers.cs" />
+    <Compile Include="Scenes\Gamified\Weapons.cs" />
     <Compile Include="Scenes\HUD\BaseHUD.cs" />
+    <Compile Include="Scenes\HUD\Gamified\GamifiedBaseHUD.cs" />
+    <Compile Include="Scenes\HUD\Gamified\GamifiedQualityHUD.cs" />
+    <Compile Include="Scenes\HUD\Gamified\GamifiedSimpleHUD.cs" />
+    <Compile Include="Scenes\HUD\Gamified\GamifiedTaskCompletedPopup.cs" />
     <Compile Include="Scenes\HUD\Nongamified\NongamifiedQualityHUD.cs" />
     <Compile Include="Scenes\HUD\Nongamified\NongamifiedSimpleHUD.cs" />
     <Compile Include="Scenes\HUD\Nongamified\NongamifiedTaskCompletedPopup.cs" />
@@ -115,6 +131,7 @@
     <Compile Include="Utils\ExtensionMethods.cs" />
     <Compile Include="Utils\GameTask.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utils\ResourceStrings.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -235,7 +252,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include=".mono\temp\obj\Tools\" />
-    <Folder Include="NongamifiedScenes\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\Nongamified\Advertisement\add_button.png" />

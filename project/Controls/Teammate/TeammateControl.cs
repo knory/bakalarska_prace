@@ -14,6 +14,7 @@ namespace Controls
 
         public int VerticalContainerSeparation { get; set; }
         public DynamicFont Font { get; set; }
+        public Color? LabelColor { get; set; }
 
         public Teammate Teammate { get; private set; }
 
@@ -45,6 +46,11 @@ namespace Controls
 
             _verticalContainer.Set("custom_constants/separation", VerticalContainerSeparation);
             _teammateName.AddFontOverride("font", Font);
+
+            if (LabelColor.HasValue)
+            {
+                _teammateName.AddColorOverride("font_color", LabelColor.Value);
+            }
         }
 
         // Called when the node enters the scene tree for the first time.

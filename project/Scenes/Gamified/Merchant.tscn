@@ -1,0 +1,176 @@
+[gd_scene load_steps=18 format=2]
+
+[ext_resource path="res://Components/DoubleDropdown/DoubleDropdownComponent.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Scenes/Gamified/Merchant.cs" type="Script" id=2]
+[ext_resource path="res://Resources/Gamified/Merchant/chiller.tres" type="DynamicFont" id=3]
+[ext_resource path="res://Resources/Gamified/Merchant/red_arrow.png" type="Texture" id=4]
+[ext_resource path="res://Resources/Gamified/Merchant/blue_arrow.png" type="Texture" id=5]
+
+[sub_resource type="StyleBoxFlat" id=2]
+bg_color = Color( 1, 1, 1, 1 )
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+expand_margin_left = 5.0
+
+[sub_resource type="StyleBoxFlat" id=3]
+bg_color = Color( 1, 1, 1, 1 )
+border_color = Color( 1, 1, 1, 1 )
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+expand_margin_left = 5.0
+
+[sub_resource type="StyleBoxFlat" id=4]
+bg_color = Color( 1, 1, 1, 1 )
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+expand_margin_left = 5.0
+
+[sub_resource type="StyleBoxFlat" id=5]
+bg_color = Color( 0.937255, 0.937255, 0.937255, 1 )
+
+[sub_resource type="StyleBoxFlat" id=6]
+content_margin_left = 5.0
+content_margin_right = 5.0
+content_margin_top = 5.0
+content_margin_bottom = 8.0
+bg_color = Color( 1, 1, 1, 1 )
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="Theme" id=1]
+default_font = ExtResource( 3 )
+OptionButton/colors/font_color = Color( 0, 0, 0, 1 )
+OptionButton/colors/font_color_disabled = Color( 0, 0, 0, 0.2 )
+OptionButton/colors/font_color_hover = Color( 0, 0, 0, 1 )
+OptionButton/colors/font_color_pressed = Color( 0, 0, 0, 1 )
+OptionButton/constants/arrow_margin = 2
+OptionButton/constants/hseparation = 2
+OptionButton/fonts/font = null
+OptionButton/icons/arrow = ExtResource( 4 )
+OptionButton/styles/disabled = null
+OptionButton/styles/focus = null
+OptionButton/styles/hover = SubResource( 2 )
+OptionButton/styles/normal = SubResource( 3 )
+OptionButton/styles/pressed = SubResource( 4 )
+PopupMenu/colors/font_color = Color( 0, 0, 0, 1 )
+PopupMenu/colors/font_color_accel = Color( 0, 0, 0, 0.8 )
+PopupMenu/colors/font_color_disabled = Color( 0, 0, 0, 0.8 )
+PopupMenu/colors/font_color_hover = Color( 0, 0, 0, 1 )
+PopupMenu/constants/hseparation = 4
+PopupMenu/constants/vseparation = 4
+PopupMenu/fonts/font = ExtResource( 3 )
+PopupMenu/icons/checked = null
+PopupMenu/icons/radio_checked = null
+PopupMenu/icons/radio_unchecked = null
+PopupMenu/icons/submenu = null
+PopupMenu/icons/unchecked = null
+PopupMenu/styles/hover = SubResource( 5 )
+PopupMenu/styles/labeled_separator_left = null
+PopupMenu/styles/labeled_separator_right = null
+PopupMenu/styles/panel = SubResource( 6 )
+PopupMenu/styles/panel_disabled = null
+PopupMenu/styles/separator = null
+
+[sub_resource type="StyleBoxFlat" id=7]
+bg_color = Color( 1, 1, 1, 1 )
+border_color = Color( 1, 1, 1, 1 )
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+expand_margin_left = 5.0
+
+[sub_resource type="StyleBoxFlat" id=8]
+bg_color = Color( 1, 1, 1, 1 )
+border_color = Color( 1, 1, 1, 1 )
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+expand_margin_left = 5.0
+
+[sub_resource type="StyleBoxFlat" id=9]
+bg_color = Color( 1, 1, 1, 1 )
+border_color = Color( 1, 1, 1, 1 )
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+expand_margin_left = 5.0
+
+[sub_resource type="StyleBoxFlat" id=10]
+bg_color = Color( 0.937255, 0.937255, 0.937255, 1 )
+expand_margin_left = 5.0
+expand_margin_right = 5.0
+expand_margin_top = 5.0
+expand_margin_bottom = 5.0
+
+[sub_resource type="StyleBoxFlat" id=11]
+content_margin_left = 5.0
+content_margin_right = 5.0
+content_margin_top = 5.0
+content_margin_bottom = 8.0
+bg_color = Color( 1, 1, 1, 1 )
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+expand_margin_left = 5.0
+expand_margin_right = 5.0
+expand_margin_top = 5.0
+expand_margin_bottom = 5.0
+
+[sub_resource type="Theme" id=12]
+default_font = ExtResource( 3 )
+OptionButton/colors/font_color = Color( 0, 0, 0, 1 )
+OptionButton/colors/font_color_disabled = Color( 0, 0, 0, 0.2 )
+OptionButton/colors/font_color_hover = Color( 0, 0, 0, 1 )
+OptionButton/colors/font_color_pressed = Color( 0, 0, 0, 1 )
+OptionButton/constants/arrow_margin = 2
+OptionButton/constants/hseparation = 2
+OptionButton/fonts/font = null
+OptionButton/icons/arrow = ExtResource( 5 )
+OptionButton/styles/disabled = null
+OptionButton/styles/focus = null
+OptionButton/styles/hover = SubResource( 7 )
+OptionButton/styles/normal = SubResource( 8 )
+OptionButton/styles/pressed = SubResource( 9 )
+PopupMenu/colors/font_color = Color( 0, 0, 0, 1 )
+PopupMenu/colors/font_color_accel = Color( 0, 0, 0, 0.8 )
+PopupMenu/colors/font_color_disabled = Color( 0, 0, 0, 0.8 )
+PopupMenu/colors/font_color_hover = Color( 0, 0, 0, 1 )
+PopupMenu/constants/hseparation = 4
+PopupMenu/constants/vseparation = 4
+PopupMenu/fonts/font = null
+PopupMenu/icons/checked = null
+PopupMenu/icons/radio_checked = null
+PopupMenu/icons/radio_unchecked = null
+PopupMenu/icons/submenu = null
+PopupMenu/icons/unchecked = null
+PopupMenu/styles/hover = SubResource( 10 )
+PopupMenu/styles/labeled_separator_left = null
+PopupMenu/styles/labeled_separator_right = null
+PopupMenu/styles/panel = SubResource( 11 )
+PopupMenu/styles/panel_disabled = null
+PopupMenu/styles/separator = null
+
+[node name="Merchant" instance=ExtResource( 1 )]
+script = ExtResource( 2 )
+
+[node name="OptionButton1" parent="WindowWrapper/ContentWrapper" index="0"]
+theme = SubResource( 1 )
+custom_colors/font_color_disabled = Color( 0, 0, 0, 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_hover = Color( 0, 0, 0, 1 )
+custom_colors/font_color_pressed = Color( 0, 0, 0, 1 )
+
+[node name="OptionButton2" parent="WindowWrapper/ContentWrapper" index="2"]
+theme = SubResource( 12 )

@@ -6,3 +6,45 @@
 script = ExtResource( 1 )
 
 [node name="StreakNotificationTimer" type="Timer" parent="."]
+
+[node name="TasksCountBackground" type="TextureRect" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TasksCountLabel" type="Label" parent="TasksCountBackground"]
+margin_right = 40.0
+margin_bottom = 14.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TimeLeftBackground" type="TextureRect" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TimeLeftLabel" type="Label" parent="TimeLeftBackground"]
+margin_right = 40.0
+margin_bottom = 14.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="InstructionsBackground" type="TextureRect" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="InstructionsContainer" type="VBoxContainer" parent="InstructionsBackground"]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}

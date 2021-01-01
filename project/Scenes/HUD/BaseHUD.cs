@@ -22,58 +22,17 @@ namespace Project.Scenes.HUD
 
         public override void _Ready()
         {
+            _tasksCountBackground = GetNode<TextureRect>("TasksCountBackground");
+            _tasksCountLabel = _tasksCountBackground.GetNode<Label>("TasksCountLabel");
+            _timeLeftBackground = GetNode<TextureRect>("TimeLeftBackground");
+            _timeLeftLabel = _timeLeftBackground.GetNode<Label>("TimeLeftLabel");
+            _instructionsBackground = GetNode<TextureRect>("InstructionsBackground");
+            _instructionsContainer = _instructionsBackground.GetNode<VBoxContainer>("InstructionsContainer");
+
             _streakNotificationTimer = GetNode<Timer>("StreakNotificationTimer");
             _streakNotificationTimer.WaitTime = Constants.STREAK_NOTIFICATION_TIME;
             _streakNotificationTimer.OneShot = true;
             _streakNotificationTimer.Connect("timeout", this, nameof(HideStreakNotification));
-        }
-
-        /// <summary>
-        /// Updates all HUD labels' information based on the provided values.
-        /// </summary>
-        /// <param name="timeLeft">Game time left in seconds</param>
-        /// <param name="completedTasks">Number of completed tasks</param>
-        /// <param name="totalActions">Number of total done actions</param>
-        /// <param name="correctActions">Number of correctly done actions</param>
-        public virtual void UpdateLabels(float timeLeft, int completedTasks, int totalActions, int correctActions)
-        {
-            _timeLeftLabel.Text = TimeSpan.FromSeconds(timeLeft).ToString("mm\\:ss");
-            
-            if (!_streakIsShown)
-            {
-                _tasksCountLabel.Text = $"{ResourceStrings.CompletedTasksCount} {completedTasks}";
-            }
-        }
-
-
-        /// <summary>
-        /// Updates the list of instructions.
-        /// </summary>
-        /// <param name="instructions">List of instructions to be newly set</param>
-        public void SetInstructions(List<string> instructions)
-        {
-            DeleteInstructions();
-
-            foreach (var item in instructions)
-            {
-                var label = new Label();
-                label.AddFontOverride("font", _instructionsFont);
-                label.AddColorOverride("font_color", _instructionsColor);
-                label.Autowrap = true;
-                label.RectSize = _instructionsBackground.RectSize;
-                label.RectMinSize = new Vector2(_instructionsBackground.RectSize.x - 10, 0);
-                label.Text = item;
-                _instructionsContainer.AddChild(label);
-            }
-
-            var confirmLabel = new Label();
-            confirmLabel.AddFontOverride("font", _instructionsFont);
-            confirmLabel.AddColorOverride("font_color", _instructionsColor);
-            confirmLabel.Autowrap = true;
-            confirmLabel.RectSize = _instructionsBackground.RectSize;
-            confirmLabel.RectMinSize = new Vector2(_instructionsBackground.RectSize.x - 10, 0);
-            confirmLabel.Text = ResourceStrings.CompleteSequence;
-            _instructionsContainer.AddChild(confirmLabel);
         }
 
         /// <summary>
@@ -103,5 +62,20 @@ namespace Project.Scenes.HUD
         {
             _streakIsShown = false;
         }
+
+        /// <summary>
+        /// Updates the list of instructions.
+        /// </summary>
+        /// <param name="instructions">List of instructions to be newly set</param>
+        public abstract void SetInstructions(List<string> instructions);
+
+        /// <summary>
+        /// Updates all HUD labels' information based on the provided values.
+        /// </summary>
+        /// <param name="timeLeft">Game time left in seconds</param>
+        /// <param name="completedTasksOrPoints">Number of completed tasks or gained points</param>
+        /// <param name="totalActions">Number of total done actions</param>
+        /// <param name="correctActions">Number of correctly done actions</param>
+        public abstract void UpdateLabels(float timeLeft, int completedTasksOrPoints, int totalActions, int correctActions);
     }
 }

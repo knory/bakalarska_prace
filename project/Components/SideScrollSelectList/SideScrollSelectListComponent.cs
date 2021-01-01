@@ -12,8 +12,9 @@ namespace Components
         protected VBoxContainer _verticalContainer;
         protected SideScrollTabControl _sideScrollTabControl;
         protected VBoxContainer _tableContainer;
-        protected MarginContainer _marginContainer;
+        protected MarginContainer _headlineMarginContainer;
         protected HBoxContainer _gridHeadline;
+        protected MarginContainer _gridMarginContainer;
         protected GridContainer _gridContainer;
         protected SelectListModel[] _selectLists;
         protected Texture _deselectedTexture;
@@ -29,16 +30,12 @@ namespace Components
         /// <summary>
         /// Initializes component's value and possible values.
         /// </summary>
-        public void Init(int[] valuesArray, string[] listNames, int numberOfColumns, string[] gridHeadline, Texture leftButton, Texture rightButton)
+        public void Init(int[] valuesArray, string[] listNames, int numberOfColumns, string[] gridHeadline, Texture leftButton, Texture rightButton,
+            Color gridHeadlineColor = default)
         {
             if (valuesArray.Length != listNames.Length)
             {
                 throw new ArgumentOutOfRangeException("Unexpected list names length.");
-            }
-
-            if (gridHeadline.Length != numberOfColumns)
-            {
-                throw new ArgumentOutOfRangeException("Unexpected grid headline length.");
             }
 
             SetupView();
@@ -55,6 +52,11 @@ namespace Components
                 var label = new Label();
                 label.Text = item;
                 label.AddFontOverride("font", _gridHeaderFont);
+
+                if (gridHeadlineColor != default)
+                {
+                    label.AddColorOverride("font_color", gridHeadlineColor);
+                }
                 
                 _gridHeadline.AddChild(label);
             }
@@ -87,9 +89,10 @@ namespace Components
             _verticalContainer = _windowWrapper.GetNode<VBoxContainer>("VerticalContainer");
             _sideScrollTabControl = _verticalContainer.GetNode<SideScrollTabControl>("SideScrollTabControl");
             _tableContainer = _verticalContainer.GetNode<VBoxContainer>("TableContainer");
-            _marginContainer = _tableContainer.GetNode<MarginContainer>("MarginContainer");
-            _gridHeadline = _marginContainer.GetNode<HBoxContainer>("GridHeadline");
-            _gridContainer = _tableContainer.GetNode<GridContainer>("GridContainer");
+            _headlineMarginContainer = _tableContainer.GetNode<MarginContainer>("HeadlineMarginContainer");
+            _gridHeadline = _headlineMarginContainer.GetNode<HBoxContainer>("GridHeadline");
+            _gridMarginContainer = _tableContainer.GetNode<MarginContainer>("GridMarginContainer");
+            _gridContainer = _gridMarginContainer.GetNode<GridContainer>("GridContainer");
         }
 
         /// <summary>

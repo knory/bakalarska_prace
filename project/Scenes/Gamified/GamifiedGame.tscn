@@ -1,0 +1,92 @@
+[gd_scene load_steps=13 format=2]
+
+[ext_resource path="res://Scenes/Gamified/GamifiedGame.cs" type="Script" id=1]
+[ext_resource path="res://Scenes/Gamified/Superpowers.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Scenes/Gamified/Armor.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Scenes/Gamified/Potions.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Scenes/Gamified/Chest.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Scenes/Gamified/Animals.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Scenes/Gamified/Candles.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Scenes/Gamified/Fighters.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Scenes/Gamified/EnergyBooster.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Scenes/Gamified/Merchant.tscn" type="PackedScene" id=10]
+[ext_resource path="res://Scenes/Gamified/Weapons.tscn" type="PackedScene" id=11]
+[ext_resource path="res://Scenes/Gamified/Daytime.tscn" type="PackedScene" id=12]
+
+[node name="GamifiedGame" type="Node"]
+script = ExtResource( 1 )
+
+[node name="Background" type="Sprite" parent="."]
+
+[node name="Animals" parent="." instance=ExtResource( 6 )]
+margin_left = 930.0
+margin_top = 320.0
+margin_right = 930.0
+margin_bottom = 320.0
+
+[node name="Armor" parent="." instance=ExtResource( 3 )]
+margin_top = 600.0
+margin_bottom = 600.0
+
+[node name="Candles" parent="." instance=ExtResource( 7 )]
+margin_left = 1400.0
+margin_top = 605.0
+margin_right = 1400.0
+margin_bottom = 605.0
+
+[node name="Chest" parent="." instance=ExtResource( 5 )]
+margin_left = 420.0
+margin_top = 630.0
+margin_right = 420.0
+margin_bottom = 630.0
+
+[node name="Daytime" parent="." instance=ExtResource( 12 )]
+margin_left = 560.0
+margin_top = 190.0
+margin_right = 560.0
+margin_bottom = 190.0
+
+[node name="EnergyBooster" parent="." instance=ExtResource( 9 )]
+margin_left = 560.0
+margin_top = 370.0
+margin_right = 560.0
+margin_bottom = 370.0
+
+[node name="Fighters" parent="." instance=ExtResource( 8 )]
+margin_left = 100.0
+margin_top = 70.0
+margin_right = 100.0
+margin_bottom = 70.0
+
+[node name="Potions" parent="." instance=ExtResource( 4 )]
+margin_left = 1470.0
+margin_top = 230.0
+margin_right = 1470.0
+margin_bottom = 230.0
+
+[node name="Superpowers" parent="." instance=ExtResource( 2 )]
+margin_left = 1012.0
+margin_top = 581.0
+margin_right = 1012.0
+margin_bottom = 581.0
+
+[node name="Weapons" parent="." instance=ExtResource( 11 )]
+margin_left = 980.0
+margin_top = 900.0
+margin_right = 980.0
+margin_bottom = 900.0
+
+[node name="Merchant" parent="." instance=ExtResource( 10 )]
+margin_left = 700.0
+margin_top = 780.0
+margin_right = 700.0
+margin_bottom = 780.0
+
+[node name="ConfirmButton" type="TextureButton" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TopBar" type="Sprite" parent="."]

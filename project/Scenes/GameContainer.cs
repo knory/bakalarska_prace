@@ -2,6 +2,7 @@ using Godot;
 using Models;
 using Newtonsoft.Json;
 using Project.Scenes.HUD;
+using Scenes.Gamified;
 using Scenes.Nongamified;
 using System;
 using Utils;
@@ -27,13 +28,13 @@ namespace Scenes
                 _config = new Config
                 {
                     ComboBreakStreak = 1,
-                    ComboStreak = 5,
-                    GameType = GameType.Nongamified,
+                    ComboStreak = 2,
+                    GameType = GameType.Gamified,
                     FeedbackType = FeedbackType.Quality,
                     MaxComboModifier = 5,
                     PerfectTaskBonusPoints = 3,
                     TasksPerGame = 100,
-                    TimePerGame = 30,
+                    TimePerGame = 120,
                     TimePerTask = 120,
                     UnusedTimeGameBonus = 2,
                     UnusedTimeTaskBonus = 0,
@@ -123,11 +124,19 @@ namespace Scenes
 
         private void SetupGameScene()
         {
+            PackedScene packedScene;
+
             switch (_config.GameType)
             {
                 case GameType.Nongamified:
-                    var packedScene = (PackedScene)GD.Load("res://Scenes/Nongamified/NongamifiedGame.tscn");
+                    packedScene = (PackedScene)GD.Load("res://Scenes/Nongamified/NongamifiedGame.tscn");
                     _gameScene = (NongamifiedGame)packedScene.Instance();
+                    _gameScene.SendGameData += SendGameData;
+                    AddChild(_gameScene);
+                    return;
+                case GameType.Gamified:
+                    packedScene = (PackedScene)GD.Load("res://Scenes/Gamified/GamifiedGame.tscn");
+                    _gameScene = (GamifiedGame)packedScene.Instance();
                     _gameScene.SendGameData += SendGameData;
                     AddChild(_gameScene);
                     return;

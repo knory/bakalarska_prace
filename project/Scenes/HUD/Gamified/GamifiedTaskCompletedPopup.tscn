@@ -1,0 +1,90 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Scenes/HUD/Gamified/GamifiedTaskCompletedPopup.cs" type="Script" id=1]
+
+[node name="GamifiedTaskCompletedPopup" type="TextureRect"]
+margin_right = 40.0
+margin_bottom = 40.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Headline" type="Label" parent="."]
+margin_right = 40.0
+margin_bottom = 14.0
+
+[node name="Award" type="Label" parent="."]
+margin_right = 40.0
+margin_bottom = 14.0
+
+[node name="GainedPoints" type="Label" parent="."]
+margin_right = 40.0
+margin_bottom = 14.0
+
+[node name="Category1" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="Name" type="Label" parent="Category1"]
+margin_right = 40.0
+margin_bottom = 14.0
+
+[node name="Points" type="Label" parent="Category1"]
+margin_right = 40.0
+margin_bottom = 14.0
+
+[node name="Comparison" type="TextureRect" parent="Category1"]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="Category2" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Name" type="Label" parent="Category2"]
+margin_right = 40.0
+margin_bottom = 14.0
+
+[node name="Points" type="Label" parent="Category2"]
+margin_right = 40.0
+margin_bottom = 14.0
+
+[node name="Comparison" type="TextureRect" parent="Category2"]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="Category3" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="Name" type="Label" parent="Category3"]
+margin_right = 40.0
+margin_bottom = 14.0
+
+[node name="Points" type="Label" parent="Category3"]
+margin_right = 40.0
+margin_bottom = 14.0
+
+[node name="Comparison" type="TextureRect" parent="Category3"]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="Sum" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="Name" type="Label" parent="Sum"]
+margin_right = 40.0
+margin_bottom = 14.0
+
+[node name="Points" type="Label" parent="Sum"]
+margin_right = 40.0
+margin_bottom = 14.0
+
+[node name="ConfirmButton" type="TextureButton" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0

@@ -2,6 +2,7 @@ using Components;
 using Godot;
 using Models;
 using Project.Scenes.HUD;
+using Scenes.HUD.Gamified;
 using System;
 using System.Collections.Generic;
 using Utils;
@@ -46,21 +47,16 @@ namespace Scenes
             _gameTimer.Start();
         }
 
-        public override void _Process(float delta)
-        {
-            if (_hud != null)
-            {
-                _hud.UpdateLabels(_gameTimer.TimeLeft, _completedTasks, _gameData.TotalActions, _gameData.CorrectActions);
-            }
-        }
-
         public void Init(Config config, GameData gameData)
         {
             _config = config;
             _gameData = gameData;
 
             _hud = GetHUDScene(_config.FeedbackType);
-            AddChild(_hud);
+            if (_hud != null)
+            {
+                AddChild(_hud);
+            }
 
             _gameTimer = new Timer
             {
@@ -165,7 +161,7 @@ namespace Scenes
         protected void GenerateNewTask()
         {
             _gameTask = new GameTask(_config.GameType);
-            _hud.SetInstructions(_gameTask.TaskAssignments);
+            _hud?.SetInstructions(_gameTask.TaskAssignments);
         }
 
         protected void CheckCompletedTask(bool endedByButton)
@@ -213,9 +209,12 @@ namespace Scenes
                 _gameData.CorrectSequences++;
                 _currentPerfectStreak++;
 
-                if (_currentPerfectStreak >= Constants.MINIMAL_STREAK_NOTIFICATION)
+                if (_config.GameType == GameType.Nongamified)
                 {
-                    _hud.ShowStreakNotification(_currentPerfectStreak);
+                    if (_currentPerfectStreak >= Constants.MINIMAL_STREAK_NOTIFICATION)
+                    {
+                        _hud?.ShowStreakNotification(_currentPerfectStreak);
+                    }
                 }
                 
                 if (_currentComboStreak < 0)
@@ -258,13 +257,23 @@ namespace Scenes
             if (_config.MaxComboModifier > 0 && _config.MaxComboModifier > _currentModifier)
             {
                 _currentModifier++;
+
+                if (_config.GameType == GameType.Gamified)
+                {
+                    _hud?.ShowStreakNotification(_currentModifier);
+                }
             }
-            
+
             _currentComboStreak = 0;
         }
 
         protected void DecrementComboModifier()
         {
+            if (_config.GameType == GameType.Gamified && _currentModifier > 1)
+            {
+                _hud?.ShowStreakNotification(1);
+            }
+
             _currentModifier = 1;
             _currentComboStreak = 0;
         }

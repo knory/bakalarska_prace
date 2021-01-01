@@ -52,7 +52,7 @@ namespace Scenes.Nongamified
             _gridHeadline.SizeFlagsVertical = (int)SizeFlags.ShrinkCenter;
             _gridHeadline.RectPosition = new Vector2(8, 0);
 
-            _marginContainer.Set("custom_constants/margin_left", 8);
+            _headlineMarginContainer.Set("custom_constants/margin_left", 8);
 
             _verticalContainer.Set("custom_constants/separation", 40);
 

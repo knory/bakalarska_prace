@@ -1,5 +1,4 @@
 using Godot;
-using Project.Scenes.HUD.Nongamified;
 using System;
 using Utils;
 
@@ -71,7 +70,7 @@ namespace Scenes.HUD.Nongamified
             _streakNotificationTimer.Start();
             _streakIsShown = true;
 
-            _tasksCountLabel.Text = $"{streak}{ResourceStrings.StreakNotification}";
+            _tasksCountLabel.Text = $"{streak}{ResourceStrings.Nongamified.StreakNotification}";
         }
 
         public void ShowTaskCompletedPopup(EventHandler<EventArgs> eventHandler, int sequenceOrder, double correctActionsInSequence, 

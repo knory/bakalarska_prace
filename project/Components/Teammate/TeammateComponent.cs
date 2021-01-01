@@ -21,12 +21,15 @@ namespace Components
         protected Label _newTeammatesLabel;
         protected MarginContainer _sideScrollMarginContainer;
         protected Label _addedTeammatesLabel;
+
         protected Teammate[] _allTeammates;
         protected Texture _addIcon;
         protected Texture _removeIcon;
         protected PackedScene _teammateScene;
         protected int _teammateVerticalSeparation;
         protected DynamicFont _teammateNameFont;
+        protected Color? _addedTeammateLabelColor = null;
+        protected Color? _newTeammateLabelColor = null;
 
         /// <summary>
         /// Initializes component's value and possible values.
@@ -45,6 +48,7 @@ namespace Components
 
             _teammatesSideScrollControl.VerticalSeparation = _teammateVerticalSeparation;
             _teammatesSideScrollControl.Font = _teammateNameFont;
+            _teammatesSideScrollControl.LabelColor = _newTeammateLabelColor;
             _teammatesSideScrollControl.Init(_allTeammates, Constants.TEAMMATES_POSSIBLE_COUNT, true, TeammateAdded,
                 leftButtonTexture, rightButtonTexture, _addIcon, _removeIcon);
             
@@ -195,6 +199,7 @@ namespace Components
             var teammateNode = (TeammateControl)_teammateScene.Instance();
             teammateNode.VerticalContainerSeparation = _teammateVerticalSeparation;
             teammateNode.Font = _teammateNameFont;
+            teammateNode.LabelColor = _addedTeammateLabelColor;
             teammateNode.Init(teammate, _addIcon, _removeIcon);
             return teammateNode;
         }

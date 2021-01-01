@@ -26,19 +26,22 @@ margin_top = 4.0
 margin_right = 40.0
 margin_bottom = 8.0
 
-[node name="MarginContainer" type="MarginContainer" parent="WindowWrapper/VerticalContainer/TableContainer" index="0"]
+[node name="HeadlineMarginContainer" type="MarginContainer" parent="WindowWrapper/VerticalContainer/TableContainer" index="0"]
 margin_right = 40.0
 
-[node name="GridHeadline" type="HBoxContainer" parent="WindowWrapper/VerticalContainer/TableContainer/MarginContainer" index="0"]
+[node name="GridHeadline" type="HBoxContainer" parent="WindowWrapper/VerticalContainer/TableContainer/HeadlineMarginContainer" index="0"]
 margin_right = 40.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="GridContainer" type="GridContainer" parent="WindowWrapper/VerticalContainer/TableContainer" index="1"]
+[node name="GridMarginContainer" type="MarginContainer" parent="WindowWrapper/VerticalContainer/TableContainer" index="1"]
 margin_top = 4.0
 margin_right = 40.0
 margin_bottom = 4.0
+
+[node name="GridContainer" type="GridContainer" parent="WindowWrapper/VerticalContainer/TableContainer/GridMarginContainer" index="0"]
+margin_right = 40.0
 __meta__ = {
 "_edit_use_anchors_": false
 }

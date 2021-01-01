@@ -2,51 +2,73 @@
 using System;
 using Utils;
 
-namespace Project.Scenes.HUD.Nongamified
+namespace Scenes.HUD.Nongamified
 {
     public class NongamifiedTaskCompletedPopup : TaskCompletedPopupBase
     {
         private static readonly string _popupResourcesPath = $"{Constants.NongamifiedResourcesPath}HUD/Quality/TaskCompleted/";
 
-        private Color _mintColor = new Color("2EAEA2");
-        private Color _blackColor = new Color("000000");
+        protected Label _currentPerformance;
+        protected Label _previousAverage;
+
+        protected Label _current1;
+        protected Label _previous1;
+
+        protected Label _current2;
+        protected Label _previous2;
+
+        protected Label _current3;
+        protected Label _previous3;
+
+        private readonly Color _mintColor = new Color("2EAEA2");
+        private readonly Color _blackColor = new Color("000000");
 
         private Texture _upArrowBlue;
-        private Texture _upArrowRed;
-        private Texture _downArrowBlue;
         private Texture _downArrowRed;
 
         public override void _Ready()
         {
             base._Ready();
 
-            _headlineFont = (DynamicFont)GD.Load($"{_popupResourcesPath}montserrat_extra_bold.tres");
-            _headlineFont.Size = 48;
+            _currentPerformance = GetNode<Label>("CurrentPerformance");
+            _previousAverage = GetNode<Label>("PreviousAverage");
 
-            _tableHeaderFont = (DynamicFont)GD.Load($"{_popupResourcesPath}montserrat_bold_small.tres");
-            _tableHeaderFont.Size = 18;
+            _current1 = _category1.GetNode<Label>("Current");
+            _previous1 = _category1.GetNode<Label>("Previous");
 
-            _tableDataFont = (DynamicFont)GD.Load($"{_popupResourcesPath}montserrat_bold.tres");
-            _tableDataFont.Size = 24;
+            _current2 = _category2.GetNode<Label>("Current");
+            _previous2 = _category2.GetNode<Label>("Previous");
 
-            _headline.AddFontOverride("font", _headlineFont);
+            _current3 = _category3.GetNode<Label>("Current");
+            _previous3 = _category3.GetNode<Label>("Previous");
+
+            var headlineFont = (DynamicFont)GD.Load($"{_popupResourcesPath}montserrat_extra_bold.tres");
+            headlineFont.Size = 48;
+
+            var tableHeaderFont = (DynamicFont)GD.Load($"{_popupResourcesPath}montserrat_bold_small.tres");
+            tableHeaderFont.Size = 18;
+
+            var tableDataFont = (DynamicFont)GD.Load($"{_popupResourcesPath}montserrat_bold.tres");
+            tableDataFont.Size = 24;
+
+            _headline.AddFontOverride("font", headlineFont);
             _headline.AddColorOverride("font_color", _mintColor);
 
-            _currentPerformance.AddFontOverride("font", _tableHeaderFont);
+            _currentPerformance.AddFontOverride("font", tableHeaderFont);
             _currentPerformance.AddColorOverride("font_color", _blackColor);
 
-            _previousAverage.AddFontOverride("font", _tableHeaderFont);
+            _previousAverage.AddFontOverride("font", tableHeaderFont);
             _previousAverage.AddColorOverride("font_color", _blackColor);
 
-            _name1.AddFontOverride("font", _tableDataFont);
-            _name2.AddFontOverride("font", _tableDataFont);
-            _name3.AddFontOverride("font", _tableDataFont);
-            _current1.AddFontOverride("font", _tableDataFont);
-            _current2.AddFontOverride("font", _tableDataFont);
-            _current3.AddFontOverride("font", _tableDataFont);
-            _previous1.AddFontOverride("font", _tableDataFont);
-            _previous2.AddFontOverride("font", _tableDataFont);
-            _previous3.AddFontOverride("font", _tableDataFont);
+            _name1.AddFontOverride("font", tableDataFont);
+            _name2.AddFontOverride("font", tableDataFont);
+            _name3.AddFontOverride("font", tableDataFont);
+            _current1.AddFontOverride("font", tableDataFont);
+            _current2.AddFontOverride("font", tableDataFont);
+            _current3.AddFontOverride("font", tableDataFont);
+            _previous1.AddFontOverride("font", tableDataFont);
+            _previous2.AddFontOverride("font", tableDataFont);
+            _previous3.AddFontOverride("font", tableDataFont);
 
             _name1.AddColorOverride("font_color", _mintColor);
             _name2.AddColorOverride("font_color", _mintColor);
@@ -101,16 +123,14 @@ namespace Project.Scenes.HUD.Nongamified
             _confirmButton.RectPosition = new Vector2(859, 812);
 
             _upArrowBlue = (Texture)GD.Load($"{_popupResourcesPath}up_arrow_blue.png");
-            _upArrowRed = (Texture)GD.Load($"{_popupResourcesPath}up_arrow_red.png");
-            _downArrowBlue = (Texture)GD.Load($"{_popupResourcesPath}down_arrow_blue.png");
             _downArrowRed = (Texture)GD.Load($"{_popupResourcesPath}down_arrow_red.png");
 
-            _currentPerformance.Text = ResourceStrings.CurrentPerformance;
-            _previousAverage.Text = ResourceStrings.PreviousAverage;
+            _currentPerformance.Text = ResourceStrings.Nongamified.CurrentPerformance;
+            _previousAverage.Text = ResourceStrings.Nongamified.PreviousAverage;
 
-            _name1.Text = ResourceStrings.CorrectActionsInSequence;
-            _name2.Text = ResourceStrings.CorrectActionsStreak;
-            _name3.Text = ResourceStrings.TaskTimeLeft;
+            _name1.Text = ResourceStrings.Nongamified.CorrectActionsInSequence;
+            _name2.Text = ResourceStrings.Nongamified.CorrectActionsStreak;
+            _name3.Text = ResourceStrings.Nongamified.TaskTimeLeft;
 
             _comparison1.RectPosition = new Vector2(1076, 463);
             _comparison2.RectPosition = new Vector2(1076, 565);
@@ -120,7 +140,7 @@ namespace Project.Scenes.HUD.Nongamified
         public void SetPopupData(int sequenceOrder, double correctActionsInSequence, double correctActionsAverage, double correctActionsStreak, 
             double correctActionsStreakAverage, double taskTimeLeft, double taskTimeLeftAverage)
         {
-            _headline.Text = ResourceStrings.PopupHeadline.Replace("$ORDER$", $"{sequenceOrder}");
+            _headline.Text = ResourceStrings.Nongamified.PopupHeadline.Replace("$ORDER$", $"{sequenceOrder}");
 
             _current1.Text = $"{((float)correctActionsInSequence / Constants.NUMBER_OF_ASSIGNMENTS_PER_TASK * 100):0.#} %";
             _previous1.Text = $"{((float)correctActionsAverage / Constants.NUMBER_OF_ASSIGNMENTS_PER_TASK * 100):0.#} %";
@@ -133,19 +153,6 @@ namespace Project.Scenes.HUD.Nongamified
             _current3.Text = $"{taskTimeLeft:0.#} s";
             _previous3.Text = $"{taskTimeLeftAverage:0.#} s";
             SetTrendTexture(_comparison3, taskTimeLeft, taskTimeLeftAverage, _upArrowBlue, _downArrowRed);
-        }
-
-        private void SetTrendTexture(TextureRect textureRect, double currentValue, double previousAverage, 
-            Texture positive, Texture negative)
-        {
-            if (currentValue > previousAverage)
-            {
-                textureRect.Texture = positive;
-            }
-            else if (currentValue < previousAverage)
-            {
-                textureRect.Texture = negative;
-            }
         }
     }
 }

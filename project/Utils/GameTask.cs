@@ -156,8 +156,79 @@ namespace Utils
                 case GameType.Nongamified:
                     GenerateTaskAssignmentsNongamified();
                     return;
+                case GameType.Gamified:
+                    GenerateTaskAssignmentsGamified();
+                    return;
                 default:
                     throw new ArgumentOutOfRangeException("Specified game type does not exist.");
+            }
+        }
+
+        private void GenerateTaskAssignmentsGamified()
+        {
+            if (Advertisement.Count > 0)
+            {
+                var valuesJoined = GetMultipleValuesJoined(Advertisement, ResourceStrings.Gamified.SUPERPOWERS_VALUES);
+                TaskAssignments.Add($"{ResourceStrings.Gamified.SUPERPOWERS_TASK_BASE} {valuesJoined}.");
+            }
+
+            if (Calendar != (-1, -1))
+            {
+                TaskAssignments.Add(ResourceStrings.Gamified.ARMOR_TASK_BASE
+                    .Replace("$ARMOR$", ResourceStrings.Gamified.ARMOR_VALUES[Calendar.Item1])
+                    .Replace("$OIL$", (Calendar.Item2 + 1).ToString()) + ".");
+            }
+
+            if (Devices.Count > 0)
+            {
+                var attributesJoined = GetMultipleValuesJoined(Devices, ResourceStrings.Gamified.POTIONS_ATTRIBUTES);
+                var colorsJoined = GetMultipleValuesJoined(Devices, ResourceStrings.Gamified.POTIONS_COLORS);
+                TaskAssignments.Add(ResourceStrings.Gamified.POTIONS_TASK_BASE
+                    .Replace("$ATTRIBUTE$", attributesJoined)
+                    .Replace("$COLOR$", colorsJoined) + ".");
+            }
+
+            if (Position)
+            {
+                TaskAssignments.Add($"{ResourceStrings.Gamified.CHEST_TASK_BASE}.");
+            }
+
+            if (Priority != -1)
+            {
+                TaskAssignments.Add($"{ResourceStrings.Gamified.ANIMALS_TASK_BASE} {ResourceStrings.Gamified.ANIMALS_VALUES[Priority]}.");
+            }
+
+            if (Rating != -1)
+            {
+                TaskAssignments.Add($"{ResourceStrings.Gamified.CANDLES_TASK_BASE.Replace("$CANDLES$", ResourceStrings.Gamified.CANDLES_VALUES[Rating])}.");
+            }
+
+            if (Teammates.Count > 0)
+            {
+                var valuesJoined = GetMultipleValuesJoined(Teammates, ResourceStrings.Gamified.FIGHTERS_VALUES);
+                TaskAssignments.Add($"{ResourceStrings.Gamified.FIGHTERS_TASK_BASE} {valuesJoined}.");
+            }
+
+            if (Theme)
+            {
+                TaskAssignments.Add($"{ResourceStrings.Gamified.ENERGY_BOOSTER_TASK_BASE}.");
+            }
+
+            if (Time != (-1, -1))
+            {
+                TaskAssignments.Add(ResourceStrings.Gamified.MERCHANT_TASK_BASE
+                    .Replace("$FOOD$", ResourceStrings.Gamified.MERCHANT_FOOD_VALUES[Time.Item1])
+                    .Replace("$WATER$", ResourceStrings.Gamified.MERCHANT_WATER_VALUES[Time.Item2]) + ".");
+            }
+
+            if (Topics != -1)
+            {
+                TaskAssignments.Add($"{ResourceStrings.Gamified.WEAPONS_TASK_BASE} {ResourceStrings.Gamified.WEAPONS_VALUES[Topics]}.");
+            }
+
+            if (Volume != 0)
+            {
+                TaskAssignments.Add($"{ResourceStrings.Gamified.DAYTIME_TASK_BASE.Replace("$TIME$", ResourceStrings.Gamified.DAYTIME_VALUES[Volume])}.");
             }
         }
 

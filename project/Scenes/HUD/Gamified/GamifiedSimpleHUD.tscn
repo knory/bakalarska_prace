@@ -1,0 +1,29 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Scenes/HUD/Gamified/GamifiedBaseHUD.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Scenes/HUD/Gamified/GamifiedSimpleHUD.cs" type="Script" id=2]
+
+[node name="GamifiedSimpleHUD" instance=ExtResource( 1 )]
+script = ExtResource( 2 )
+
+[node name="ActionsBackground" type="TextureRect" parent="." index="4"]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ActionsLabelsContainer" type="VBoxContainer" parent="ActionsBackground" index="0"]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CompletedActionsLabel" type="RichTextLabel" parent="ActionsBackground/ActionsLabelsContainer" index="0"]
+margin_right = 40.0
+
+[node name="CorrectActionsLabel" type="RichTextLabel" parent="ActionsBackground/ActionsLabelsContainer" index="1"]
+margin_top = 4.0
+margin_right = 40.0
+margin_bottom = 4.0

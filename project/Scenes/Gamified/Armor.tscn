@@ -1,0 +1,23 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Scenes/Gamified/Armor.cs" type="Script" id=1]
+[ext_resource path="res://Components/SideScrollSelectList/SideScrollSelectListComponent.tscn" type="PackedScene" id=2]
+
+[node name="Armor" instance=ExtResource( 2 )]
+script = ExtResource( 1 )
+
+[node name="VerticalContainer" parent="WindowWrapper" index="1"]
+margin_bottom = 56.0
+
+[node name="TableContainer" parent="WindowWrapper/VerticalContainer" index="1"]
+margin_bottom = 38.0
+
+[node name="GridMarginContainer" parent="WindowWrapper/VerticalContainer/TableContainer" index="1"]
+margin_bottom = 34.0
+custom_constants/margin_top = 30
+custom_constants/margin_left = 30
+
+[node name="GridContainer" parent="WindowWrapper/VerticalContainer/TableContainer/GridMarginContainer" index="0"]
+margin_left = 30.0
+margin_top = 30.0
+margin_bottom = 30.0

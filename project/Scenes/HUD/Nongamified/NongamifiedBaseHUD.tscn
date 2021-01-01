@@ -1,46 +1,7 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://Scenes/HUD/Nongamified/NongamifiedBaseHUD.cs" type="Script" id=1]
 [ext_resource path="res://Scenes/HUD/BaseHUD.tscn" type="PackedScene" id=2]
 
 [node name="NongamifiedBaseHUD" instance=ExtResource( 2 )]
 script = ExtResource( 1 )
-
-[node name="TasksCountBackground" type="TextureRect" parent="."]
-margin_left = 1617.0
-margin_top = 216.0
-margin_right = 1657.0
-margin_bottom = 256.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="TasksCountLabel" type="Label" parent="TasksCountBackground"]
-margin_right = 40.0
-margin_bottom = 14.0
-
-[node name="TimeLeftBackground" type="TextureRect" parent="."]
-margin_left = 1026.0
-margin_right = 1066.0
-margin_bottom = 40.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="TimeLeftLabel" type="Label" parent="TimeLeftBackground"]
-margin_right = 40.0
-margin_bottom = 14.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="InstructionsBackground" type="TextureRect" parent="."]
-margin_right = 40.0
-margin_bottom = 40.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="InstructionsContainer" type="VBoxContainer" parent="InstructionsBackground"]
-margin_right = 40.0
-margin_bottom = 40.0

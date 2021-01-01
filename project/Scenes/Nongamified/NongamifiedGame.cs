@@ -57,6 +57,11 @@ namespace Scenes.Nongamified
             _confirmButton.RectPosition = new Vector2(870, 555);
         }
 
+        public override void _Process(float delta)
+        {
+            _hud?.UpdateLabels(_gameTimer.TimeLeft, _completedTasks, _gameData.TotalActions, _gameData.CorrectActions);
+        }
+
         protected override BaseHUD GetHUDScene(FeedbackType feedbackType)
         {
             var hudScenesPath = "res://Scenes/HUD/Nongamified/";

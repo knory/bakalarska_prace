@@ -10,6 +10,10 @@ script = ExtResource( 4 )
 [node name="OptionButton1" parent="WindowWrapper/ContentWrapper" index="0"]
 margin_bottom = -45.0
 theme = ExtResource( 2 )
+custom_colors/font_color_disabled = Color( 0, 0, 0, 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_hover = Color( 0, 0, 0, 1 )
+custom_colors/font_color_pressed = Color( 0, 0, 0, 1 )
 
 [node name="OptionButton2" parent="WindowWrapper/ContentWrapper" index="2"]
 margin_top = -26.0

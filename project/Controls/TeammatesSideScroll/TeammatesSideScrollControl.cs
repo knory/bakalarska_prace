@@ -17,6 +17,7 @@ namespace Controls
 
         public int VerticalSeparation { get; set; }
         public DynamicFont Font { get; set; }
+        public Color? LabelColor { get; set; }
 
         public virtual void Init(Teammate[] possibleValues, int valuesShown, bool canJumpBounds, 
             EventHandler<TeammateControlClickedEventArgs> nodeClickedCallback, 
@@ -92,6 +93,7 @@ namespace Controls
         {
             var node = (TeammateControl)_teammatePackedScene.Instance();
             node.Font = Font;
+            node.LabelColor = LabelColor;
             node.VerticalContainerSeparation = VerticalSeparation;
             node.Init(teammate, _addIcon, _removeIcon);
             node.Clicked += _nodeClickedCallback;
