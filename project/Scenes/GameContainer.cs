@@ -29,54 +29,31 @@ namespace Scenes
 
             if (string.IsNullOrEmpty(encodedConfig))
             {
-                //_gameStartOverlay.ShowErrorLabel();
-                //return false;
-
-                _config = new Config
-                {
-                    ComboBreakStreak = 1,
-                    ComboStreak = 2,
-                    GameType = GameType.Nongamified,
-                    FeedbackType = FeedbackType.Quality,
-                    MaxComboModifier = 5,
-                    PerfectTaskBonusPoints = 3,
-                    TasksPerGame = 100,
-                    TimePerGame = 10,
-                    TimePerTask = 120,
-                    UnusedTimeGameBonus = 2,
-                    UnusedTimeTaskBonus = 1,
-                    PointsPerCorrectComponent = 3,
-                };
-
-                var serializedConfig = JsonConvert.SerializeObject(_config);
-                //var configBytesArray = System.Text.Encoding.UTF8.GetBytes(serializedConfig);
-                //_gameData.GameConfig = Convert.ToBase64String(configBytesArray);
-                _gameData.GameConfig = serializedConfig;
+                _gameStartOverlay.ShowErrorLabel();
+                return false;
             }
-            else
-            {
-                try 
-                {
-                    var decodedByteArray = Convert.FromBase64String(encodedConfig);
-                    var jsonConfig = System.Text.Encoding.UTF8.GetString(decodedByteArray);
-                    var deserializedConfig = JsonConvert.DeserializeObject<Config>(jsonConfig);
 
-                    if (deserializedConfig != null) 
-                    {
-                        _config = deserializedConfig;
-                        _gameData.GameConfig = jsonConfig;
-                    }
-                    else
-                    {
-                        _gameStartOverlay.ShowErrorLabel();
-                        return false;
-                    }
+            try 
+            {
+                var decodedByteArray = Convert.FromBase64String(encodedConfig);
+                var jsonConfig = System.Text.Encoding.UTF8.GetString(decodedByteArray);
+                var deserializedConfig = JsonConvert.DeserializeObject<Config>(jsonConfig);
+
+                if (deserializedConfig != null) 
+                {
+                    _config = deserializedConfig;
+                    _gameData.GameConfig = jsonConfig;
                 }
-                catch (Exception)
+                else
                 {
                     _gameStartOverlay.ShowErrorLabel();
                     return false;
                 }
+            }
+            catch (Exception)
+            {
+                _gameStartOverlay.ShowErrorLabel();
+                return false;
             }
 
             _gameStartOverlay.HideErrorLabel();
@@ -101,7 +78,8 @@ namespace Scenes
 
         public void EndGame(object sender, GameDataEventArgs eventArgs)
         {
-            _gameScene.QueueFree();
+            //_gameScene.QueueFree();
+            this.RemoveChild(_gameScene);
             _gameStartOverlay.ShowOverlay();
             _gameStartOverlay.ShowWaitLabel();
 

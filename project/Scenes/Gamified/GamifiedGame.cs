@@ -180,10 +180,6 @@ namespace Scenes.Gamified
                     _perfectTaskBonusPerSequence[_perfectTaskBonusPerSequence.Count - 1], perfectTaskBonusAverage, 
                     _savedTimeBonusPerSequence[_savedTimeBonusPerSequence.Count - 1], savedTimeBonusAverage);
             }
-            else
-            {
-                ResumeTimers();
-            }
         }
 
         /// <summary>

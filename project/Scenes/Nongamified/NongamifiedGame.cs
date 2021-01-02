@@ -169,10 +169,6 @@ namespace Scenes.Nongamified
                     correctComponents, correctComponentsAverage, _currentCorrectActionStreak, correctActionsStreakAverage, _taskTimer.TimeLeft, 
                     taskTimeLeftAverage);
             }
-            else
-            {
-                ResumeTimers();
-            }
         }
 
         /// <summary>

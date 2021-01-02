@@ -15,6 +15,11 @@
 			text-align: center;
 			background-color: black;
 		}
+		
+		#canvasContainer {
+			overflow: hidden;
+			margin: auto;
+		}
 
 		#canvas {
 			display: block;
@@ -115,10 +120,12 @@
 
 </head>
 <body>
-	<canvas id='canvas'>
-		HTML5 canvas appears to be unsupported in the current browser.<br />
-		Please try updating or use a different browser.
-	</canvas>
+    <div id='canvasContainer'>
+		<canvas id='canvas'>
+			HTML5 canvas appears to be unsupported in the current browser.<br />
+			Please try updating or use a different browser.
+		</canvas>
+	</div>
 	<div id='status'>
 		<div id='status-progress' style='display: none;' oncontextmenu='event.preventDefault();'><div id ='status-progress-inner'></div></div>
 		<div id='status-indeterminate' style='display: none;' oncontextmenu='event.preventDefault();'>
@@ -147,6 +154,7 @@
 			const MAIN_PACK = 'index.pck';
 			const INDETERMINATE_STATUS_STEP_MS = 100;
 
+			var canvasContainer = document.getElementById('canvasContainer');
 			var canvas = document.getElementById('canvas');
 			var statusProgress = document.getElementById('status-progress');
 			var statusProgressInner = document.getElementById('status-progress-inner');
@@ -155,6 +163,10 @@
 
 			var initializing = true;
 			var statusMode = 'hidden';
+
+			var windowHeight = window.innerHeight;
+			var viewportWidth = windowHeight / 9 * 16;
+			canvasContainer.style.maxWidth = viewportWidth + "px";
 
 			var animationCallbacks = [];
 			function animate(time) {

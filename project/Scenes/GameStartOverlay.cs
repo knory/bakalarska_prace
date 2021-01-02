@@ -4,7 +4,7 @@ using Utils;
 
 namespace Scenes
 {
-    public class GameStartOverlay : CanvasLayer
+    public class GameStartOverlay : Control
     {
         private Label _gameStatusLabel;
         private MarginContainer _overlayWrapper;

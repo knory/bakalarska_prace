@@ -146,7 +146,7 @@ namespace Scenes
 
         private void CheckTaskAndGenerateNew(bool endedByButton)
         {
-            _taskTimer.Paused = true;
+            PauseTimers();
             CheckCompletedTask(endedByButton);
             
             if (_completedTasks == _config.TasksPerGame)
@@ -155,15 +155,17 @@ namespace Scenes
                 return;
             }
 
-            PauseTimers();
             ShowTaskCompletedPopup();
 
             GenerateNewTask();
             ResetComponents();
 
             _tasksTimeLeft.Add(_taskTimer.TimeLeft);
-            _taskTimer.Paused = false;
-            _taskTimer.Start();
+
+            if (_config.FeedbackType == FeedbackType.Simple)
+            {
+                ResumeTimers();
+            }
         }
         
         protected void GenerateNewTask()
@@ -182,7 +184,8 @@ namespace Scenes
 
             var gainedPointsBase = correctComponents * _config.PointsPerCorrectComponent * _currentModifier;
             var perfectTaskBonus = _config.PerfectTaskBonusPoints * _currentModifier * (perfectTask ? 1 : 0);
-            var gainedPointsTimeSaved = (int)Math.Floor(_taskTimer.TimeLeft * _currentModifier * _config.UnusedTimeTaskBonus);
+            var taskTimeLeft = endedByButton ? _taskTimer.TimeLeft : 0;
+            var gainedPointsTimeSaved = (int)Math.Floor(taskTimeLeft * _currentModifier * _config.UnusedTimeTaskBonus);
             _gainedPointsPerSequence.Add(gainedPointsBase);
             _perfectTaskBonusPerSequence.Add(perfectTaskBonus);
             _savedTimeBonusPerSequence.Add(gainedPointsTimeSaved);
@@ -307,6 +310,7 @@ namespace Scenes
         {
             _gameTimer.Paused = false;
             _taskTimer.Paused = false;
+            _taskTimer.Start();
         }
 
         public void TaskCompletedPopupClosedCallback(object sender, EventArgs eventArgs)
