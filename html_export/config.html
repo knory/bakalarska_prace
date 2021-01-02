@@ -11,6 +11,10 @@
 			min-width: 150px;
 			width: 150px;
 		}
+		
+		#configCode {
+			width: 600px;
+		}
 	</style>
 </head>
 <body>
@@ -128,24 +132,14 @@
 			"GameType": document.querySelector('input[name="GameType"]:checked').value,
 			"FeedbackType": document.querySelector('input[name="FeedbackType"]:checked').value
 		};
-		
-		// Define what happens on successful data submission
-		XHR.addEventListener( "load", function(event) {
-			alert( event.target.responseText );
-		} );
 
-		// Set up our request
 		XHR.open( "POST", "https://xknor-gamificationapp.azurewebsites.net/api/GameConfigEncoder" );
-
-		// The data sent is what the user provided in the form
 		XHR.send( JSON.stringify(formData) );
 			
 		XHR.onreadystatechange = function () {
 			if (XHR.readyState == XMLHttpRequest.DONE) {
 				document.getElementById("configCode").value = XHR.response;
 			}
-			
-			alert(XHR.readyState);
 		}
 	}
 	

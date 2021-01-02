@@ -36,12 +36,17 @@ namespace Scenes
             font.Size = 25;
 
             _enterNicknameLabel.AddFontOverride("font", font);
-            _gameStatusLabel.AddFontOverride("font", font);
             _enterCodeLabel.AddFontOverride("font", font);
             _codeErrorLabel.AddFontOverride("font", font);
             _nicknameValue.AddFontOverride("font", font);
             _gameCodeValue.AddFontOverride("font", font);
             _startButton.AddFontOverride("font", font);
+
+            var boldFont = (DynamicFont)GD.Load($"{Constants.ResourcesPath}Fonts/Montserrat/montserrat_bold.tres");
+            boldFont.Size = 55;
+
+            _gameStatusLabel.AddFontOverride("font", boldFont);
+            _gameStatusLabel.AddColorOverride("font_color", new Color("#bf5034"));
 
             _startButton.Connect("pressed", this, nameof(StartButtonPressed));
         }
@@ -68,13 +73,13 @@ namespace Scenes
         public void ShowGameOverLabel()
         {
             ShowGameStatusLabel();
-            _gameStatusLabel.Text = "Hra skoncila.";
+            _gameStatusLabel.Text = "Hra skončila.";
         }
 
         public void ShowWaitLabel()
         {
             ShowGameStatusLabel();
-            _gameStatusLabel.Text = "Hra skoncila. Prosim vyckejte, vysledky se odesilaji na server.";
+            _gameStatusLabel.Text = "Hra skončila. Prosím vyčkejte, výsledky se odesílají na server.";
         }
 
         public void ShowGameStatusLabel()

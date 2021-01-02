@@ -57,7 +57,6 @@
     <Reference Include="System.Net.Http" />
   </ItemGroup>
   <ItemGroup>
-    <!--<Compile Include=".mono\temp\obj\Debug\.NETFramework,Version=v4.7.AssemblyAttributes.cs" />-->
     <Compile Include="Components\Component.cs" />
     <Compile Include="Components\DoubleDropdown\DoubleDropdownComponent.cs" />
     <Compile Include="Components\MultipleSelect\MultipleSelectComponent.cs" />
@@ -122,9 +121,7 @@
     <Compile Include="Scenes\Game.cs" />
     <Compile Include="Scenes\GameContainer.cs" />
     <Compile Include="Scenes\GameStartOverlay.cs" />
-    <Compile Include="Scenes\MainMenu.cs" />
     <Compile Include="Scenes\HUD\Nongamified\NongamifiedBaseHUD.cs" />
-    <Compile Include="Scenes\Settings.cs" />
     <Compile Include="Utils\Config.cs" />
     <Compile Include="Utils\Constants.cs" />
     <Compile Include="Utils\EventArgs.cs" />
