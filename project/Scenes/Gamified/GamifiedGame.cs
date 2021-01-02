@@ -124,12 +124,9 @@ namespace Scenes.Gamified
             if (!CheckComponentValue(_weapons, _gameTask.Topics, ref correctComponents))
                 perfectTask = false;
 
-            EvaluateTaskData(perfectTask);
-
             if (perfectTask)
             {
                 _currentCorrectActionStreak += correctComponents;
-                _gameData.GainedPoints += _config.PerfectTaskBonusPoints;
 
                 if (endedByButton)
                 {
@@ -159,18 +156,33 @@ namespace Scenes.Gamified
             if (_config.FeedbackType == FeedbackType.Quality)
             {
                 var correctComponents = _correctComponentsPerSequence[_correctComponentsPerSequence.Count - 1];
-                double correctComponentsAverage = 0;
-                if (_correctComponentsPerSequence.Count > 1)
+
+                double gainedPointsAverage = 0;
+                if (_gainedPointsPerSequence.Count > 1)
                 {
-                    correctComponentsAverage = _correctComponentsPerSequence.Take(_correctComponentsPerSequence.Count - 1).Average();
+                    gainedPointsAverage = _gainedPointsPerSequence.Take(_gainedPointsPerSequence.Count - 1).Average();
                 }
 
-                var correctActionsStreakAverage = _correctActionsStreaks.Count > 0 ? _correctActionsStreaks.Average() : _currentCorrectActionStreak;
-                var taskTimeLeftAverage = _tasksTimeLeft.Count > 0 ? _tasksTimeLeft.Average() : _taskTimer.TimeLeft;
+                double perfectTaskBonusAverage = 0;
+                if (_perfectTaskBonusPerSequence.Count > 1)
+                {
+                    perfectTaskBonusAverage = _perfectTaskBonusPerSequence.Take(_perfectTaskBonusPerSequence.Count - 1).Average();
+                }
+
+                double savedTimeBonusAverage = 0;
+                if (_savedTimeBonusPerSequence.Count > 1)
+                {
+                    savedTimeBonusAverage = _savedTimeBonusPerSequence.Take(_savedTimeBonusPerSequence.Count - 1).Average();
+                }
 
                 ((GamifiedQualityHUD)_hud).ShowTaskCompletedPopup(TaskCompletedPopupClosedCallback, _correctComponentsPerSequence.Count,
-                    correctComponents, correctComponentsAverage, _currentCorrectActionStreak, correctActionsStreakAverage, _taskTimer.TimeLeft,
-                    taskTimeLeftAverage);
+                    correctComponents, _gainedPointsPerSequence[_gainedPointsPerSequence.Count - 1], gainedPointsAverage, 
+                    _perfectTaskBonusPerSequence[_perfectTaskBonusPerSequence.Count - 1], perfectTaskBonusAverage, 
+                    _savedTimeBonusPerSequence[_savedTimeBonusPerSequence.Count - 1], savedTimeBonusAverage);
+            }
+            else
+            {
+                ResumeTimers();
             }
         }
 

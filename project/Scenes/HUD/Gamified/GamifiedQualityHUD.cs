@@ -74,14 +74,17 @@ namespace Scenes.HUD.Gamified
         }
 
         public void ShowTaskCompletedPopup(EventHandler<EventArgs> eventHandler, int sequenceOrder, int correctActionsInSequence,
-            double correctActionsAverage, double correctActionsStreak, double correctActionsStreakAverage, double taskTimeLeft,
-            double taskTimeLeftAverage)
+            int gainedPointsBase, double gainedPointsAverage, int perfectTaskBonus, double perfectTaskBonusAverage,
+            int savedTimeBonus, double savedTimeBonusAverage)
         {
             var popupInstance = (GamifiedTaskCompletedPopup)_popupPackedScene.Instance();
             popupInstance.ConfirmButtonHandler += eventHandler;
             AddChild(popupInstance);
-            popupInstance.SetPopupData(sequenceOrder, correctActionsInSequence, correctActionsAverage, correctActionsStreak, correctActionsStreakAverage,
-                taskTimeLeft, taskTimeLeftAverage);
+
+
+
+            popupInstance.SetPopupData(sequenceOrder, correctActionsInSequence, gainedPointsBase, gainedPointsAverage, perfectTaskBonus,
+                perfectTaskBonusAverage, savedTimeBonus, savedTimeBonusAverage);
         }
     }
 }

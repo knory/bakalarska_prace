@@ -8,6 +8,7 @@ namespace Utils
         public int ComboStreak { get; set; }
         public int MaxComboModifier { get; set; }
         public int ComboBreakStreak { get; set; }
+        public int PointsPerCorrectComponent { get; set; }
         public int PerfectTaskBonusPoints { get; set; }
         public int UnusedTimeTaskBonus { get; set; }
         public int UnusedTimeGameBonus { get; set; }

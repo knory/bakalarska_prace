@@ -16,33 +16,42 @@ namespace Scenes
         private Game _gameScene;
         private GameData _gameData;
 
-        public bool Init(string encodedConfig) 
+        public bool Init(string encodedConfig, string nickname) 
         {
             _gameData = new GameData();
+            _gameData.Username = nickname;
+
+            if (string.IsNullOrEmpty(nickname))
+            {
+                _gameStartOverlay.ShowErrorLabel();
+                return false;
+            }
 
             if (string.IsNullOrEmpty(encodedConfig))
             {
-                //_gameStartOverlay.ShowCodeErrorLabel();
+                //_gameStartOverlay.ShowErrorLabel();
                 //return false;
 
                 _config = new Config
                 {
                     ComboBreakStreak = 1,
                     ComboStreak = 2,
-                    GameType = GameType.Gamified,
+                    GameType = GameType.Nongamified,
                     FeedbackType = FeedbackType.Quality,
                     MaxComboModifier = 5,
                     PerfectTaskBonusPoints = 3,
                     TasksPerGame = 100,
-                    TimePerGame = 120,
+                    TimePerGame = 10,
                     TimePerTask = 120,
                     UnusedTimeGameBonus = 2,
-                    UnusedTimeTaskBonus = 0,
+                    UnusedTimeTaskBonus = 1,
+                    PointsPerCorrectComponent = 3,
                 };
 
                 var serializedConfig = JsonConvert.SerializeObject(_config);
-                var configBytesArray = System.Text.Encoding.UTF8.GetBytes(serializedConfig);
-                _gameData.GameConfig = Convert.ToBase64String(configBytesArray);
+                //var configBytesArray = System.Text.Encoding.UTF8.GetBytes(serializedConfig);
+                //_gameData.GameConfig = Convert.ToBase64String(configBytesArray);
+                _gameData.GameConfig = serializedConfig;
             }
             else
             {
@@ -55,28 +64,25 @@ namespace Scenes
                     if (deserializedConfig != null) 
                     {
                         _config = deserializedConfig;
-                        var serializedConfig = JsonConvert.SerializeObject(_config);
-                        var configBytesArray = System.Text.Encoding.UTF8.GetBytes(serializedConfig);
-                        _gameData.GameConfig = Convert.ToBase64String(configBytesArray);
+                        _gameData.GameConfig = jsonConfig;
                     }
                     else
                     {
-                        _gameStartOverlay.ShowCodeErrorLabel();
+                        _gameStartOverlay.ShowErrorLabel();
                         return false;
                     }
                 }
                 catch (Exception)
                 {
-                    _gameStartOverlay.ShowCodeErrorLabel();
+                    _gameStartOverlay.ShowErrorLabel();
                     return false;
                 }
             }
 
-            _gameStartOverlay.HideCodeErrorLabel();
+            _gameStartOverlay.HideErrorLabel();
             return true;
         }
 
-        // Called when the node enters the scene tree for the first time.
         public override void _Ready()
         {
             _gameStartOverlay = GetNode<GameStartOverlay>("GameStartOverlay");
@@ -85,7 +91,7 @@ namespace Scenes
 
         public void StartGame(object sender, GameConfigEventArgs eventArgs)
         {
-            if (!Init(eventArgs.EncodedConfig))
+            if (!Init(eventArgs.EncodedConfig, eventArgs.Nickname))
                 return;
 
             SetupGameScene();
@@ -93,11 +99,19 @@ namespace Scenes
             _gameStartOverlay.HideOverlay();
         }
 
-        public void SendGameData(object sender, GameDataEventArgs eventArgs)
+        public void EndGame(object sender, GameDataEventArgs eventArgs)
         {
-            var gameData = eventArgs.GameData;
+            _gameScene.QueueFree();
+            _gameStartOverlay.ShowOverlay();
+            _gameStartOverlay.ShowWaitLabel();
 
-            gameData.Username = "Ingame test";
+            SendGameData(eventArgs.GameData);
+
+            _gameStartOverlay.ShowGameOverLabel();
+        }
+
+        private void SendGameData(GameData gameData)
+        {
             gameData.TimeLimit = _config.TimePerGame == 0 ? _config.TimePerTask * _config.TasksPerGame : _config.TimePerGame;
             gameData.TimeAdded = DateTime.Now;
 
@@ -131,18 +145,17 @@ namespace Scenes
                 case GameType.Nongamified:
                     packedScene = (PackedScene)GD.Load("res://Scenes/Nongamified/NongamifiedGame.tscn");
                     _gameScene = (NongamifiedGame)packedScene.Instance();
-                    _gameScene.SendGameData += SendGameData;
-                    AddChild(_gameScene);
-                    return;
+                    break;
                 case GameType.Gamified:
                     packedScene = (PackedScene)GD.Load("res://Scenes/Gamified/GamifiedGame.tscn");
                     _gameScene = (GamifiedGame)packedScene.Instance();
-                    _gameScene.SendGameData += SendGameData;
-                    AddChild(_gameScene);
-                    return;
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException("Specified game type does not exist.");
             }
+
+            _gameScene.EndGame += EndGame;
+            AddChild(_gameScene);
         }
     }
 }

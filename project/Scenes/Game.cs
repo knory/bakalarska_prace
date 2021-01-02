@@ -16,6 +16,10 @@ namespace Scenes
         protected List<int> _correctActionsStreaks;
         protected List<float> _tasksTimeLeft;
 
+        protected List<int> _gainedPointsPerSequence;
+        protected List<int> _perfectTaskBonusPerSequence;
+        protected List<int> _savedTimeBonusPerSequence;
+
         protected Config _config;
         protected GameData _gameData;
         protected GameTask _gameTask;
@@ -28,7 +32,7 @@ namespace Scenes
         protected BaseHUD _hud;
         protected TextureButton _confirmButton;
 
-        public event EventHandler<GameDataEventArgs> SendGameData;
+        public event EventHandler<GameDataEventArgs> EndGame;
 
         public override void _Ready()
         {
@@ -39,6 +43,10 @@ namespace Scenes
             _correctActionsStreaks = new List<int>();
             _tasksTimeLeft = new List<float>();
             _currentCorrectActionStreak = 0;
+
+            _gainedPointsPerSequence = new List<int>();
+            _perfectTaskBonusPerSequence = new List<int>();
+            _savedTimeBonusPerSequence = new List<int>();
 
             _gameTimer = new Timer();
             _gameTimer.WaitTime = 20;
@@ -114,14 +122,14 @@ namespace Scenes
         {
             _gameTimer.Paused = true;
 
-            _gameData.GainedPoints += (_config.TimePerGame - (int)_gameTimer.TimeLeft) * _config.UnusedTimeGameBonus;
+            _gameData.GainedPoints += (int)Math.Floor(_gameTimer.TimeLeft * _config.UnusedTimeGameBonus);
 
             _gameTimer.Stop();
             _taskTimer.Stop();
             HideComponents();
             DisableComponents();
 
-            SendGameData?.Invoke(this, new GameDataEventArgs { GameData = _gameData });
+            EndGame?.Invoke(this, new GameDataEventArgs { GameData = _gameData });
         }
 
         private void EndTaskButton()
@@ -169,8 +177,19 @@ namespace Scenes
             _gameData.TimeSpent += _config.TimePerTask - _taskTimer.TimeLeft;
             var correctComponents = CountCorrectComponents(endedByButton);
             _correctComponentsPerSequence.Add(correctComponents);
-            _gameData.GainedPoints += correctComponents * _currentModifier;
-            _gameData.GainedPoints += (int)Math.Floor(_taskTimer.TimeLeft * _config.UnusedTimeTaskBonus);
+            
+            var perfectTask = correctComponents == Constants.NUMBER_OF_ASSIGNMENTS_PER_TASK;
+
+            var gainedPointsBase = correctComponents * _config.PointsPerCorrectComponent * _currentModifier;
+            var perfectTaskBonus = _config.PerfectTaskBonusPoints * _currentModifier * (perfectTask ? 1 : 0);
+            var gainedPointsTimeSaved = (int)Math.Floor(_taskTimer.TimeLeft * _currentModifier * _config.UnusedTimeTaskBonus);
+            _gainedPointsPerSequence.Add(gainedPointsBase);
+            _perfectTaskBonusPerSequence.Add(perfectTaskBonus);
+            _savedTimeBonusPerSequence.Add(gainedPointsTimeSaved);
+
+            _gameData.GainedPoints += gainedPointsBase + perfectTaskBonus + gainedPointsTimeSaved;
+
+            EvaluateTaskData(perfectTask);
 
             _completedTasks++;
         }
@@ -278,13 +297,13 @@ namespace Scenes
             _currentComboStreak = 0;
         }
 
-        private void PauseTimers()
+        protected void PauseTimers()
         {
             _gameTimer.Paused = true;
             _taskTimer.Paused = true;
         }
 
-        private void ResumeTimers()
+        protected void ResumeTimers()
         {
             _gameTimer.Paused = false;
             _taskTimer.Paused = false;

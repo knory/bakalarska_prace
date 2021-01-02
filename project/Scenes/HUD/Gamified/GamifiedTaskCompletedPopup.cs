@@ -136,23 +136,23 @@ namespace Scenes.HUD.Gamified
             _comparison3.RectPosition = new Vector2(1320, 675);
         }
 
-        public void SetPopupData(int sequenceOrder, int correctActionsInSequence, double correctActionsAverage, double correctActionsStreak,
-            double correctActionsStreakAverage, double taskTimeLeft, double taskTimeLeftAverage)
+        public void SetPopupData(int sequenceOrder, int correctActionsInSequence, int gainedPointsBase, double gainedPointsAverage,
+            int perfectTaskBonus, double perfectTaskBonusAverage, int savedTimeBonus, double savedTimeBonusAverage)
         {
             _headline.Text = ResourceStrings.Gamified.PopupHeadlines[correctActionsInSequence]
                 .Replace("$ORDER$", $"{sequenceOrder}")
                 .Replace("$MONSTER$", ResourceStrings.Gamified.PopupMonsters[new Random().Next(ResourceStrings.Gamified.PopupMonsters.Length)]);
 
-            _points1.Text = $"+{correctActionsInSequence}";
-            SetTrendTexture(_comparison1, correctActionsInSequence, correctActionsAverage, _upArrowOrange, _downArrowRed);
+            _points1.Text = $"+{gainedPointsBase}";
+            SetTrendTexture(_comparison1, gainedPointsBase, gainedPointsAverage, _upArrowOrange, _downArrowRed);
 
-            _points2.Text = $"+{correctActionsStreak}";
-            SetTrendTexture(_comparison2, correctActionsStreak, correctActionsStreakAverage, _upArrowOrange, _downArrowRed);
+            _points2.Text = $"+{perfectTaskBonus}";
+            SetTrendTexture(_comparison2, perfectTaskBonus, perfectTaskBonusAverage, _upArrowOrange, _downArrowRed);
 
-            _points3.Text = $"+{taskTimeLeft}";
-            SetTrendTexture(_comparison3, taskTimeLeft, taskTimeLeftAverage, _upArrowOrange, _downArrowRed);
+            _points3.Text = $"+{savedTimeBonus}";
+            SetTrendTexture(_comparison3, savedTimeBonus, savedTimeBonusAverage, _upArrowOrange, _downArrowRed);
 
-            _pointsSum.Text = $"+{correctActionsInSequence + correctActionsStreak + taskTimeLeft}";
+            _pointsSum.Text = $"+{gainedPointsBase + perfectTaskBonus + savedTimeBonus}";
         }
     }
 }

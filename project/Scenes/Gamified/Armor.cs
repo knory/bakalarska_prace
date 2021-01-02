@@ -36,20 +36,21 @@ namespace Scenes.Gamified
         protected override void SetupView()
         {
             _tabHeaderFont = (DynamicFont)GD.Load($"{_resourcePath}bebas_neue.tres");
-            _tabHeaderFont.Size = 25;
+            _tabHeaderFont.Size = 30;
 
             _gridHeaderFont = (DynamicFont)GD.Load($"{_resourcePath}chiller_grid_header.tres");
-            _gridHeaderFont.Size = 25;
+            _gridHeaderFont.Size = 30;
 
             _gridDataLabelFont = (DynamicFont)GD.Load($"{_resourcePath}chiller_grid_data.tres");
-            _gridDataLabelFont.Size = 21;
+            _gridDataLabelFont.Size = 25;
 
             _gridContainer.Set("custom_constants/vseparation", -3);
             _gridContainer.Set("custom_constants/hseparation", -3);
 
-            _headlineMarginContainer.Set("custom_constants/margin_left", 190);
+            _headlineMarginContainer.Set("custom_constants/margin_left", 185);
+            _headlineMarginContainer.Set("custom_constants/margin_top", 5);
             _gridMarginContainer.Set("custom_constants/margin_left", 95);
-            _gridMarginContainer.Set("custom_constants/margin_top", -10);
+            _gridMarginContainer.Set("custom_constants/margin_top", -5);
 
             _gridHeadline.Set("custom_constants/separation", 30);
             _gridHeadline.SizeFlagsHorizontal = (int)SizeFlags.ExpandFill;
@@ -67,7 +68,7 @@ namespace Scenes.Gamified
             _sideScrollTabControl.GetNode<TextureButton>("RightButton").RectPosition = new Vector2(350, -25);
 
             var sideScrollCenterContainer = _sideScrollTabControl.GetNode<CenterContainer>("CenterContainer");
-            sideScrollCenterContainer.RectPosition = new Vector2(168, 0);
+            sideScrollCenterContainer.RectPosition = new Vector2(155, 5);
 
             _deselectedTexture = (Texture)GD.Load($"{_resourcePath}unselected_item.png");
             _selectedTexture = (Texture)GD.Load($"{_resourcePath}selected_item.png");

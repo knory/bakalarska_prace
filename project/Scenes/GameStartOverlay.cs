@@ -8,10 +8,12 @@ namespace Scenes
     {
         private Label _gameStatusLabel;
         private MarginContainer _overlayWrapper;
+        private LineEdit _nicknameValue;
         private LineEdit _gameCodeValue;
         private Label _codeErrorLabel;
+        private Label _enterNicknameLabel;
+        private Label _enterCodeLabel;
         private Button _startButton;
-        private Button _backButton;
 
         public event EventHandler<GameConfigEventArgs> StartGame;
 
@@ -20,15 +22,26 @@ namespace Scenes
         {
             _overlayWrapper = GetNode<MarginContainer>("MarginContainer");
             _gameStatusLabel = _overlayWrapper.GetNode<Label>("GameStatusContainer/GameStatusLabel");
+            _nicknameValue = _overlayWrapper.GetNode<LineEdit>("VBoxContainer/NicknameLabel");
             _gameCodeValue = _overlayWrapper.GetNode<LineEdit>("VBoxContainer/GameCodeValue");
             _codeErrorLabel = _overlayWrapper.GetNode<Label>("VBoxContainer/CodeErrorLabel");
+            _enterNicknameLabel = _overlayWrapper.GetNode<Label>("VBoxContainer/EnterNicknameLabel");
+            _enterCodeLabel = _overlayWrapper.GetNode<Label>("VBoxContainer/EnterCodeLabel");
             _startButton = _overlayWrapper.GetNode<Button>("VBoxContainer/StartButton");
-            _backButton = _overlayWrapper.GetNode<Button>("VBoxContainer/BackButton");
             
-            _gameStatusLabel.Text = $"Game Over";
             _gameStatusLabel.Visible = false;
-
             _codeErrorLabel.Visible = false;
+
+            var font = (DynamicFont)GD.Load($"{Constants.ResourcesPath}Fonts/Montserrat/montserrat_regular.tres");
+            font.Size = 25;
+
+            _enterNicknameLabel.AddFontOverride("font", font);
+            _gameStatusLabel.AddFontOverride("font", font);
+            _enterCodeLabel.AddFontOverride("font", font);
+            _codeErrorLabel.AddFontOverride("font", font);
+            _nicknameValue.AddFontOverride("font", font);
+            _gameCodeValue.AddFontOverride("font", font);
+            _startButton.AddFontOverride("font", font);
 
             _startButton.Connect("pressed", this, nameof(StartButtonPressed));
         }
@@ -38,7 +51,6 @@ namespace Scenes
             _overlayWrapper.Visible = false;
             _gameCodeValue.MouseFilter = Control.MouseFilterEnum.Ignore;
             _startButton.MouseFilter = Control.MouseFilterEnum.Ignore;
-            _backButton.MouseFilter = Control.MouseFilterEnum.Ignore;
         }
 
         public void ShowOverlay()
@@ -46,7 +58,6 @@ namespace Scenes
             _overlayWrapper.Visible = true;
             _gameCodeValue.MouseFilter = Control.MouseFilterEnum.Stop;
             _startButton.MouseFilter = Control.MouseFilterEnum.Stop;
-            _backButton.MouseFilter = Control.MouseFilterEnum.Stop;
         }
 
         public void HideGameStatusLabel()
@@ -54,24 +65,36 @@ namespace Scenes
             _gameStatusLabel.Visible = false;
         }
 
+        public void ShowGameOverLabel()
+        {
+            ShowGameStatusLabel();
+            _gameStatusLabel.Text = "Hra skoncila.";
+        }
+
+        public void ShowWaitLabel()
+        {
+            ShowGameStatusLabel();
+            _gameStatusLabel.Text = "Hra skoncila. Prosim vyckejte, vysledky se odesilaji na server.";
+        }
+
         public void ShowGameStatusLabel()
         {
             _gameStatusLabel.Visible = true;
         }
 
-        public void ShowCodeErrorLabel()
+        public void ShowErrorLabel()
         {
             _codeErrorLabel.Visible = true;
         }
 
-        public void HideCodeErrorLabel()
+        public void HideErrorLabel()
         {
             _codeErrorLabel.Visible = false;
         }
 
         private void StartButtonPressed()
         {
-            StartGame?.Invoke(this, new GameConfigEventArgs { EncodedConfig = _gameCodeValue.Text });
+            StartGame?.Invoke(this, new GameConfigEventArgs { EncodedConfig = _gameCodeValue.Text, Nickname = _nicknameValue.Text });
         }
     }
 }

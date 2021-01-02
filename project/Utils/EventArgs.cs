@@ -22,5 +22,6 @@ namespace Utils
     public class GameConfigEventArgs : EventArgs
     {
         public string EncodedConfig { get; set; }
+        public string Nickname { get; set; }
     }
 }

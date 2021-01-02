@@ -124,12 +124,9 @@ namespace Scenes.Nongamified
             if (!CheckComponentValue(_volume, _gameTask.Volume, ref correctComponents))
                 perfectTask = false;
 
-            EvaluateTaskData(perfectTask);
-
             if (perfectTask)
             {
                 _currentCorrectActionStreak += correctComponents;
-                _gameData.GainedPoints += _config.PerfectTaskBonusPoints;
 
                 if (endedByButton)
                 {
@@ -171,6 +168,10 @@ namespace Scenes.Nongamified
                 ((NongamifiedQualityHUD)_hud).ShowTaskCompletedPopup(TaskCompletedPopupClosedCallback, _correctComponentsPerSequence.Count, 
                     correctComponents, correctComponentsAverage, _currentCorrectActionStreak, correctActionsStreakAverage, _taskTimer.TimeLeft, 
                     taskTimeLeftAverage);
+            }
+            else
+            {
+                ResumeTimers();
             }
         }
 

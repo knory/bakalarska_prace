@@ -36,35 +36,41 @@ margin_right = 1850.0
 margin_bottom = 1010.0
 mouse_filter = 2
 custom_constants/separation = 20
-alignment = 2
+alignment = 1
+
+[node name="EnterNicknameLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+margin_top = 365.0
+margin_right = 1780.0
+margin_bottom = 379.0
+text = "Přezdívka:"
+align = 1
+
+[node name="NicknameLabel" type="LineEdit" parent="MarginContainer/VBoxContainer"]
+margin_top = 399.0
+margin_right = 1780.0
+margin_bottom = 423.0
 
 [node name="EnterCodeLabel" type="Label" parent="MarginContainer/VBoxContainer"]
-margin_top = 768.0
+margin_top = 443.0
 margin_right = 1780.0
-margin_bottom = 782.0
-text = "Enter game code (or leave empty):"
+margin_bottom = 457.0
+text = "Herní kód:"
 align = 1
 
 [node name="GameCodeValue" type="LineEdit" parent="MarginContainer/VBoxContainer"]
-margin_top = 802.0
+margin_top = 477.0
 margin_right = 1780.0
-margin_bottom = 826.0
+margin_bottom = 501.0
 
 [node name="CodeErrorLabel" type="Label" parent="MarginContainer/VBoxContainer"]
-margin_top = 846.0
+margin_top = 521.0
 margin_right = 1780.0
-margin_bottom = 860.0
-text = "Entered code is invalid!"
+margin_bottom = 535.0
+text = "Prosím vložte přezdívku a platný herní kód."
 align = 1
 
 [node name="StartButton" type="Button" parent="MarginContainer/VBoxContainer"]
-margin_top = 880.0
+margin_top = 555.0
 margin_right = 1780.0
-margin_bottom = 900.0
-text = "Start Game"
-
-[node name="BackButton" type="Button" parent="MarginContainer/VBoxContainer"]
-margin_top = 920.0
-margin_right = 1780.0
-margin_bottom = 940.0
-text = "Back to Main Menu"
+margin_bottom = 575.0
+text = "Spustit"

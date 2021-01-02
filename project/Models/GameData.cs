@@ -9,7 +9,6 @@ namespace Models
         public string GameConfig { get; set; }
         public int GainedPoints { get; set; }
         public int LongestPerfectStreak { get; set; }
-        //TODO pocitadlo spravnych sekvenci per komponenta
         public int CorrectActions { get; set; }
         public int TotalActions { get; set; }
         public int CorrectSequences { get; set; }

@@ -1,0 +1,154 @@
+<head>
+	<style>
+		label:not(.radioLabel) {
+			display: inline-block;
+			min-width: 500px;
+			width: 500px;
+		}
+		
+		input:not(.radiobutton) {
+			display: inline;
+			min-width: 150px;
+			width: 150px;
+		}
+	</style>
+</head>
+<body>
+	<form id="configForm">
+		<label for="ComboStreak">Pocet sekvenci bez chyby pro zvyseni komba:</label>
+		<br/>
+		<input id="ComboStreak" name="ComboStreak" type="number" />
+		
+		<br/>
+		<br/>
+		
+		<label for="MaxComboModifier">Maximalni kombo:</label>
+		<br/>
+		<input id="MaxComboModifier" name="MaxComboModifier" type="number" />
+		
+		<br/>
+		<br/>
+		
+		<label for="ComboBreakStreak">Pocet sekvenci s chybou pro snizeni komba:</label>
+		<br/>
+		<input id="ComboBreakStreak" name="ComboBreakStreak" type="number" />
+		
+		<br/>
+		<br/>
+		
+		<label for="PointsPerCorrectComponent">Pocet bodu za spravne splnenou komponentu:</label>
+		<br/>
+		<input id="PointsPerCorrectComponent" name="PointsPerCorrectComponent" type="number" />
+		
+		<br/>
+		<br/>
+		
+		<label for="PerfectTaskBonusPoints">Pocet bonusovych bodu za sekvenci bez chyby:</label>
+		<br/>
+		<input id="PerfectTaskBonusPoints" name="PerfectTaskBonusPoints" type="number" />
+		
+		<br/>
+		<br/>
+		
+		<label for="UnusedTimeTaskBonus">Pocet bonusovych bodu za kazdou usetrenou sekundu v sekvenci:</label>
+		<br/>
+		<input id="UnusedTimeTaskBonus" name="UnusedTimeTaskBonus" type="number" />
+		
+		<br/>
+		<br/>
+		
+		<label for="UnusedTimeGameBonus">Pocet bonusovych bodu za kazdou usetrenou sekundu na konci hry:</label>
+		<br/>
+		<input id="UnusedTimeGameBonus" name="UnusedTimeGameBonus" type="number" />
+		
+		<br/>
+		<br/>
+		
+		<label for="TimePerTask">Cas na sekvenci (v sekundach):</label>
+		<br/>
+		<input id="TimePerTask" name="TimePerTask" type="number" />
+		
+		<br/>
+		<br/>
+		
+		<label for="TimePerGame">Cas na hru (v sekundach):</label>
+		<br/>
+		<input id="TimePerGame" name="TimePerGame" type="number" />
+		
+		<br/>
+		<br/>
+		
+		<label for="TasksPerGame">Pocet ukolu na hru:</label>
+		<br/>
+		<input id="TasksPerGame" name="TasksPerGame" type="number" />
+		
+		<br/>
+		<br/>
+		
+		<label for="GameType">Typ hry:</label>
+		<br/>
+		<input class="radiobutton" id="GameTypeGamified" name="GameType" type="radio" value="0" />
+		<label class="radioLabel" for="GameTypeGamified">Gamifikovana</label>
+		<input class="radiobutton" id="GameTypeNongamified" name="GameType" type="radio" value="1" />
+		<label class="radioLabel" for="GameTypeNongamified">Negamifikovana</label>
+		
+		<br/>
+		<br/>
+		
+		<label for="FeedbackType">Typ zpetne vazby:</label>
+		<br/>
+		<input class="radiobutton" id="FeedbackTypeSimple" name="FeedbackType" type="radio" value="0" />
+		<label class="radioLabel" for="FeedbackTypeSimple">Jednoducha</label>
+		<input class="radiobutton" id="FeedbackTypeQuality" name="FeedbackType" type="radio" value="1" />
+		<label class="radioLabel" for="FeedbackTypeQuality">Kvalitni</label>
+	</form>
+	<input type="submit" onclick="sendDataA();" value="Vygenerovat kod" />
+
+	<br/>
+	<br/>
+
+	<input id="configCode" type="text" />
+
+	<script>
+	function sendDataA() {
+		const XHR = new XMLHttpRequest();
+
+		// Bind the FormData object and the form element
+		const formData = {
+			"ComboStreak": document.getElementById("ComboStreak").value,
+			"MaxComboModifier": document.getElementById("MaxComboModifier").value,
+			"ComboBreakStreak": document.getElementById("ComboBreakStreak").value,
+			"PointsPerCorrectComponent": document.getElementById("PointsPerCorrectComponent").value,
+			"PerfectTaskBonusPoints": document.getElementById("PerfectTaskBonusPoints").value,
+			"UnusedTimeTaskBonus": document.getElementById("UnusedTimeTaskBonus").value,
+			"UnusedTimeGameBonus": document.getElementById("UnusedTimeGameBonus").value,
+			"TimePerTask": document.getElementById("TimePerTask").value,
+			"TimePerGame": document.getElementById("TimePerGame").value,
+			"TasksPerGame": document.getElementById("TasksPerGame").value,
+			"GameType": document.querySelector('input[name="GameType"]:checked').value,
+			"FeedbackType": document.querySelector('input[name="FeedbackType"]:checked').value
+		};
+		
+		// Define what happens on successful data submission
+		XHR.addEventListener( "load", function(event) {
+			alert( event.target.responseText );
+		} );
+
+		// Set up our request
+		XHR.open( "POST", "http://localhost:7071/api/GameConfigEncoder" );
+
+		// The data sent is what the user provided in the form
+		XHR.send( JSON.stringify(formData) );
+			
+		XHR.onreadystatechange = function () {
+			if (XHR.readyState == XMLHttpRequest.DONE) {
+				document.getElementById("configCode").value = XHR.response;
+			}
+			
+			alert(XHR.readyState);
+		}
+	}
+	
+	const form = document.getElementById( "configForm" );
+	</script>
+</body>
