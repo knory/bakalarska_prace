@@ -135,7 +135,7 @@
 		} );
 
 		// Set up our request
-		XHR.open( "POST", "http://localhost:7071/api/GameConfigEncoder" );
+		XHR.open( "POST", "https://xknor-gamificationapp.azurewebsites.net/api/GameConfigEncoder" );
 
 		// The data sent is what the user provided in the form
 		XHR.send( JSON.stringify(formData) );

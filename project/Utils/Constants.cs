@@ -2,7 +2,7 @@ namespace Utils
 {
     public static class Constants
     {
-        public static readonly string ApiHost = "https://xknor-gamification.azurewebsites.net";
+        public static readonly string ApiHost = "https://xknor-gamificationapp.azurewebsites.net";
         public static readonly string ApiDataCollectorUrl = "/api/GameDataCollector";
 
         public static readonly string ResourcesPath = "res://Resources/";

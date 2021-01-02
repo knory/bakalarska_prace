@@ -3,7 +3,7 @@
 <script>
 	function downloadFile() {
      var req = new XMLHttpRequest();
-     req.open("GET", "http://xknor-gamification.azurewebsites.net/api/GameDataProvider", true);
+     req.open("GET", "https://xknor-gamificationapp.azurewebsites.net/api/GameDataProvider", true);
      req.responseType = "blob";
      req.onload = function (event) {
          var blob = req.response;

@@ -48,8 +48,8 @@ namespace xknor.Functions
                     + "Počet sekvencí odevzdaných tlačítkem, Počet správných sekvencí odevzdaných tlačítkem,"
                     + "Počet sekvencí odevzdaných vypršením časového limitu,"
                     + "Počet správných sekvencí odevzdaných vypršením časového limitu\n";
-                var lines = gameData.Select(x => $"{x.DataId},{x.TimeAdded.ToString("dd/MM/yyyy HH:mm:ss")},{x.Username},{x.GameConfig},{x.GainedPoints},"
-                    + $"{x.LongestPerfectStreak},{x.CorrectActions},{x.TotalActions},{x.CorrectSequences},{x.TotalSequences},"
+                var lines = gameData.Select(x => $"{x.DataId},{x.TimeAdded.ToString("dd/MM/yyyy HH:mm:ss")},{x.Username},{x.GameConfig.Replace(",", ";")},"
+                    + $"{x.GainedPoints},{x.LongestPerfectStreak},{x.CorrectActions},{x.TotalActions},{x.CorrectSequences},{x.TotalSequences},"
                     + $"{x.TimeSpent},{x.TimeLimit},{x.SequencesButton},{x.CorrectSequencesButton},{x.SequencesTimeLimit},"
                     + $"{x.CorrectSequencesTimeLimit}").Aggregate((a, b) => $"{a}\n{b}");
                 var bytes = Encoding.UTF8.GetBytes(header + lines);
