@@ -37,6 +37,9 @@ namespace Controls
             return possibleValues;
         }
 
+        /// <summary>
+        /// Value changed handler.
+        /// </summary>
         public void OnValueChanged()
         {
             ValueChanged?.Invoke(this, new SelectedValueEventArgs { SelectedValue = ((ProgressBarState[])_possibleValues)[_leftMostIndex].Id });

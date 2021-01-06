@@ -13,7 +13,6 @@ namespace Scenes.Nongamified
 
         private readonly TeammateResource[] _teammateResources = new TeammateResource[8];
 
-        // Called when the node enters the scene tree for the first time.
         public override void _Ready()
         {
             var teammates = new (string, string)[]

@@ -73,6 +73,17 @@ namespace Scenes.HUD.Nongamified
             _tasksCountLabel.Text = $"{streak}{ResourceStrings.Nongamified.StreakNotification}";
         }
 
+        /// <summary>
+        /// Shows the task completed informational popup.
+        /// </summary>
+        /// <param name="eventHandler">Popup closed event handler.</param>
+        /// <param name="sequenceOrder">Order of the current sequence.</param>
+        /// <param name="correctActionsInSequence">Correct actions in the current sequence.</param>
+        /// <param name="correctActionsAverage">Correct actions average in the previous sequences.</param>
+        /// <param name="correctActionsStreak">Correct actions streak in the current sequence.</param>
+        /// <param name="correctActionsStreakAverage">Correct actions streak average in the previous sequences.</param>
+        /// <param name="taskTimeLeft">Time left in the current sequence.</param>
+        /// <param name="taskTimeLeftAverage">Time left average in the previous sequences.</param>
         public void ShowTaskCompletedPopup(EventHandler<EventArgs> eventHandler, int sequenceOrder, double correctActionsInSequence, 
             double correctActionsAverage, double correctActionsStreak, double correctActionsStreakAverage, double taskTimeLeft, 
             double taskTimeLeftAverage)

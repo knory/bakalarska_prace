@@ -20,6 +20,12 @@ namespace Controls
 
         public event EventHandler<TeammateControlClickedEventArgs> Clicked;
 
+        /// <summary>
+        /// Initializes the control.
+        /// </summary>
+        /// <param name="teammate">Teammate model to initialize the control from.</param>
+        /// <param name="addIcon">Texture of the add icon.</param>
+        /// <param name="removeIcon">Texture of the remove icon.</param>
         public void Init(Teammate teammate, Texture addIcon, Texture removeIcon)
         {
             Teammate = teammate;
@@ -53,22 +59,30 @@ namespace Controls
             }
         }
 
-        // Called when the node enters the scene tree for the first time.
         public override void _Ready()
         {
             
         }
 
+        /// <summary>
+        /// Enables the control.
+        /// </summary>
         public void EnableControl()
         {
             _teammateButton.Disabled = false;
         }
 
+        /// <summary>
+        /// Disables the control.
+        /// </summary>
         public void DisableControl()
         {
             _teammateButton.Disabled = true;
         }
 
+        /// <summary>
+        /// Click event handler.
+        /// </summary>
         private void OnClick()
         {
             Clicked?.Invoke(this, new TeammateControlClickedEventArgs(){ SelectedValue = this });

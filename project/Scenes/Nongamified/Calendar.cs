@@ -13,7 +13,6 @@ namespace Scenes.Nongamified
         private readonly string[] _monthNames = new string[12] { "Leden", "Únor", "Březen", "Duben", "Květen", "Červen", "Červenec", "Srpen", "Září", "Říjen", "Listopad", "Prosinec" };
         private readonly string[] _dayNames = new string[7] { "Po", "Út", "St", "Čt", "Pá", "So", "Ne" };
 
-        // Called when the node enters the scene tree for the first time.
         public override void _Ready()
         {
             base._Ready();

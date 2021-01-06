@@ -16,6 +16,12 @@ namespace Scenes
         private Game _gameScene;
         private GameData _gameData;
 
+        /// <summary>
+        /// Initializes the game container with provided config.
+        /// </summary>
+        /// <param name="encodedConfig">Encoded game config.</param>
+        /// <param name="nickname">Player's nickname.</param>
+        /// <returns>true if initialization is successful, false otherwise</returns>
         public bool Init(string encodedConfig, string nickname) 
         {
             _gameData = new GameData();
@@ -66,6 +72,11 @@ namespace Scenes
             _gameStartOverlay.StartGame += StartGame;
         }
 
+        /// <summary>
+        /// Sets up the game scene and starts the game.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="eventArgs"></param>
         public void StartGame(object sender, GameConfigEventArgs eventArgs)
         {
             if (!Init(eventArgs.EncodedConfig, eventArgs.Nickname))
@@ -76,9 +87,14 @@ namespace Scenes
             _gameStartOverlay.HideOverlay();
         }
 
+        /// <summary>
+        /// Ends the game.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="eventArgs"></param>
         public void EndGame(object sender, GameDataEventArgs eventArgs)
         {
-            //_gameScene.QueueFree();
+            _gameScene.QueueFree();
             this.RemoveChild(_gameScene);
             _gameStartOverlay.ShowOverlay();
             _gameStartOverlay.ShowWaitLabel();
@@ -88,32 +104,39 @@ namespace Scenes
             _gameStartOverlay.ShowGameOverLabel();
         }
 
+        /// <summary>
+        /// Sends the game data to the API.
+        /// </summary>
+        /// <param name="gameData">Game data to be sent.</param>
         private void SendGameData(GameData gameData)
         {
-            gameData.TimeLimit = _config.TimePerGame == 0 ? _config.TimePerTask * _config.TasksPerGame : _config.TimePerGame;
-            gameData.TimeAdded = DateTime.Now;
+            // gameData.TimeLimit = _config.TimePerGame == 0 ? _config.TimePerTask * _config.TasksPerGame : _config.TimePerGame;
+            // gameData.TimeAdded = DateTime.Now;
 
-            var headers = new string[] { "Content-Type: application/json" };
-            var serializedData = JsonConvert.SerializeObject(gameData);
+            // var headers = new string[] { "Content-Type: application/json" };
+            // var serializedData = JsonConvert.SerializeObject(gameData);
 
-            using (var client = new HTTPClient())
-            {
-                client.ConnectToHost(Constants.ApiHost);
+            // using (var client = new HTTPClient())
+            // {
+            //     client.ConnectToHost(Constants.ApiHost);
 
-                while (client.GetStatus() == HTTPClient.Status.Resolving || client.GetStatus() == HTTPClient.Status.Connecting)
-                {
-                    client.Poll();
-                }
+            //     while (client.GetStatus() == HTTPClient.Status.Resolving || client.GetStatus() == HTTPClient.Status.Connecting)
+            //     {
+            //         client.Poll();
+            //     }
 
-                client.Request(HTTPClient.Method.Post, Constants.ApiDataCollectorUrl, headers, serializedData);
+            //     client.Request(HTTPClient.Method.Post, Constants.ApiDataCollectorUrl, headers, serializedData);
 
-                while (client.GetStatus() == HTTPClient.Status.Requesting)
-                {
-                    client.Poll();
-                }
-            }
+            //     while (client.GetStatus() == HTTPClient.Status.Requesting)
+            //     {
+            //         client.Poll();
+            //     }
+            // }
         }
 
+        /// <summary>
+        /// Sets up the game scene.
+        /// </summary>
         private void SetupGameScene()
         {
             PackedScene packedScene;

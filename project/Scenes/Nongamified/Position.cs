@@ -9,7 +9,6 @@ namespace Scenes.Nongamified
     {
         private string _resourcesPath = $"{Constants.NongamifiedResourcesPath}Position/";
 
-        // Called when the node enters the scene tree for the first time.
         public override void _Ready()
         {
             _textureOff = (Texture)GD.Load($"{_resourcesPath}position_user.png");

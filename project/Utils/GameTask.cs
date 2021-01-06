@@ -55,7 +55,7 @@ namespace Utils
                 _generators[i].Invoke();
             }
 
-            GenerateTaskAssignmentTexts();
+            GenerateTaskAssignmentInstructions();
         }
 
         private void GenerateAdvertisementAssignment()
@@ -149,7 +149,7 @@ namespace Utils
             Volume = _random.Next(1, Constants.VOLUME_OPTIONS_COUNT);
         }
 
-        private void GenerateTaskAssignmentTexts()
+        private void GenerateTaskAssignmentInstructions()
         {
             switch (_gameType)
             {

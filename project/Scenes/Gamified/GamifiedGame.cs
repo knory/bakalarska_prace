@@ -25,9 +25,6 @@ namespace Scenes.Gamified
         private Sprite _background;
         private Sprite _topBar;
 
-        /// <summary>
-        /// Initializes all components and other graphical elements. Called when the node first enters the scene.
-        /// </summary>
         public override void _Ready()
         {
             base._Ready();
@@ -80,10 +77,6 @@ namespace Scenes.Gamified
             }
         }
 
-        /// <summary>
-        /// Counts correct components against game task and adjusts combo modifier.
-        /// </summary>
-        /// <returns>Number of correct components</returns>
         protected override int CountCorrectComponents(bool endedByButton)
         {
             if (_gameTask == null) return 0;
@@ -148,9 +141,6 @@ namespace Scenes.Gamified
             return correctComponents;
         }
 
-        /// <summary>
-        /// Shows popup with information about the completed task.
-        /// </summary>
         protected override void ShowTaskCompletedPopup()
         {
             if (_config.FeedbackType == FeedbackType.Quality)
@@ -182,9 +172,6 @@ namespace Scenes.Gamified
             }
         }
 
-        /// <summary>
-        /// Disables inputs on all components.
-        /// </summary>
         protected override void DisableComponents()
         {
             _animals.DisableComponent();
@@ -202,9 +189,6 @@ namespace Scenes.Gamified
             _confirmButton.Disabled = true;
         }
 
-        /// <summary>
-        /// Enables inputs on all components.
-        /// </summary>
         protected override void EnableComponents()
         {
             _animals.EnableComponent();
@@ -222,9 +206,6 @@ namespace Scenes.Gamified
             _confirmButton.Disabled = false;
         }
 
-        /// <summary>
-        /// Hides all components.
-        /// </summary>
         protected override void HideComponents()
         {
             _animals.Hide();
@@ -243,9 +224,6 @@ namespace Scenes.Gamified
             _confirmButton.Hide();
         }
 
-        /// <summary>
-        /// Shows all components.
-        /// </summary>
         protected override void ShowComponents()
         {
             _animals.Show();
@@ -264,9 +242,6 @@ namespace Scenes.Gamified
             _confirmButton.Show();
         }
 
-        /// <summary>
-        /// Resets state and selected values of all components.
-        /// </summary>
         protected override void ResetComponents()
         {
             _animals.ResetState();

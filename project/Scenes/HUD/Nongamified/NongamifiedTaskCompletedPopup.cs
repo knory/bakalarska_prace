@@ -137,6 +137,16 @@ namespace Scenes.HUD.Nongamified
             _comparison3.RectPosition = new Vector2(1076, 667);
         }
 
+        /// <summary>
+        /// Sets up the informational popup data.
+        /// </summary>
+        /// <param name="sequenceOrder">Order of the current sequence.</param>
+        /// <param name="correctActionsInSequence">Correct actions in the current sequence.</param>
+        /// <param name="correctActionsAverage">Correct actions average in the previous sequences.</param>
+        /// <param name="correctActionsStreak">Correct actions streak in the current sequence.</param>
+        /// <param name="correctActionsStreakAverage">Correct actions streak average in the previous sequences.</param>
+        /// <param name="taskTimeLeft">Time left in seconds in the current sequence.</param>
+        /// <param name="taskTimeLeftAverage">Time left average in seconds in the previous sequences.</param>
         public void SetPopupData(int sequenceOrder, double correctActionsInSequence, double correctActionsAverage, double correctActionsStreak, 
             double correctActionsStreakAverage, double taskTimeLeft, double taskTimeLeftAverage)
         {

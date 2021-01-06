@@ -12,7 +12,6 @@ namespace Scenes.Gamified
         private readonly string[] _armorNames = new string[12] { "Božská", "Falérová", "Kožená", "Kroužková", "Lamelová", "Magická", "Plátová", "Prošívaná", "Šupinová", "Titánská", "Vlněná", "Žádná" };
         private readonly string[] _contentHeadline = new string[1] { "Oleje" };
 
-        // Called when the node enters the scene tree for the first time.
         public override void _Ready()
         {
             base._Ready();

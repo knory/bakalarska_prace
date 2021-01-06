@@ -136,6 +136,17 @@ namespace Scenes.HUD.Gamified
             _comparison3.RectPosition = new Vector2(1320, 675);
         }
 
+        /// <summary>
+        /// Sets the popup data.
+        /// </summary>
+        /// <param name="sequenceOrder">Order of the current task.</param>
+        /// <param name="correctActionsInSequence">Correct actions in the current task.</param>
+        /// <param name="gainedPointsBase">Gained points base in the current task.</param>
+        /// <param name="gainedPointsAverage">Gained points base average in the previous tasks.</param>
+        /// <param name="perfectTaskBonus">Bonus points for perfect task in the current task.</param>
+        /// <param name="perfectTaskBonusAverage">Bonus points for perfect task average in the previous tasks.</param>
+        /// <param name="savedTimeBonus">Bonus points for saved time in the current task.</param>
+        /// <param name="savedTimeBonusAverage">Bonus points for saved time average in the previous tasks.</param>
         public void SetPopupData(int sequenceOrder, int correctActionsInSequence, int gainedPointsBase, double gainedPointsAverage,
             int perfectTaskBonus, double perfectTaskBonusAverage, int savedTimeBonus, double savedTimeBonusAverage)
         {

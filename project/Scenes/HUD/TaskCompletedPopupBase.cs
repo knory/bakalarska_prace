@@ -51,6 +51,14 @@ public abstract class TaskCompletedPopupBase : TextureRect
         this.QueueFree();
     }
 
+    /// <summary>
+    /// Sets the trend texture based on comparison of provided values.
+    /// </summary>
+    /// <param name="textureRect">TextureRect to be set.</param>
+    /// <param name="currentValue">Current value.</param>
+    /// <param name="previousAverage">Average of previous values.</param>
+    /// <param name="positive">Texture of positive trend.</param>
+    /// <param name="negative">Texture of negative trend.</param>
     protected void SetTrendTexture(TextureRect textureRect, double currentValue, double previousAverage,
         Texture positive, Texture negative)
     {

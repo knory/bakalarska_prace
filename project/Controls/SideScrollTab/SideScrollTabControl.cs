@@ -14,7 +14,6 @@ namespace Controls
 
         public event EventHandler<SelectedValueEventArgs> TabChanged;
 
-        // Called when the node enters the scene tree for the first time.
         public override void _Ready()
         {
             _leftButton = GetNode<TextureButton>("LeftButton");
@@ -60,6 +59,9 @@ namespace Controls
             OnTabChanged();
         }
 
+        /// <summary>
+        /// Handler of the scroll event.
+        /// </summary>
         protected void OnTabChanged()
         {
             TabChanged?.Invoke(this, new SelectedValueEventArgs(){ SelectedValue = _leftMostIndex });

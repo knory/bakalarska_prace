@@ -17,7 +17,6 @@ namespace Scenes
 
         public event EventHandler<GameConfigEventArgs> StartGame;
 
-        // Called when the node enters the scene tree for the first time.
         public override void _Ready()
         {
             _overlayWrapper = GetNode<MarginContainer>("MarginContainer");
@@ -51,6 +50,9 @@ namespace Scenes
             _startButton.Connect("pressed", this, nameof(StartButtonPressed));
         }
 
+        /// <summary>
+        /// Hides the game start overlay.
+        /// </summary>
         public void HideOverlay()
         {
             _overlayWrapper.Visible = false;
@@ -58,6 +60,9 @@ namespace Scenes
             _startButton.MouseFilter = Control.MouseFilterEnum.Ignore;
         }
 
+        /// <summary>
+        /// Shows the game start overlay.
+        /// </summary>
         public void ShowOverlay()
         {
             _overlayWrapper.Visible = true;
@@ -65,38 +70,59 @@ namespace Scenes
             _startButton.MouseFilter = Control.MouseFilterEnum.Stop;
         }
 
+        /// <summary>
+        /// Hides the game status label.
+        /// </summary>
         public void HideGameStatusLabel()
         {
             _gameStatusLabel.Visible = false;
         }
 
+        /// <summary>
+        /// Shows the game status label and sets the 'Game Over' text.
+        /// </summary>
         public void ShowGameOverLabel()
         {
             ShowGameStatusLabel();
             _gameStatusLabel.Text = "Hra skončila.";
         }
 
+        /// <summary>
+        /// Shows the game status label and sets the 'Game Over, results are being sent to the server.'
+        /// </summary>
         public void ShowWaitLabel()
         {
             ShowGameStatusLabel();
             _gameStatusLabel.Text = "Hra skončila. Prosím vyčkejte, výsledky se odesílají na server.";
         }
 
+        /// <summary>
+        /// Shows the game status label.
+        /// </summary>
         public void ShowGameStatusLabel()
         {
             _gameStatusLabel.Visible = true;
         }
 
+        /// <summary>
+        /// Shows the error label.
+        /// </summary>
         public void ShowErrorLabel()
         {
             _codeErrorLabel.Visible = true;
         }
 
+        /// <summary>
+        /// Hides the error label.
+        /// </summary>
         public void HideErrorLabel()
         {
             _codeErrorLabel.Visible = false;
         }
 
+        /// <summary>
+        /// Starts the game.
+        /// </summary>
         private void StartButtonPressed()
         {
             StartGame?.Invoke(this, new GameConfigEventArgs { EncodedConfig = _gameCodeValue.Text, Nickname = _nicknameValue.Text });

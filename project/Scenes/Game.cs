@@ -32,6 +32,9 @@ namespace Scenes
         protected BaseHUD _hud;
         protected TextureButton _confirmButton;
 
+        /// <summary>
+        /// Event handler called when the game ends.
+        /// </summary>
         public event EventHandler<GameDataEventArgs> EndGame;
 
         public override void _Ready()
@@ -55,6 +58,11 @@ namespace Scenes
             _gameTimer.Start();
         }
 
+        /// <summary>
+        /// Initializes the game.
+        /// </summary>
+        /// <param name="config">Config of the current game.</param>
+        /// <param name="gameData">Game data object for the current game.</param>
         public void Init(Config config, GameData gameData)
         {
             _config = config;
@@ -100,6 +108,9 @@ namespace Scenes
             startCountdownTimer.Start();
         }
 
+        /// <summary>
+        /// Starts the game.
+        /// </summary>
         public void StartGame() 
         {
             _gameData.GainedPoints = 0;
@@ -118,6 +129,9 @@ namespace Scenes
             }
         }
 
+        /// <summary>
+        /// Stops the game.
+        /// </summary>
         protected void StopGame()
         {
             _gameTimer.Paused = true;
@@ -132,18 +146,28 @@ namespace Scenes
             EndGame?.Invoke(this, new GameDataEventArgs { GameData = _gameData });
         }
 
+        /// <summary>
+        /// End current task by confirm button.
+        /// </summary>
         private void EndTaskButton()
         {
             _gameData.SequencesButton++;
             CheckTaskAndGenerateNew(true);
         }
 
+        /// <summary>
+        /// End current task by task time limit.
+        /// </summary>
         private void EndTaskTime()
         {
             _gameData.SequencesTimeLimit++;
             CheckTaskAndGenerateNew(false);
         }
 
+        /// <summary>
+        /// Checks the current task, counts gained points and generates a new task.
+        /// </summary>
+        /// <param name="endedByButton">true if the task was ended by confirm button, false otherwise</param>
         private void CheckTaskAndGenerateNew(bool endedByButton)
         {
             PauseTimers();
@@ -168,12 +192,19 @@ namespace Scenes
             }
         }
         
+        /// <summary>
+        /// Generates a new task and sets the instructions to the HUD.
+        /// </summary>
         protected void GenerateNewTask()
         {
             _gameTask = new GameTask(_config.GameType);
             _hud?.SetInstructions(_gameTask.TaskAssignments);
         }
 
+        /// <summary>
+        /// Checks the completed task and counts the gained points.
+        /// </summary>
+        /// <param name="endedByButton">true if task was ended by the confirm button, false otherwise</param>
         protected void CheckCompletedTask(bool endedByButton)
         {
             _gameData.TimeSpent += _config.TimePerTask - _taskTimer.TimeLeft;
@@ -197,6 +228,14 @@ namespace Scenes
             _completedTasks++;
         }
 
+        /// <summary>
+        /// Compares the specified component's value with the provided value.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="component">Component to be checked.</param>
+        /// <param name="value">Expected value.</param>
+        /// <param name="correctComponents">Number of correct components reference.</param>
+        /// <returns>true if the component is correct, false otherwise</returns>
         protected bool CheckComponentValue<T>(Component<T> component, T value, ref int correctComponents)
         {
             if (component.IsModified())
@@ -224,6 +263,10 @@ namespace Scenes
             return true;
         }
 
+        /// <summary>
+        /// Updates the number of sequences data and everything combo related.
+        /// </summary>
+        /// <param name="perfectTask">true if the finished task was perfect, false otherwise</param>
         protected void EvaluateTaskData(bool perfectTask)
         {
             if (perfectTask)
@@ -274,6 +317,9 @@ namespace Scenes
             }
         }
 
+        /// <summary>
+        /// Increments the combo modifier, if possible, and resets the combo streak;
+        /// </summary>
         protected void IncrementComboModifier()
         {
             if (_config.MaxComboModifier > 0 && _config.MaxComboModifier > _currentModifier)
@@ -289,6 +335,9 @@ namespace Scenes
             _currentComboStreak = 0;
         }
 
+        /// <summary>
+        /// Resets the combo modifier, if possible, and resets the combo streak.
+        /// </summary>
         protected void DecrementComboModifier()
         {
             if (_config.GameType == GameType.Gamified && _currentModifier > 1)
@@ -300,12 +349,18 @@ namespace Scenes
             _currentComboStreak = 0;
         }
 
+        /// <summary>
+        /// Pauses game timer and task timer.
+        /// </summary>
         protected void PauseTimers()
         {
             _gameTimer.Paused = true;
             _taskTimer.Paused = true;
         }
 
+        /// <summary>
+        /// Resumes game timer, resets and resumes task timer.
+        /// </summary>
         protected void ResumeTimers()
         {
             _gameTimer.Paused = false;
@@ -313,18 +368,58 @@ namespace Scenes
             _taskTimer.Start();
         }
 
+        /// <summary>
+        /// Resumes the game and task timers, when the popup window after completed task is closed.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="eventArgs"></param>
         public void TaskCompletedPopupClosedCallback(object sender, EventArgs eventArgs)
         {
             ResumeTimers();
         }
 
+        /// <summary>
+        /// Shows informational popup after task completion.
+        /// </summary>
         protected abstract void ShowTaskCompletedPopup();
+
+        /// <summary>
+        /// Returns correct HUD scene, according to current game type and provided feedback type.
+        /// </summary>
+        /// <param name="feedbackType">Current game's feedback type.</param>
+        /// <returns>HUD scene according to current game type and provided feedback type.</returns>
         protected abstract BaseHUD GetHUDScene(FeedbackType feedbackType);
+
+        /// <summary>
+        /// Counts correct components against game task and adjusts combo modifier.
+        /// </summary>
+        /// <param name="endedByButton">true if the sequence was ended by the confirm button, false otherwise</param>
+        /// <returns>Number of correct components</returns>
         protected abstract int CountCorrectComponents(bool endedByButton);
+
+        /// <summary>
+        /// Disables all game components.
+        /// </summary>
         protected abstract void DisableComponents();
+
+        /// <summary>
+        /// Enables all game components.
+        /// </summary>
         protected abstract void EnableComponents();
+
+        /// <summary>
+        /// Resets all game components.
+        /// </summary>
         protected abstract void ResetComponents();
+
+        /// <summary>
+        /// Hides all game components.
+        /// </summary>
         protected abstract void HideComponents();
+
+        /// <summary>
+        /// Shows all game components.
+        /// </summary>
         protected abstract void ShowComponents();
     }
 }

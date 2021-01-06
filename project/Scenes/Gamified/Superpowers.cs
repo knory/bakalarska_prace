@@ -10,7 +10,6 @@ namespace Scenes.Gamified
     {
         private string _resourcePath = $"{Constants.GamifiedResourcesPath}Superpowers/";
 
-        // Called when the node enters the scene tree for the first time.
         public override void _Ready()
         {
             _backgroundTextures = new Texture[]
@@ -59,6 +58,9 @@ namespace Scenes.Gamified
             AdjustControlPositioning();
         }
 
+        /// <summary>
+        /// Adjusts positioning of the control's nodes.
+        /// </summary>
         private void AdjustControlPositioning()
         {
             var container = _sideScrollWithBackgroundControl.GetNode<HBoxContainer>("ContentContainer");

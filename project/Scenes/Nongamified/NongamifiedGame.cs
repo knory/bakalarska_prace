@@ -24,9 +24,6 @@ namespace Scenes.Nongamified
         private Sprite _topBar;
         private TextureRect _ellipses;
 
-        /// <summary>
-        /// Initializes all components and other graphical elements. Called when the node first enters the scene.
-        /// </summary>
         public override void _Ready()
         {
             base._Ready();
@@ -80,10 +77,6 @@ namespace Scenes.Nongamified
             }
         }
 
-        /// <summary>
-        /// Counts correct components against game task and adjusts combo modifier.
-        /// </summary>
-        /// <returns>Number of correct components</returns>
         protected override int CountCorrectComponents(bool endedByButton)
         {
             if (_gameTask == null) return 0;
@@ -148,9 +141,6 @@ namespace Scenes.Nongamified
             return correctComponents;
         }
 
-        /// <summary>
-        /// Shows popup with information about the completed task.
-        /// </summary>
         protected override void ShowTaskCompletedPopup()
         {
             if (_config.FeedbackType == FeedbackType.Quality)
@@ -171,9 +161,6 @@ namespace Scenes.Nongamified
             }
         }
 
-        /// <summary>
-        /// Disables inputs on all components.
-        /// </summary>
         protected override void DisableComponents()
         {
             _advertisement.DisableComponent();
@@ -191,9 +178,6 @@ namespace Scenes.Nongamified
             _confirmButton.Disabled = true;
         }
 
-        /// <summary>
-        /// Enables inputs on all components.
-        /// </summary>
         protected override void EnableComponents()
         {
             _advertisement.EnableComponent();
@@ -211,9 +195,6 @@ namespace Scenes.Nongamified
             _confirmButton.Disabled = false;
         }
 
-        /// <summary>
-        /// Hides all components.
-        /// </summary>
         protected override void HideComponents()
         {
             _advertisement.Hide();
@@ -233,9 +214,6 @@ namespace Scenes.Nongamified
             _confirmButton.Hide();
         }
 
-        /// <summary>
-        /// Shows all components.
-        /// </summary>
         protected override void ShowComponents()
         {
             _advertisement.Show();
@@ -255,9 +233,6 @@ namespace Scenes.Nongamified
             _confirmButton.Show();
         }
 
-        /// <summary>
-        /// Resets state and selected values of all components.
-        /// </summary>
         protected override void ResetComponents()
         {
             _advertisement.ResetState();

@@ -23,6 +23,11 @@ namespace Controls
         /// </summary>
         protected int _leftMostIndex;
 
+        /// <summary>
+        /// Transforms possible values from the input model to actual nodes.
+        /// </summary>
+        /// <param name="possibleValues">Array of the input model values to be transformed.</param>
+        /// <returns></returns>
         protected abstract ICollection<T> TransformPossibleValues(U[] possibleValues);
 
         public override void _Ready()
@@ -33,6 +38,9 @@ namespace Controls
             _contentContainer = GetNode<HBoxContainer>("ContentContainer");
         }
 
+        /// <summary>
+        /// Sets content based on number of shown values, current left-most index and the collection of possible values.
+        /// </summary>
         protected void SetContent()
         {
             DeleteContent();
@@ -60,6 +68,14 @@ namespace Controls
             }
         }
 
+        /// <summary>
+        /// Initializes the control.
+        /// </summary>
+        /// <param name="possibleValues">Array of possible values, typed as input model.</param>
+        /// <param name="valuesShown">Number of values shown in the control.</param>
+        /// <param name="canJumpBounds">Sets whether the control can scroll from last element to the first one.</param>
+        /// <param name="leftButtonTexture">Texture of the left scroll button.</param>
+        /// <param name="rightButtonTexture">Texture of the right scroll button.</param>
         public virtual void Init(U[] possibleValues, int valuesShown, bool canJumpBounds, 
             Texture leftButtonTexture, Texture rightButtonTexture)
         {
@@ -77,6 +93,9 @@ namespace Controls
             _rightButton.Connect("pressed", this, nameof(OnScrollRight));
         }
 
+        /// <summary>
+        /// Handles left scroll button click.
+        /// </summary>
         protected virtual void OnScrollLeft()
         {
             if (_canJumpBounds)
@@ -91,6 +110,9 @@ namespace Controls
             SetContent();
         }
 
+        /// <summary>
+        /// Handles right scroll button click.
+        /// </summary>
         protected virtual void OnScrollRight()
         {
             if (_canJumpBounds)
@@ -105,18 +127,27 @@ namespace Controls
             SetContent();
         }
 
+        /// <summary>
+        /// Enables the control.
+        /// </summary>
         public virtual void EnableControl()
         {
             _leftButton.Disabled = false;
             _rightButton.Disabled = false;
         }
 
+        /// <summary>
+        /// Disables the control.
+        /// </summary>
         public virtual void DisableControl()
         {
             _leftButton.Disabled = true;
             _rightButton.Disabled = true;
         }
 
+        /// <summary>
+        /// Deletes all currently shown value nodes from the control.
+        /// </summary>
         protected void DeleteContent()
         {
             var contentNodes = _contentContainer.GetChildren();
@@ -126,6 +157,9 @@ namespace Controls
             }
         }
 
+        /// <summary>
+        /// Resets the control to the default state.
+        /// </summary>
         public virtual void ResetState()
         {
             _leftMostIndex = 0;

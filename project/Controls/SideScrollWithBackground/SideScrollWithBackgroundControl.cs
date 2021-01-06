@@ -16,6 +16,14 @@ namespace Controls
         public EventHandler<SelectedValueEventArgs> OnDeselected;
         public EventHandler<EventArgs> OnScrolled;
 
+        /// <summary>
+        /// Initializes the control.
+        /// </summary>
+        /// <param name="possibleValues">Array of the possible values typed as input model.</param>
+        /// <param name="leftButtonTexture">Texture of the left scroll button.</param>
+        /// <param name="rightButtonTexture">Texture of the right scroll button.</param>
+        /// <param name="addButonTexture">Texture of the add button.</param>
+        /// <param name="removeButtonTexture">Texture of the remove button.</param>
         public void Init(Texture[] possibleValues, Texture leftButtonTexture, Texture rightButtonTexture, 
             Texture addButonTexture, Texture removeButtonTexture)
         {
@@ -25,7 +33,6 @@ namespace Controls
             base.Init(possibleValues, 1, true, leftButtonTexture, rightButtonTexture);
         }
 
-        // Called when the node enters the scene tree for the first time.
         public override void _Ready()
         {
             base._Ready();
@@ -46,6 +53,9 @@ namespace Controls
             return controls;
         }
 
+        /// <summary>
+        /// Deselects all value nodes.
+        /// </summary>
         public void DeselectAll()
         {
             foreach (var item in _possibleValues)

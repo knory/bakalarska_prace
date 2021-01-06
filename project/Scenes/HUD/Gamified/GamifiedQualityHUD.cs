@@ -73,6 +73,18 @@ namespace Scenes.HUD.Gamified
             _tasksCountLabel.Text = $"{streak}{ResourceStrings.Gamified.ComboNotification}";
         }
 
+        /// <summary>
+        /// Show task completed informational popup.
+        /// </summary>
+        /// <param name="eventHandler">Popup close event handler.</param>
+        /// <param name="sequenceOrder">Order of the current sequence.</param>
+        /// <param name="correctActionsInSequence">Number of correct actions in the current sequence.</param>
+        /// <param name="gainedPointsBase">Gained points base in the current sequence.</param>
+        /// <param name="gainedPointsAverage">Previous average of gained points base.</param>
+        /// <param name="perfectTaskBonus">Bonus points for perfect task in the current sequence.</param>
+        /// <param name="perfectTaskBonusAverage">Average of bonus points for perfect task in the previous sequences.</param>
+        /// <param name="savedTimeBonus">Bonus points for saved time.</param>
+        /// <param name="savedTimeBonusAverage">Previous average of bonus points for saved time.</param>
         public void ShowTaskCompletedPopup(EventHandler<EventArgs> eventHandler, int sequenceOrder, int correctActionsInSequence,
             int gainedPointsBase, double gainedPointsAverage, int perfectTaskBonus, double perfectTaskBonusAverage,
             int savedTimeBonus, double savedTimeBonusAverage)
@@ -80,8 +92,6 @@ namespace Scenes.HUD.Gamified
             var popupInstance = (GamifiedTaskCompletedPopup)_popupPackedScene.Instance();
             popupInstance.ConfirmButtonHandler += eventHandler;
             AddChild(popupInstance);
-
-
 
             popupInstance.SetPopupData(sequenceOrder, correctActionsInSequence, gainedPointsBase, gainedPointsAverage, perfectTaskBonus,
                 perfectTaskBonusAverage, savedTimeBonus, savedTimeBonusAverage);

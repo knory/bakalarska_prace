@@ -19,6 +19,17 @@ namespace Controls
         public DynamicFont Font { get; set; }
         public Color? LabelColor { get; set; }
 
+        /// <summary>
+        /// Initializes the control.
+        /// </summary>
+        /// <param name="possibleValues">Array of possible values typed as input model.</param>
+        /// <param name="valuesShown">Number of values shown in the control.</param>
+        /// <param name="canJumpBounds">Sets whether the control can scroll between last and first value.</param>
+        /// <param name="nodeClickedCallback">Event handler of the click event of contained value nodes.</param>
+        /// <param name="leftButtonTexture">Texture of the left scroll button.</param>
+        /// <param name="rightButtonTexture">Texture of the right scroll button.</param>
+        /// <param name="addIcon">Texture of the add icon.</param>
+        /// <param name="removeIcon">Texture of the remove icon.</param>
         public virtual void Init(Teammate[] possibleValues, int valuesShown, bool canJumpBounds, 
             EventHandler<TeammateControlClickedEventArgs> nodeClickedCallback, 
             Texture leftButtonTexture, Texture rightButtonTexture, Texture addIcon, Texture removeIcon)
@@ -28,6 +39,10 @@ namespace Controls
             base.Init(possibleValues, valuesShown, canJumpBounds, nodeClickedCallback, leftButtonTexture, rightButtonTexture);
         }
 
+        /// <summary>
+        /// Adds a teammate node to the control content.
+        /// </summary>
+        /// <param name="teammate">Model of the teammate to be added.</param>
         public void AddPossibleTeammate(Teammate teammate)
         {
             var node = CreateNodeFromTeammate(teammate);
@@ -37,6 +52,10 @@ namespace Controls
             SetContent();
         }
 
+        /// <summary>
+        /// Removes the specified teammate node from the control content.
+        /// </summary>
+        /// <param name="teammate">Model of the teammate to be removed.</param>
         public void RemovePossibleTeammate(Teammate teammate)
         {
             var node = _possibleValues.Where(x => x.Teammate.Id == teammate.Id).FirstOrDefault();
@@ -89,6 +108,11 @@ namespace Controls
             base.ResetState();
         }
 
+        /// <summary>
+        /// Creates a teammate control node from the specified teammate model.
+        /// </summary>
+        /// <param name="teammate">Teammate model for the node to be created from.</param>
+        /// <returns>TeammateControl created according to the input model.</returns>
         private TeammateControl CreateNodeFromTeammate(Teammate teammate)
         {
             var node = (TeammateControl)_teammatePackedScene.Instance();
