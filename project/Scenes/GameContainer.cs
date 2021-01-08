@@ -110,28 +110,28 @@ namespace Scenes
         /// <param name="gameData">Game data to be sent.</param>
         private void SendGameData(GameData gameData)
         {
-            // gameData.TimeLimit = _config.TimePerGame == 0 ? _config.TimePerTask * _config.TasksPerGame : _config.TimePerGame;
-            // gameData.TimeAdded = DateTime.Now;
+            gameData.TimeLimit = _config.TimePerGame == 0 ? _config.TimePerTask * _config.TasksPerGame : _config.TimePerGame;
+            gameData.TimeAdded = DateTime.Now;
 
-            // var headers = new string[] { "Content-Type: application/json" };
-            // var serializedData = JsonConvert.SerializeObject(gameData);
+            var headers = new string[] { "Content-Type: application/json" };
+            var serializedData = JsonConvert.SerializeObject(gameData);
 
-            // using (var client = new HTTPClient())
-            // {
-            //     client.ConnectToHost(Constants.ApiHost);
+            using (var client = new HTTPClient())
+            {
+                client.ConnectToHost(Constants.ApiHost);
 
-            //     while (client.GetStatus() == HTTPClient.Status.Resolving || client.GetStatus() == HTTPClient.Status.Connecting)
-            //     {
-            //         client.Poll();
-            //     }
+                while (client.GetStatus() == HTTPClient.Status.Resolving || client.GetStatus() == HTTPClient.Status.Connecting)
+                {
+                    client.Poll();
+                }
 
-            //     client.Request(HTTPClient.Method.Post, Constants.ApiDataCollectorUrl, headers, serializedData);
+                client.Request(HTTPClient.Method.Post, Constants.ApiDataCollectorUrl, headers, serializedData);
 
-            //     while (client.GetStatus() == HTTPClient.Status.Requesting)
-            //     {
-            //         client.Poll();
-            //     }
-            // }
+                while (client.GetStatus() == HTTPClient.Status.Requesting)
+                {
+                    client.Poll();
+                }
+            }
         }
 
         /// <summary>
