@@ -74,7 +74,7 @@ namespace Utils
             };
 
             // Energy Booster task constants
-            public static readonly string ENERGY_BOOSTER_TASK_BASE = "Zapni posilovač vnímavosti svých smyslů";
+            public static readonly string ENERGY_BOOSTER_TASK_BASE = "Zapni posilovač energie na vnímání";
 
             // Fighters task constants
             public static readonly string FIGHTERS_TASK_BASE = "Vezmi s sebou na výpravu";

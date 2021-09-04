@@ -51,11 +51,11 @@ namespace Scenes
             _perfectTaskBonusPerSequence = new List<int>();
             _savedTimeBonusPerSequence = new List<int>();
 
-            _gameTimer = new Timer();
-            _gameTimer.WaitTime = 20;
-            _gameTimer.OneShot = true;
-            AddChild(_gameTimer);
-            _gameTimer.Start();
+            // _gameTimer = new Timer();
+            // _gameTimer.WaitTime = 20;
+            // _gameTimer.OneShot = true;
+            // AddChild(_gameTimer);
+            // _gameTimer.Start();
         }
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace Scenes
                 WaitTime = _config.TimePerGame,
                 OneShot = true
             };
-            _gameTimer.Connect("timeout", this, nameof(StopGame));
+            _gameTimer.Connect("timeout", this, nameof(StopGameByTime));
             AddChild(_gameTimer);
 
             _taskTimer = new Timer
@@ -132,11 +132,16 @@ namespace Scenes
         /// <summary>
         /// Stops the game.
         /// </summary>
-        protected void StopGame()
+        protected void StopGame(bool endedByTime)
         {
             _gameTimer.Paused = true;
 
             _gameData.GainedPoints += (int)Math.Floor(_gameTimer.TimeLeft * _config.UnusedTimeGameBonus);
+            
+            if (endedByTime)
+            {
+                _gameData.TimeSpent = _config.TimePerGame;
+            }
 
             _gameTimer.Stop();
             _taskTimer.Stop();
@@ -144,6 +149,11 @@ namespace Scenes
             DisableComponents();
 
             EndGame?.Invoke(this, new GameDataEventArgs { GameData = _gameData });
+        }
+
+        protected void StopGameByTime()
+        {
+            StopGame(true);
         }
 
         /// <summary>
@@ -175,7 +185,7 @@ namespace Scenes
             
             if (_completedTasks == _config.TasksPerGame)
             {
-                StopGame();
+                StopGame(false);
                 return;
             }
 
@@ -207,7 +217,15 @@ namespace Scenes
         /// <param name="endedByButton">true if task was ended by the confirm button, false otherwise</param>
         protected void CheckCompletedTask(bool endedByButton)
         {
-            _gameData.TimeSpent += _config.TimePerTask - _taskTimer.TimeLeft;
+            if (endedByButton)
+            {
+                _gameData.TimeSpent += _config.TimePerTask - _taskTimer.TimeLeft;
+            }
+            else
+            {
+                _gameData.TimeSpent += _config.TimePerTask;
+            }
+
             var correctComponents = CountCorrectComponents(endedByButton);
             _correctComponentsPerSequence.Add(correctComponents);
             

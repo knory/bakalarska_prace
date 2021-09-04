@@ -99,7 +99,7 @@ namespace Scenes
             _gameStartOverlay.ShowOverlay();
             _gameStartOverlay.ShowWaitLabel();
 
-            SendGameData(eventArgs.GameData);
+            //SendGameData(eventArgs.GameData);
 
             _gameStartOverlay.ShowGameOverLabel();
         }

@@ -10,7 +10,7 @@ namespace Utils
         public static readonly string GamifiedResourcesPath = ResourcesPath + "Gamified/";
 
         public static int NUMBER_OF_ASSIGNMENTS_PER_TASK { get; } = 5;
-        public static int GAME_COUNTDOWN_WAIT_TIME { get; } = 15;
+        public static int GAME_COUNTDOWN_WAIT_TIME { get; } = 3;
         public static int STREAK_NOTIFICATION_TIME { get; } = 5;
         public static int MINIMAL_STREAK_NOTIFICATION { get; } = 3;
 
